@@ -1,0 +1,383 @@
+media:
+  input: todo-brice-rd/img
+  output: todo-brice-rd/img
+  categories: [image, video]
+
+content:
+  # ──────────────────────────────────────────────
+  # 1) CONFIGURACIÓN GENERAL DEL SITIO
+  # ──────────────────────────────────────────────
+  - name: site
+    label: "⚙️ Configuración General"
+    type: file
+    path: todo-brice-rd/data/site.json
+    fields:
+      - name: colores
+        type: object
+        label: "Colores de la marca"
+        description: "Se aplican en todo el sitio (botones, títulos, franjas). Usa el código de color en formato hexadecimal, ej: #1F2A60."
+        fields:
+          - name: azul
+            type: string
+            label: "Azul principal"
+            description: "Usado en títulos y botones azules. Código hexadecimal, ej: #1F2A60"
+          - name: verde
+            type: string
+            label: "Verde"
+            description: "Usado en botones de WhatsApp y acentos verdes. Código hexadecimal, ej: #2E9E46"
+          - name: naranja
+            type: string
+            label: "Naranja"
+            description: "Color principal de la marca Brice. Código hexadecimal, ej: #EB5C27"
+
+      - name: medios
+        type: object
+        label: "Fotos y videos principales"
+        description: "Las imágenes y videos que aparecen en el logo, la portada y las páginas de presentación. Sube el archivo nuevo antes de borrar el anterior."
+        fields:
+          - name: logo
+            type: image
+            label: "Logo (header y pie de página de las 4 páginas)"
+          - name: fachada
+            type: image
+            label: "Foto de la fachada de la tienda"
+            description: "Aparece en Contacto y Nosotros."
+          - name: retrato_fundador
+            type: image
+            label: "Foto de Manuel (Nosotros)"
+          - name: video_inicio
+            type: image
+            label: "Video principal de Inicio"
+            description: "Aunque el campo dice 'imagen', aquí puedes subir un archivo de video (MP4) — el selector de medios acepta ambos."
+          - name: poster_video_inicio
+            type: image
+            label: "Imagen de portada del video de Inicio"
+            description: "Se muestra mientras el video carga o antes de darle play."
+          - name: video_nosotros
+            type: image
+            label: "Video de la página Nosotros"
+            description: "Igual que arriba: puedes subir un archivo MP4 aquí."
+          - name: poster_video_nosotros
+            type: image
+            label: "Imagen de portada del video de Nosotros"
+
+      - name: banner
+        type: object
+        label: "Franja superior (mensaje corto arriba del todo)"
+        description: "El texto que aparece en la barra de color al tope de cada página. Puedes incluir emojis."
+        fields:
+          - name: inicio
+            type: string
+            label: "Mensaje en Inicio"
+          - name: nosotros
+            type: string
+            label: "Mensaje en Nosotros"
+          - name: productos
+            type: string
+            label: "Mensaje en Productos"
+          - name: contacto
+            type: string
+            label: "Mensaje en Contacto"
+
+      - name: contacto
+        type: object
+        label: "Datos de contacto (aparecen en todas las páginas)"
+        fields:
+          - name: telefono_visible
+            type: string
+            label: "Teléfono visible"
+            description: "Ej: (809) 385-2381"
+          - name: whatsapp_visible
+            type: string
+            label: "WhatsApp visible"
+            description: "Ej: (829) 379-5820 — solo el texto que se muestra, no cambia el número real de WhatsApp"
+          - name: direccion
+            type: string
+            label: "Dirección / zona"
+          - name: instagram_usuario
+            type: string
+            label: "Usuario de Instagram"
+            description: "Ej: @todobrice"
+
+      - name: whatsapp
+        type: object
+        label: "Número real de WhatsApp"
+        description: "Este es el número al que de verdad llegan los mensajes de todos los botones de WhatsApp del sitio."
+        fields:
+          - name: numero
+            type: string
+            label: "Número de WhatsApp"
+            description: "Solo números, con código de país, sin + ni espacios. Ej: 18293795820"
+            required: true
+          - name: mensaje_general
+            type: string
+            label: "Mensaje por defecto"
+            description: "Texto que se pre-escribe cuando alguien toca un botón de WhatsApp genérico."
+
+      - name: recarga_pagos
+        type: object
+        label: "Datos para recargas y pago de servicios"
+        description: "Se muestran en la sección de recargas/CAASD/EDEESTE de la página de Productos."
+        fields:
+          - name: banco
+            type: string
+            label: "Banco"
+          - name: titular
+            type: string
+            label: "Titular de la cuenta"
+          - name: cuenta
+            type: string
+            label: "Número de cuenta"
+          - name: caasd_edeeste_texto
+            type: text
+            label: "Instrucciones para pago de CAASD/EDEESTE"
+
+      - name: contenido
+        type: object
+        label: "Textos de cada página"
+        description: "Títulos, descripciones y textos de botones de cada página. No cambies el nombre de los campos, solo el texto."
+        fields:
+          - name: inicio
+            type: object
+            label: "Página de Inicio"
+            fields:
+              - name: sello
+                type: string
+                label: "Etiqueta pequeña arriba del título"
+              - name: titulo
+                type: string
+                label: "Título principal"
+              - name: descripcion
+                type: text
+                label: "Descripción"
+              - name: boton_productos
+                type: string
+                label: "Texto del botón hacia Productos"
+              - name: boton_whatsapp
+                type: string
+                label: "Texto del botón de WhatsApp"
+              - name: tarjeta_video_etiqueta
+                type: string
+                label: "Etiqueta pequeña sobre la tarjeta de video"
+              - name: tarjeta_video_titulo
+                type: string
+                label: "Título de la tarjeta de video"
+              - name: tarjeta_video_sello
+                type: string
+                label: "Sello/insignia sobre la tarjeta de video"
+          - name: nosotros
+            type: object
+            label: "Página Nosotros"
+            fields:
+              - name: intro_etiqueta
+                type: string
+                label: "Etiqueta pequeña arriba del título"
+              - name: intro_titulo
+                type: string
+                label: "Título principal"
+              - name: intro_descripcion
+                type: text
+                label: "Descripción"
+              - name: video_etiqueta
+                type: string
+                label: "Etiqueta pequeña sobre el video"
+              - name: video_titulo
+                type: string
+                label: "Título sobre el video"
+              - name: video_descripcion
+                type: text
+                label: "Descripción bajo el título del video"
+          - name: productos
+            type: object
+            label: "Página Productos"
+            fields:
+              - name: etiqueta
+                type: string
+                label: "Etiqueta pequeña arriba del título"
+              - name: titulo
+                type: string
+                label: "Título principal"
+              - name: descripcion
+                type: text
+                label: "Descripción"
+              - name: vitrina_etiqueta
+                type: string
+                label: "Etiqueta pequeña sobre el catálogo"
+              - name: vitrina_titulo
+                type: string
+                label: "Título sobre el catálogo"
+              - name: vitrina_descripcion
+                type: text
+                label: "Descripción sobre el catálogo"
+          - name: contacto
+            type: object
+            label: "Página Contacto"
+            fields:
+              - name: etiqueta
+                type: string
+                label: "Etiqueta pequeña arriba del título"
+              - name: titulo
+                type: string
+                label: "Título principal"
+              - name: descripcion
+                type: text
+                label: "Descripción"
+
+      - name: pie_pagina
+        type: object
+        label: "Pie de página"
+        fields:
+          - name: copyright
+            type: string
+            label: "Texto de derechos de autor"
+            description: "Ej: 2026 Todo Brice RD. Todos los derechos reservados."
+
+  # ──────────────────────────────────────────────
+  # 2) PROMOCIONES (carrusel en la página de Inicio)
+  # ──────────────────────────────────────────────
+  - name: promos
+    label: "🎉 Promociones (Inicio)"
+    type: file
+    path: todo-brice-rd/data/promos.json
+    fields:
+      - name: promos
+        type: object
+        label: "Promoción"
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.categoria} — {fields.tituloPrecio}"
+        fields:
+          - name: activa
+            type: boolean
+            label: "¿Mostrar esta promoción?"
+            description: "Desactívala para ocultarla del carrusel sin borrarla."
+          - name: tipoMedio
+            type: select
+            label: "¿Esta promo usa foto o video?"
+            options:
+              values:
+                - { name: imagen, label: "Foto" }
+                - { name: video, label: "Video" }
+            description: "Elige uno. Si eliges video, sube el archivo MP4 en el campo de abajo — el mismo campo acepta ambos tipos."
+          - name: imagen
+            type: image
+            label: "Imagen o video de la promoción"
+          - name: etiqueta
+            type: string
+            label: "Etiqueta sobre la imagen"
+            description: "Ej: 🔥 RD$80, 🆕 LANZAMIENTO, 💧 SOLO ESTE MES"
+          - name: colorEtiqueta
+            type: select
+            label: "Color de la etiqueta"
+            options:
+              values:
+                - { name: naranja, label: "Naranja" }
+                - { name: verde, label: "Verde" }
+                - { name: azul, label: "Azul" }
+          - name: categoria
+            type: string
+            label: "Nombre del producto"
+          - name: tituloPrecio
+            type: string
+            label: "Presentación y precio"
+            description: "Ej: Suavizante — RD$80"
+          - name: colorBoton
+            type: select
+            label: "Color del botón 'Pedir'"
+            options:
+              values:
+                - { name: naranja, label: "Naranja" }
+                - { name: verde, label: "Verde" }
+                - { name: azul, label: "Azul" }
+          - name: descripcion
+            type: text
+            label: "Descripción corta"
+          - name: whatsappTexto
+            type: string
+            label: "Mensaje de WhatsApp al tocar la promoción"
+            description: "Ej: Hola, quiero el Brice-Fresh Suavizante a RD$80"
+
+  # ──────────────────────────────────────────────
+  # 3) CATÁLOGO DE PRODUCTOS Y PRECIOS
+  # ──────────────────────────────────────────────
+  - name: productos
+    label: "🛒 Catálogo y Precios"
+    type: file
+    path: todo-brice-rd/data/productos.json
+    fields:
+      - name: categorias
+        type: object
+        label: "Categoría"
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.nombre}"
+        fields:
+          - name: id
+            type: string
+            label: "Identificador interno"
+            description: "No lo cambies si no estás seguro — se usa internamente para abrir la categoría correcta. Ej: linea-brice"
+          - name: nombre
+            type: string
+            label: "Nombre de la categoría"
+          - name: icono
+            type: string
+            label: "Icono (emoji)"
+            description: "Ej: 🧴 🥫 🍬 🧽 🥤"
+          - name: color
+            type: select
+            label: "Color de la categoría"
+            options:
+              values:
+                - { name: brandOrange, label: "Naranja de marca" }
+                - { name: brandBlue, label: "Azul de marca" }
+                - { name: brandGreen, label: "Verde de marca" }
+                - { name: pink-500, label: "Rosado" }
+                - { name: blue-500, label: "Azul claro" }
+                - { name: purple-500, label: "Morado" }
+                - { name: gray-500, label: "Gris" }
+          - name: abierta
+            type: boolean
+            label: "¿Abierta por defecto?"
+            description: "Si está activo, esta categoría aparece ya desplegada al entrar a la página de Productos."
+          - name: productos
+            type: object
+            label: "Producto"
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{fields.nombre}"
+            fields:
+              - name: nombre
+                type: string
+                label: "Nombre del producto"
+                required: true
+              - name: imagen
+                type: image
+                label: "Foto del producto"
+              - name: etiqueta
+                type: string
+                label: "Etiqueta corta"
+                description: "Ej: Cuidado de Ropa, Súper Rendidor"
+              - name: destacado
+                type: boolean
+                label: "¿Destacado / Más vendido?"
+              - name: descripcion
+                type: text
+                label: "Descripción"
+              - name: precios
+                type: object
+                label: "Presentación y precio"
+                list:
+                  collapsible:
+                    collapsed: true
+                    summary: "{fields.tamano} — RD${fields.monto}"
+                fields:
+                  - name: tamano
+                    type: string
+                    label: "Tamaño / presentación"
+                    description: "Ej: Galón grande, Mediano, Pequeño"
+                  - name: monto
+                    type: number
+                    label: "Precio en RD$"
