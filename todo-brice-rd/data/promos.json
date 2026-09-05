@@ -1,0 +1,40 @@
+{
+  "promos": [
+    {
+      "activa": true,
+      "tipoMedio": "imagen",
+      "imagen": "img/promos/promo-bricefresh-suavizante.png",
+      "etiqueta": "🔥 RD$80",
+      "colorEtiqueta": "naranja",
+      "categoria": "Brice-Fresh",
+      "tituloPrecio": "Suavizante — RD$80",
+      "colorBoton": "azul",
+      "descripcion": "Fórmula concentrada ideal para ropa de bebé y toda la familia. Suavidad que cuida tus prendas con aroma fresco y duradero.",
+      "whatsappTexto": "Hola, quiero el Brice-Fresh Suavizante a RD$80"
+    },
+    {
+      "activa": true,
+      "tipoMedio": "imagen",
+      "imagen": "img/promos/promo-suavizante-galon.png",
+      "etiqueta": "💧 SOLO ESTE MES",
+      "colorEtiqueta": "verde",
+      "categoria": "Suavizante Brice",
+      "tituloPrecio": "Galón — RD$200",
+      "colorBoton": "verde",
+      "descripcion": "¡Suavidad que se nota! Aprovecha nuestra oferta especial de galón a solo RD$200 durante todo este mes.",
+      "whatsappTexto": "Hola, quiero el Suavizante galón a RD$200"
+    },
+    {
+      "activa": true,
+      "tipoMedio": "imagen",
+      "imagen": "img/promos/promo-jabon-galon.png",
+      "etiqueta": "🆕 LANZAMIENTO",
+      "colorEtiqueta": "azul",
+      "categoria": "Jabón Líquido",
+      "tituloPrecio": "Galón — RD$200",
+      "colorBoton": "naranja",
+      "descripcion": "Precio especial de lanzamiento. Jabón líquido de limpieza profunda y calidad garantizada para todo tu hogar o negocio.",
+      "whatsappTexto": "Hola, quiero el Jabón Líquido a RD$200"
+    }
+  ]
+}

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo Brice RD | Tienda de Conveniencia y Limpieza en Santo Domingo Este</title>
+    <meta name="description" content="Todo Brice RD: productos de limpieza Brice, recargas móviles, pago de facturas y delivery rápido en Santo Domingo Este. Calidad, variedad y buenos precios en un solo lugar.">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="google9c41d89a0c874875">
+    <link rel="canonical" href="https://todo-brice-rd.pages.dev/">
+
+    <!-- Favicon & App Icons / Iconos de la Aplicación -->
+    <link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#1F2A60">
+
+    <!-- Social Media Meta Tags / Meta Etiquetas para Redes Sociales (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Todo Brice RD">
+    <meta property="og:locale" content="es_DO">
+    <meta property="og:title" content="Todo Brice RD | Tienda de Conveniencia y Limpieza en Santo Domingo Este">
+    <meta property="og:description" content="Productos de limpieza Brice, recargas, pago de facturas y delivery rápido. Calidad, variedad y buenos precios en un solo lugar.">
+    <meta property="og:url" content="https://todo-brice-rd.pages.dev/">
+    <meta property="og:image" content="https://todo-brice-rd.pages.dev/img/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags / Meta Etiquetas para Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Todo Brice RD | Tienda de Conveniencia y Limpieza en Santo Domingo Este">
+    <meta name="twitter:description" content="Productos de limpieza Brice, recargas, pago de facturas y delivery rápido en Santo Domingo Este.">
+    <meta name="twitter:image" content="https://todo-brice-rd.pages.dev/img/og-image.jpg">
+
+    <!-- Datos estructurados para Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ConvenienceStore",
+        "name": "Todo Brice RD",
+        "image": "https://todo-brice-rd.pages.dev/img/og-image.jpg",
+        "url": "https://todo-brice-rd.pages.dev/",
+        "telephone": "+1-809-385-2381",
+        "priceRange": "$$",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Santo Domingo Este",
+            "addressCountry": "DO"
+        }
+    }
+    </script>
+    <!-- Tailwind CSS Framework -->
+    <!-- Dark Mode Toggle Script / Script de Modo Oscuro -->
+    <!-- Evita el "flash" del tema incorrecto al cargar / Prevents incorrect theme flash on load -->
+    <script>
+        (function () {
+            var stored = localStorage.getItem('brice-theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (stored === 'dark' || (!stored && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+    <style>:root{--brand-blue:#1F2A60;--brand-green:#2E9E46;--brand-orange:#EB5C27;}</style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: 'var(--brand-blue)',
+                        brandGreen: 'var(--brand-green)',
+                        brandOrange: 'var(--brand-orange)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Transiciones elegantes entre páginas (navegadores Chromium modernos) */
+        @view-transition {
+            navigation: auto;
+        }
+        /* Fallback: fundido suave de entrada para todos los navegadores */
+        body {
+            animation: briceFadeIn .45s ease both;
+        }
+        @keyframes briceFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        /* Transición suave de colores al cambiar de tema */
+        html.theme-ready, html.theme-ready * {
+            transition: background-color .25s ease, border-color .25s ease, color .25s ease;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            body { animation: none; }
+            html.theme-ready, html.theme-ready * { transition: none !important; }
+        }
+
+        /* Carrusel del Hero */
+        #hero-carousel {
+            display: grid;
+        }
+        #hero-carousel .hero-slide {
+            grid-area: 1 / 1;
+            width: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .6s ease;
+        }
+        #hero-carousel .hero-slide.is-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .hero-dot.is-active {
+            background-color: #EB5C27 !important;
+            width: 1.75rem;
+            border-radius: 9999px;
+        }
+        .hero-dot {
+            transition: all .3s ease;
+            cursor: pointer;
+        }
+
+        /* Mini-carrusel de productos (dentro del slide 2) */
+        #product-mini-carousel {
+            display: grid;
+        }
+        #product-mini-carousel .mini-slide {
+            grid-area: 1 / 1;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity .5s ease;
+        }
+        #product-mini-carousel .mini-slide.is-active {
+            opacity: 1;
+        }
+        .mini-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 9999px;
+            background-color: rgba(31, 42, 96, .25);
+            transition: all .3s ease;
+        }
+        .mini-dot.is-active {
+            background-color: #EB5C27;
+            width: 16px;
+            border-radius: 9999px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #hero-carousel .hero-slide { transition: none; }
+            #product-mini-carousel .mini-slide { transition: none; }
+        }
+    </style>
+    <script src="assets/site.js" defer></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans flex flex-col min-h-screen">
+
+    <!-- Barra de aviso superior -->
+    <div class="bg-brandBlue text-white text-xs py-2 px-4 text-center font-medium flex justify-center items-center gap-4 flex-wrap">
+        <span data-cms="banner.inicio">📍 Tienda física en Santo Domingo Este</span>
+        <span class="hidden md:inline">•</span>
+        <span>📞 Tel: <span data-cms="contacto.telefono_visible">(809) 385-2381</span></span>
+        <span class="hidden md:inline">•</span>
+        <span>🛵 Delivery & WhatsApp: <strong data-cms="contacto.whatsapp_visible">(829) 379-5820</strong></span>
+    </div>
+
+    <!-- Navigation Bar / Barra de Navegación -->
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 border-b-4 border-brandGreen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center h-full py-2">
+                    <a href="index.html" class="flex items-center h-full">
+                        <span class="inline-flex items-center rounded-xl px-2.5 py-1 dark:bg-white dark:shadow-md transition-colors h-full">
+                            <img data-cms-src="medios.logo" src="img/logo-transparent.png" alt="Todo Brice Logo" class="h-10 md:h-12 w-auto object-contain">
+                        </span>
+                    </a>
+                </div>
+                
+                <!-- Enlaces -->
+                <nav class="hidden md:flex space-x-8 h-full">
+                    <a href="index.html" class="flex items-center text-brandBlue dark:text-blue-300 font-bold border-b-2 border-brandOrange h-full px-1">Inicio</a>
+                    <a href="nosotros.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Nosotros</a>
+                    <a href="productos.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Productos & Servicios</a>
+                    <a href="contacto.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Contacto</a>
+                </nav>
+
+                <!-- Botón WhatsApp Directo -->
+                <div class="flex items-center gap-3">
+                    <div class="hidden md:flex items-center">
+                        <a href="https://wa.me/18293795820" target="_blank" rel="noopener" class="bg-brandOrange text-white px-5 py-2.5 rounded-full hover:bg-orange-600 transition font-bold shadow-lg flex items-center gap-2 text-sm">
+                            <span>📲 WhatsApp: (829) 379-5820</span>
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="theme-toggle" type="button" aria-label="Cambiar tema claro/oscuro" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 transition">
+                            <svg id="icon-sun" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+                            <svg id="icon-moon" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        </button>
+                        <button id="menu-toggle" type="button" aria-label="Abrir menú" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-brandBlue dark:text-blue-300 border border-gray-200 dark:border-gray-700">
+                            <svg id="icon-menu-open" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                            <svg id="icon-menu-close" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+            <nav class="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
+                <a href="index.html" class="block px-4 py-3 rounded-lg bg-brandBlue/5 text-brandBlue dark:text-blue-300 font-bold">Inicio</a>
+                <a href="nosotros.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Nosotros</a>
+                <a href="productos.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Productos & Servicios</a>
+                <a href="contacto.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Contacto</a>
+                <a href="https://wa.me/18293795820" target="_blank" rel="noopener" class="mt-2 text-center bg-brandOrange text-white px-5 py-3 rounded-xl hover:bg-orange-600 transition font-bold shadow-md">
+                    📲 WhatsApp: (829) 379-5820
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section / Sección Principal (Carrusel) -->
+    <main class="flex-grow">
+        <section class="bg-white dark:bg-gray-800 relative overflow-hidden border-t border-gray-100 dark:border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-10 pb-8 md:pb-10 relative">
+
+                <div id="hero-carousel" class="relative">
+
+                    <!-- Slide 1: Video de Manuel / slogan "Calidad, Variedad y Buenos Precios" -->
+                    <div class="hero-slide flex flex-col md:flex-row items-center relative z-10" data-slide="0">
+                        <div class="md:w-1/2 pr-0 md:pr-10">
+                            <div class="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-orange-50 dark:bg-orange-900/20 border border-orange-200 text-brandOrange font-bold text-xs mb-5 uppercase tracking-wide">
+                                <span class="w-2 h-2 rounded-full bg-brandOrange animate-ping"></span>
+                                Calidad, Variedad y Buenos Precios
+                            </div>
+                            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-brandBlue dark:text-blue-300 leading-tight mb-5">
+                                Al frente de <span class="text-brandOrange">Todo Brice</span> está Manuel Brice
+                            </h1>
+                            <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                                Conoce la cara detrás de nuestra tienda y de la línea <strong>Brice Limpieza & Hogar</strong>: cercanía, compromiso y atención personalizada para cada cliente en Santo Domingo Este.
+                            </p>
+                            <div class="flex flex-wrap gap-4">
+                                <a href="productos.html" class="bg-brandBlue text-white px-7 py-3 rounded-xl hover:bg-blue-900 transition font-bold text-base shadow-lg hover:shadow-xl">
+                                    Ver Productos & Servicios
+                                </a>
+                                <a href="https://wa.me/18293795820?text=Hola%20Todo%20Brice,%20quiero%20hacer%20un%20pedido" target="_blank" rel="noopener" class="bg-brandGreen text-white px-7 py-3 rounded-xl hover:bg-green-700 transition font-bold text-base shadow-md flex items-center gap-2">
+                                    <span>💬 Pedir por WhatsApp</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="md:w-1/2 mt-12 md:mt-0 flex justify-center relative">
+                            <div class="relative max-w-md w-full">
+                                <div class="absolute -top-6 -left-6 w-full h-full bg-brandOrange/10 rounded-3xl rotate-2"></div>
+                                <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 p-2">
+                                    <div class="w-full aspect-video rounded-xl overflow-hidden bg-black relative group">
+                                        <video id="heroVideo" class="w-full h-full object-contain" autoplay muted loop playsinline preload="metadata" data-cms-poster="medios.poster_video_inicio" poster="img/video/al-frente-de-todo-brice-poster.jpg">
+                                            <source data-cms-src="medios.video_inicio" src="img/video/al-frente-de-todo-brice.mp4" type="video/mp4">
+                                        </video>
+                                        <!-- Botón de Audio Sutil -->
+                                        <button type="button" onclick="toggleAudio(this, 'heroVideo')" aria-label="Activar o desactivar sonido" class="absolute bottom-3 right-3 z-20 bg-black/75 hover:bg-black/90 text-white text-xs font-semibold py-1.5 px-3 rounded-full backdrop-blur-md border border-white/25 shadow-lg flex items-center gap-1.5 transition cursor-pointer">
+                                            <svg class="w-3.5 h-3.5 sound-off" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" /></svg>
+                                            <svg class="w-3.5 h-3.5 sound-on hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" /></svg>
+                                            <span class="audio-label">Activar sonido</span>
+                                        </button>
+                                    </div>
+                                    <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl mt-2 flex items-center justify-between">
+                                        <div>
+                                            <span class="text-xs font-bold text-brandOrange uppercase">Conócenos</span>
+                                            <h4 class="font-extrabold text-brandBlue dark:text-blue-300">Manuel Brice — Fundador</h4>
+                                        </div>
+                                        <span class="bg-brandBlue text-white text-xs font-bold px-3 py-1.5 rounded-lg">100% Confianza</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Producto / slogan "¡Aquí encuentras de todo!" -->
+                    <div class="hero-slide flex flex-col md:flex-row items-center relative z-10" data-slide="1">
+                        <div class="md:w-1/2 pr-0 md:pr-10">
+                            <div class="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-200 text-brandGreen font-bold text-xs mb-5 uppercase tracking-wide">
+                                <span class="w-2 h-2 rounded-full bg-brandGreen animate-ping"></span>
+                                Tu Tienda de Confianza en RD
+                            </div>
+                            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-brandBlue dark:text-blue-300 leading-tight mb-5">
+                                ¡Aquí encuentras <span class="text-brandOrange">de todo!</span>
+                            </h1>
+                            <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                                Calidad, variedad y buenos precios en un solo lugar. Encuentra nuestra línea exclusiva <strong>Brice Limpieza & Hogar</strong>, realiza tus recargas telefónicas, paga facturas y pide con <strong>delivery rápido</strong>.
+                            </p>
+                            <div class="flex flex-wrap gap-4">
+                                <a href="productos.html" class="bg-brandBlue text-white px-7 py-3 rounded-xl hover:bg-blue-900 transition font-bold text-base shadow-lg hover:shadow-xl">
+                                    Ver Productos & Servicios
+                                </a>
+                                <a href="https://wa.me/18293795820?text=Hola%20Todo%20Brice,%20quiero%20hacer%20un%20pedido" target="_blank" rel="noopener" class="bg-brandGreen text-white px-7 py-3 rounded-xl hover:bg-green-700 transition font-bold text-base shadow-md flex items-center gap-2">
+                                    <span>💬 Pedir por WhatsApp</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Imagen Destacada del Hero: mini-carrusel de productos -->
+                        <div class="md:w-1/2 mt-12 md:mt-0 flex justify-center relative">
+                            <div class="relative max-w-md w-full">
+                                <div class="absolute -top-6 -left-6 w-full h-full bg-brandGreen/10 rounded-3xl -rotate-2"></div>
+                                <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700 p-2">
+                                    <div id="product-mini-carousel" class="relative w-full h-80 rounded-xl overflow-hidden bg-white dark:bg-gray-900">
+                                        <div class="mini-slide is-active" data-mini="0" data-cat="Cuidado de Ropa" data-name="Suavizante Textil" data-badge="Fórmula Rendidora">
+                                            <img src="img/suavizante.jpg" alt="Suavizante Textil Brice" class="w-full h-full object-contain p-4">
+                                        </div>
+                                        <div class="mini-slide" data-mini="1" data-cat="Desinfectante & Ambientador" data-name="Brice-Fresh Lavanda" data-badge="Más Pedido">
+                                            <img src="img/brice-fresh.jpg" alt="Brice-Fresh Desinfectante" class="w-full h-full object-contain p-4">
+                                        </div>
+                                        <div class="mini-slide" data-mini="2" data-cat="Arranca Grasa" data-name="Jabón Líquido Multiuso" data-badge="Alta Espuma">
+                                            <img src="img/jabon-liquido.jpg" alt="Jabón Líquido Multiuso" class="w-full h-full object-contain p-4">
+                                        </div>
+                                        <!-- Puntos del mini-carrusel -->
+                                        <div class="absolute bottom-2 right-2.5 flex gap-1.5 z-10">
+                                            <span class="mini-dot is-active" data-mini-target="0"></span>
+                                            <span class="mini-dot" data-mini-target="1"></span>
+                                            <span class="mini-dot" data-mini-target="2"></span>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl mt-2 flex items-center justify-between">
+                                        <div>
+                                            <span class="text-xs font-bold text-brandGreen uppercase" id="mini-cat">Cuidado de Ropa</span>
+                                            <h4 class="font-extrabold text-brandBlue dark:text-blue-300" id="mini-name">Suavizante Textil</h4>
+                                        </div>
+                                        <span class="bg-brandOrange text-white text-xs font-bold px-3 py-1.5 rounded-lg" id="mini-badge">Fórmula Rendidora</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Controles del carrusel -->
+                <div class="flex justify-center gap-2.5 mt-10 md:mt-4">
+                    <button type="button" class="hero-dot w-2.5 h-2.5 rounded-full bg-brandBlue/25 dark:bg-blue-300/30" data-target="0" aria-label="Ir al slide 1"></button>
+                    <button type="button" class="hero-dot w-2.5 h-2.5 rounded-full bg-brandBlue/25 dark:bg-blue-300/30" data-target="1" aria-label="Ir al slide 2"></button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Sección de Servicios de la Tienda -->
+        <section class="bg-blue-50/50 dark:bg-gray-800/40 py-14 border-y border-gray-200 dark:border-gray-700">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-brandBlue dark:text-blue-300">Servicios Disponibles en Todo Brice</h2>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-2">Ahorra tiempo resolviendo tus pagos y recargas sin hacer largas filas.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition">
+                        <div class="text-3xl mb-3">🛒</div>
+                        <h3 class="text-lg font-bold text-brandBlue dark:text-blue-300 mb-2">Tienda de Conveniencia</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 mb-3">Alimentos, dulces, detergentes, bebidas, cuidado personal y mucho más, entre otros.</p>
+                        <span class="text-brandGreen text-xs font-bold font-mono">Todo en un Lugar</span>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition">
+                        <div class="text-3xl mb-3">📱</div>
+                        <h3 class="text-lg font-bold text-brandBlue dark:text-blue-300 mb-2">Recargas Móviles</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 mb-3">Altice, Claro, Viva, Digicel y Natcom. Recargas al instante sin comisión extra.</p>
+                        <span class="text-brandGreen text-xs font-bold font-mono">100% Inmediato</span>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition">
+                        <div class="text-3xl mb-3">💡</div>
+                        <h3 class="text-lg font-bold text-brandBlue dark:text-blue-300 mb-2">Pago de Facturas</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 mb-3">Paga tu agua con CAASD y tu factura de energía con EDEESTE de forma segura.</p>
+                        <span class="text-brandBlue dark:text-blue-300 text-xs font-bold font-mono">Sin Filas</span>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition">
+                        <div class="text-3xl mb-3">🧴</div>
+                        <h3 class="text-lg font-bold text-brandBlue dark:text-blue-300 mb-2">Productos Brice</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 mb-3">Suavizantes, desinfectantes Brice-Fresh y jabones líquidos para el hogar y negocio.</p>
+                        <span class="text-brandOrange text-xs font-bold font-mono">Precios de Fábrica</span>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition">
+                        <div class="text-3xl mb-3">🛵</div>
+                        <h3 class="text-lg font-bold text-brandBlue dark:text-blue-300 mb-2">Servicio a Domicilio</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 mb-3">Envíanos tu lista por WhatsApp y te lo llevamos directamente a tu puerta.</p>
+                        <span class="text-brandGreen text-xs font-bold font-mono">Delivery Rápido</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Productos Destacados -->
+        <section id="productos" class="bg-white dark:bg-gray-800 py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+                    <div>
+                        <span class="text-brandGreen font-bold text-xs uppercase tracking-wider block mb-1">Nuestra Marca</span>
+                        <h2 class="text-3xl font-extrabold text-brandBlue dark:text-blue-300">Línea de Limpieza & Hogar</h2>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Fórmulas potentes que rinden más y cuidan tu presupuesto.</p>
+                    </div>
+                    <a href="productos.html" class="text-brandOrange font-bold hover:text-orange-700 transition flex items-center gap-1 text-sm">
+                        Ver catálogo completo &rarr;
+                    </a>
+                </div>
+
+                <!-- Promo Slider / Carrusel de Promociones Activas -->
+                <div class="mb-12">
+                    <div class="flex items-center gap-3 mb-5">
+                        <span class="flex items-center gap-1.5 bg-brandOrange/10 dark:bg-orange-900/30 text-brandOrange font-bold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full border border-brandOrange/20">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandOrange animate-pulse"></span>
+                            Promociones Activas
+                        </span>
+                    </div>
+
+                    <!-- Slider wrapper -->
+                    <div class="relative max-w-sm mx-auto md:max-w-none">
+                        <!-- Track: se rellena en vivo desde data/promos.json (editable en el CMS) -->
+                        <div id="promo-slider" class="relative overflow-hidden rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700" style="max-width:380px; margin:0 auto; transition: height 0.4s ease;">
+                        </div><!-- /promo-slider -->
+
+                        <!-- Dot indicators: se generan en vivo junto con las promos -->
+                        <div id="promo-dots" class="flex justify-center gap-2 mt-4"></div>
+
+                    </div><!-- /slider wrapper -->
+                </div>
+                <!-- /Promo Slider -->
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Suavizante -->
+                    <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden hover:shadow-xl transition border border-gray-200 dark:border-gray-700 flex flex-col">
+                        <div class="h-60 bg-white dark:bg-gray-800 p-4 flex items-center justify-center border-b border-gray-100 dark:border-gray-700">
+                            <img src="img/suavizante.jpg" alt="Suavizante Brice" class="h-full object-contain hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <span class="text-brandGreen font-bold text-xs uppercase">Cuidado de Ropa</span>
+                                <h3 class="text-xl font-bold text-brandBlue dark:text-blue-300 mt-1 mb-2">Suavizante Textil</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-xs leading-relaxed mb-4">Aroma prolongado y suavidad extrema para toallas, sábanas y ropa de uso diario.</p>
+                            </div>
+                            <a href="https://wa.me/18293795820?text=Hola,%20me%20interesa%20el%20Suavizante%20Brice" target="_blank" rel="noopener" class="w-full text-center py-2.5 bg-brandBlue text-white font-bold text-sm rounded-xl hover:bg-blue-900 transition">
+                                Pedir por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Brice-Fresh -->
+                    <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden hover:shadow-xl transition border border-gray-200 dark:border-gray-700 flex flex-col relative">
+                        <div class="absolute top-3 right-3 bg-brandOrange text-white text-[11px] font-bold px-2.5 py-1 rounded-full z-10 shadow">Más Pedido</div>
+                        <div class="h-60 bg-white dark:bg-gray-800 p-4 flex items-center justify-center border-b border-gray-100 dark:border-gray-700">
+                            <img src="img/brice-fresh.jpg" alt="Brice-Fresh Desinfectante" class="h-full object-contain hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <span class="text-brandGreen font-bold text-xs uppercase">Desinfectante & Ambientador</span>
+                                <h3 class="text-xl font-bold text-brandBlue dark:text-blue-300 mt-1 mb-2">Brice-Fresh Lavanda</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-xs leading-relaxed mb-4">Elimina gérmenes y mantiene pisos y baños aromatizados con frescura prolongada.</p>
+                            </div>
+                            <a href="https://wa.me/18293795820?text=Hola,%20me%20interesa%20el%20Brice-Fresh" target="_blank" rel="noopener" class="w-full text-center py-2.5 bg-brandOrange text-white font-bold text-sm rounded-xl hover:bg-orange-600 transition">
+                                Pedir por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Jabón Líquido -->
+                    <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden hover:shadow-xl transition border border-gray-200 dark:border-gray-700 flex flex-col">
+                        <div class="h-60 bg-white dark:bg-gray-800 p-4 flex items-center justify-center border-b border-gray-100 dark:border-gray-700">
+                            <img src="img/jabon-liquido.jpg" alt="Jabón Líquido Multiuso" class="h-full object-contain hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <span class="text-brandGreen font-bold text-xs uppercase">Arranca Grasa</span>
+                                <h3 class="text-xl font-bold text-brandBlue dark:text-blue-300 mt-1 mb-2">Jabón Líquido Multiuso</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-xs leading-relaxed mb-4">Alta espuma desengrasante ideal para vajillas, cocinas y limpieza general sin resecar manos.</p>
+                            </div>
+                            <a href="https://wa.me/18293795820?text=Hola,%20me%20interesa%20el%20Jabon%20Liquido%20Brice" target="_blank" rel="noopener" class="w-full text-center py-2.5 bg-brandBlue text-white font-bold text-sm rounded-xl hover:bg-blue-900 transition">
+                                Pedir por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner de Contacto Rapido -->
+        <section class="bg-brandBlue text-white py-14 relative overflow-hidden">
+            <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+                <span class="text-brandOrange font-bold text-xs uppercase tracking-widest block mb-2">Atención Inmediata</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-4">¿Necesitas recarga, pago de factura o productos?</h2>
+                <p class="text-base text-blue-200 mb-8 max-w-xl mx-auto">Comunícate directamente a nuestro WhatsApp y coordinamos tu entrega o pago de inmediato.</p>
+                <div class="flex flex-wrap justify-center items-center gap-4">
+                    <a href="https://wa.me/18293795820" target="_blank" rel="noopener" class="inline-flex items-center bg-brandGreen text-white rounded-full px-8 py-3.5 shadow-lg hover:bg-green-600 transition font-bold text-lg gap-2">
+                        <span>📲 Escribir al (829) 379-5820</span>
+                    </a>
+                    <a href="contacto.html" class="inline-flex items-center bg-white/10 hover:bg-white/20 text-white rounded-full px-7 py-3.5 transition font-semibold text-base border border-white/20">
+                        Ver Horarios y Ubicación
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer / Pie de Página -->
+    <footer class="bg-gray-900 text-white py-12 mt-auto border-t-4 border-brandOrange">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <span class="inline-flex items-center rounded-xl px-2.5 py-1.5 mb-4 bg-white shadow-md"><img data-cms-src="medios.logo" src="img/logo-transparent.png" alt="Todo Brice Logo" class="h-12 w-auto object-contain"></span>
+                <p class="text-gray-400 dark:text-gray-400 text-sm leading-relaxed">Calidad, Variedad y Buenos Precios. Tu punto de conveniencia y productos de limpieza en Santo Domingo Este.</p>
+            </div>
+            <div>
+                <h4 class="text-base font-bold mb-3 text-brandOrange uppercase tracking-wider">Navegación</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="index.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Inicio</a></li>
+                    <li><a href="nosotros.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Sobre Nosotros</a></li>
+                    <li><a href="productos.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Productos & Servicios</a></li>
+                    <li><a href="contacto.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Contacto & Delivery</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-base font-bold mb-3 text-brandGreen uppercase tracking-wider">Contacto & Tienda</h4>
+                <ul class="space-y-2.5 text-sm text-gray-400 dark:text-gray-400">
+                    <li class="flex items-center gap-2"><span>📍</span> <span data-cms="contacto.direccion">Santo Domingo Este, República Dominicana</span></li>
+                    <li class="flex items-center gap-2"><span>📞</span> Tel: <span data-cms="contacto.telefono_visible">(809) 385-2381</span></li>
+                    <li class="flex items-center gap-2"><span>📲</span> WhatsApp: <span data-cms="contacto.whatsapp_visible">(829) 379-5820</span></li>
+                      <li class="flex items-center gap-2 text-brandOrange"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg> <a href="https://www.instagram.com/todobrice/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition"><span data-cms="contacto.instagram_usuario">@todobrice</span></a></li>
+                    <li class="flex items-center gap-2"><span>🛵</span> Servicio a domicilio disponible</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 dark:text-gray-400 text-xs">
+            &copy; <span data-cms="pie_pagina.copyright">2026 Todo Brice RD. Todos los derechos reservados.</span>
+            &nbsp;•&nbsp;<a href="aviso-legal.html" class="hover:text-white transition underline">Aviso Legal y Privacidad</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- Tema claro/oscuro ---
+        var html = document.documentElement;
+        var sun = document.getElementById('icon-sun');
+        var moon = document.getElementById('icon-moon');
+        function syncThemeIcon() {
+            var isDark = html.classList.contains('dark');
+            sun.classList.toggle('hidden', !isDark);
+            moon.classList.toggle('hidden', isDark);
+        }
+        syncThemeIcon();
+        window.addEventListener('load', function () {
+            requestAnimationFrame(function () { html.classList.add('theme-ready'); });
+        });
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            html.classList.toggle('dark');
+            localStorage.setItem('brice-theme', html.classList.contains('dark') ? 'dark' : 'light');
+            syncThemeIcon();
+        });
+
+        // --- Carrusel del Hero ---
+        (function () {
+            var carousel = document.getElementById('hero-carousel');
+            if (!carousel) return;
+            var slides = Array.prototype.slice.call(carousel.querySelectorAll('.hero-slide'));
+            var dots = Array.prototype.slice.call(document.querySelectorAll('.hero-dot'));
+            var current = 0;
+            var intervalMs = 6500;
+            var timer = null;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function goTo(index) {
+                current = (index + slides.length) % slides.length;
+                slides.forEach(function (slide, i) {
+                    slide.classList.toggle('is-active', i === current);
+                });
+                dots.forEach(function (dot, i) {
+                    dot.classList.toggle('is-active', i === current);
+                });
+                // Reproduce el video solo cuando su slide está activo (ahorra batería/datos)
+                slides[current].querySelectorAll('video').forEach(function (v) {
+                    v.play().catch(function () {});
+                });
+            }
+
+            function next() { goTo(current + 1); }
+
+            function startAutoplay() {
+                if (reduceMotion) return;
+                stopAutoplay();
+                timer = setInterval(next, intervalMs);
+            }
+            function stopAutoplay() {
+                if (timer) { clearInterval(timer); timer = null; }
+            }
+
+            dots.forEach(function (dot) {
+                dot.addEventListener('click', function () {
+                    goTo(parseInt(dot.getAttribute('data-target'), 10));
+                    startAutoplay();
+                });
+            });
+
+            carousel.addEventListener('mouseenter', stopAutoplay);
+            carousel.addEventListener('mouseleave', startAutoplay);
+            carousel.addEventListener('touchstart', stopAutoplay, { passive: true });
+
+            goTo(0);
+            startAutoplay();
+        })();
+
+        // --- Mini-carrusel de productos (dentro del slide 2 del hero) ---
+        (function () {
+            var wrap = document.getElementById('product-mini-carousel');
+            if (!wrap) return;
+            var slides = Array.prototype.slice.call(wrap.querySelectorAll('.mini-slide'));
+            var dots = Array.prototype.slice.call(wrap.querySelectorAll('.mini-dot'));
+            var catEl = document.getElementById('mini-cat');
+            var nameEl = document.getElementById('mini-name');
+            var badgeEl = document.getElementById('mini-badge');
+            var current = 0;
+            var timer = null;
+            var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function goTo(index) {
+                current = (index + slides.length) % slides.length;
+                var active = slides[current];
+                slides.forEach(function (s, i) { s.classList.toggle('is-active', i === current); });
+                dots.forEach(function (d, i) { d.classList.toggle('is-active', i === current); });
+                catEl.textContent = active.getAttribute('data-cat');
+                nameEl.textContent = active.getAttribute('data-name');
+                badgeEl.textContent = active.getAttribute('data-badge');
+            }
+
+            function next() { goTo(current + 1); }
+            function startAutoplay() {
+                if (reduceMotion) return;
+                stopAutoplay();
+                timer = setInterval(next, 2800);
+            }
+            function stopAutoplay() {
+                if (timer) { clearInterval(timer); timer = null; }
+            }
+
+            dots.forEach(function (dot) {
+                dot.addEventListener('click', function () {
+                    goTo(parseInt(dot.getAttribute('data-mini-target'), 10));
+                    startAutoplay();
+                });
+            });
+
+            wrap.addEventListener('mouseenter', stopAutoplay);
+            wrap.addEventListener('mouseleave', startAutoplay);
+
+            goTo(0);
+            startAutoplay();
+        })();
+
+        // --- Menú móvil ---
+        var menu = document.getElementById('mobile-menu');
+        var menuOpenIcon = document.getElementById('icon-menu-open');
+        var menuCloseIcon = document.getElementById('icon-menu-close');
+        document.getElementById('menu-toggle').addEventListener('click', function () {
+            var isHidden = menu.classList.toggle('hidden');
+            menuOpenIcon.classList.toggle('hidden', !isHidden);
+            menuCloseIcon.classList.toggle('hidden', isHidden);
+        });
+    </script>
+
+    <!-- Promo Slider Logic / Lógica del Carrusel de Promociones -->
+    <!-- Las tarjetas se construyen en vivo desde data/promos.json (editable en el CMS, sin tocar código) -->
+    <script>
+    (function () {
+        var wrapEl = document.getElementById('promo-slider');
+        var dotsEl = document.getElementById('promo-dots');
+        if (!wrapEl || !dotsEl) return;
+
+        var numeroWA = (window.BRICE_WA_NUMERO) || '18293795820';
+
+        function crearTarjeta(promo, idx) {
+            var div = document.createElement('div');
+            div.className = 'promo-slide';
+            div.setAttribute('data-promo', idx);
+            div.style.cssText = idx === 0
+                ? 'position:relative; display:flex; flex-direction:column; cursor:pointer; transition:opacity .6s ease; opacity:1;'
+                : 'position:absolute; top:0; left:0; width:100%; display:flex; flex-direction:column; opacity:0; pointer-events:none; cursor:pointer; transition:opacity .6s ease;';
+
+            var mensaje = encodeURIComponent(promo.whatsappTexto || ('Hola, quiero la promoción de ' + (promo.categoria || '')));
+            div.addEventListener('click', function () {
+                window.open('https://wa.me/' + numeroWA + '?text=' + mensaje, '_blank');
+            });
+
+            var colorEtiqueta = promo.colorEtiqueta || 'naranja';
+            var colorBoton = promo.colorBoton || 'azul';
+            var colorMap = { naranja: 'bg-brandOrange', verde: 'bg-brandGreen', azul: 'bg-brandBlue' };
+
+            var medioHTML = promo.tipoMedio === 'video'
+                ? '<video src="' + promo.imagen + '" class="w-full block" autoplay muted loop playsinline></video>'
+                : '<img src="' + promo.imagen + '" alt="' + (promo.tituloPrecio || promo.categoria || 'Promoción') + '" class="w-full block">';
+
+            div.innerHTML =
+                '<div class="relative bg-gray-100 dark:bg-gray-900">' +
+                    '<span class="absolute top-3 left-3 z-10 ' + (colorMap[colorEtiqueta] || colorMap.naranja) + ' text-white text-xs font-extrabold px-2.5 py-1 rounded-full shadow">' + (promo.etiqueta || '') + '</span>' +
+                    medioHTML +
+                '</div>' +
+                '<div class="bg-white dark:bg-gray-800 p-4 flex flex-col justify-center">' +
+                    '<div class="flex items-center justify-between mb-2">' +
+                        '<div>' +
+                            '<p class="text-xs font-bold text-brandGreen uppercase">' + (promo.categoria || '') + '</p>' +
+                            '<p class="text-sm font-extrabold text-brandBlue dark:text-blue-300">' + (promo.tituloPrecio || '') + '</p>' +
+                        '</div>' +
+                        '<span class="' + (colorMap[colorBoton] || colorMap.azul) + ' text-white text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap">Pedir →</span>' +
+                    '</div>' +
+                    '<p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">' + (promo.descripcion || '') + '</p>' +
+                '</div>';
+            return div;
+        }
+
+        function crearPunto(idx) {
+            var b = document.createElement('button');
+            b.className = 'promo-dot w-2.5 h-2.5 rounded-full transition-all duration-300 ' + (idx === 0 ? 'bg-brandOrange' : 'bg-gray-300 dark:bg-gray-600');
+            b.setAttribute('data-promo-target', idx);
+            b.setAttribute('aria-label', 'Promo ' + (idx + 1));
+            return b;
+        }
+
+        fetch('data/promos.json')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                var promos = (data.promos || []).filter(function (p) { return p.activa !== false; });
+                if (!promos.length) {
+                    wrapEl.closest('.mb-12').style.display = 'none';
+                    return;
+                }
+                promos.forEach(function (promo, idx) {
+                    wrapEl.appendChild(crearTarjeta(promo, idx));
+                    dotsEl.appendChild(crearPunto(idx));
+                });
+                iniciarCarrusel();
+            })
+            .catch(function (err) {
+                console.error('No se pudo cargar data/promos.json', err);
+            });
+
+        function iniciarCarrusel() {
+            var slides = Array.prototype.slice.call(document.querySelectorAll('.promo-slide'));
+            var dots   = Array.prototype.slice.call(document.querySelectorAll('.promo-dot'));
+            if (!slides.length) return;
+
+            var current = 0;
+            var timer   = null;
+            var DELAY   = 4000;
+
+            function goTo(idx) {
+                var wrap = document.getElementById('promo-slider');
+                
+                // On first run, make sure height is explicit so transition works
+                if (!wrap.style.height) {
+                    wrap.style.height = slides[current].offsetHeight + 'px';
+                }
+
+                // Hide current
+                slides[current].style.opacity = '0';
+                slides[current].style.pointerEvents = 'none';
+                dots[current].style.backgroundColor = '';
+                dots[current].classList.remove('bg-brandOrange');
+                dots[current].classList.add('bg-gray-300');
+
+                current = (idx + slides.length) % slides.length;
+
+                // Show next
+                slides[current].style.opacity = '1';
+                slides[current].style.pointerEvents = 'auto';
+                dots[current].classList.remove('bg-gray-300');
+                dots[current].classList.add('bg-brandOrange');
+                dots[current].style.backgroundColor = '';
+                
+                // Update container height
+                wrap.style.height = slides[current].offsetHeight + 'px';
+            }
+
+            function next() { goTo(current + 1); }
+
+            function start() {
+                stop();
+                timer = setInterval(next, DELAY);
+            }
+            function stop() {
+                if (timer) { clearInterval(timer); timer = null; }
+            }
+
+            // Dot click
+            dots.forEach(function (dot) {
+                dot.addEventListener('click', function () {
+                    goTo(parseInt(dot.getAttribute('data-promo-target'), 10));
+                    start();
+                });
+            });
+
+            // Pause on hover
+            var wrap = document.getElementById('promo-slider');
+            if (wrap) {
+                wrap.addEventListener('mouseenter', stop);
+                wrap.addEventListener('mouseleave', start);
+            }
+
+            // Init
+            goTo(0);
+            start();
+        }
+    })();
+    </script>
+
+
+
+    <script>
+        function toggleAudio(btn, videoId) {
+            var v = document.getElementById(videoId);
+            if (!v) return;
+            var offIcon = btn.querySelector('.sound-off');
+            var onIcon = btn.querySelector('.sound-on');
+            var label = btn.querySelector('.audio-label');
+            if (v.muted) {
+                v.muted = false;
+                v.volume = 0.8;
+                if (offIcon) offIcon.classList.add('hidden');
+                if (onIcon) onIcon.classList.remove('hidden');
+                if (label) label.textContent = 'Silenciar';
+            } else {
+                v.muted = true;
+                if (offIcon) offIcon.classList.remove('hidden');
+                if (onIcon) onIcon.classList.add('hidden');
+                if (label) label.textContent = 'Activar sonido';
+            }
+        }
+    </script>
+</body>
+</html>
+
+

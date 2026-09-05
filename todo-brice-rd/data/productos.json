@@ -1,0 +1,108 @@
+{
+  "categorias": [
+    {
+      "id": "linea-brice",
+      "nombre": "Línea Brice — Limpieza & Hogar",
+      "icono": "🧴",
+      "color": "brandOrange",
+      "abierta": true,
+      "productos": [
+        {
+          "nombre": "Suavizante Brice",
+          "imagen": "img/suavizante.jpg",
+          "etiqueta": "Cuidado de Ropa",
+          "destacado": false,
+          "descripcion": "Suavidad profunda y aroma prolongado que protege las fibras de toda tu ropa.",
+          "precios": [
+            { "tamano": "Galón grande", "monto": 250 },
+            { "tamano": "Galón mediano", "monto": 170 },
+            { "tamano": "Pote pequeño", "monto": 110 }
+          ]
+        },
+        {
+          "nombre": "Brice-Fresh",
+          "imagen": "img/brice-fresh.jpg",
+          "etiqueta": "Ambientador Multiuso",
+          "destacado": true,
+          "descripcion": "Poderosa fragancia y desinfección antibacteriana para pisos y baños.",
+          "precios": [
+            { "tamano": "Grande", "monto": 200 },
+            { "tamano": "Mediano", "monto": 150 },
+            { "tamano": "Pequeño", "monto": 80 }
+          ]
+        },
+        {
+          "nombre": "Jabón Líquido Brice",
+          "imagen": "img/jabon-liquido.jpg",
+          "etiqueta": "Súper Rendidor",
+          "destacado": false,
+          "descripcion": "Fórmula arranca grasa densa que cuida tus manos, ideal para lozas y cocina.",
+          "precios": [
+            { "tamano": "Galón grande", "monto": 220 },
+            { "tamano": "Mediano", "monto": 150 },
+            { "tamano": "Pequeño", "monto": 100 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alimentos",
+      "nombre": "Alimentos",
+      "icono": "🥫",
+      "color": "brandBlue",
+      "abierta": false,
+      "productos": []
+    },
+    {
+      "id": "dulces",
+      "nombre": "Dulces",
+      "icono": "🍬",
+      "color": "pink-500",
+      "abierta": false,
+      "productos": []
+    },
+    {
+      "id": "detergentes",
+      "nombre": "Detergentes y Limpieza",
+      "icono": "🧽",
+      "color": "brandGreen",
+      "abierta": false,
+      "productos": []
+    },
+    {
+      "id": "bebidas",
+      "nombre": "Bebidas",
+      "icono": "🥤",
+      "color": "blue-500",
+      "abierta": false,
+      "productos": []
+    },
+    {
+      "id": "cuidado-personal",
+      "nombre": "Cuidado Personal",
+      "icono": "🧴",
+      "color": "purple-500",
+      "abierta": false,
+      "productos": []
+    },
+    {
+      "id": "otros",
+      "nombre": "Otros Productos",
+      "icono": "🛒",
+      "color": "gray-500",
+      "abierta": false,
+      "productos": [
+        {
+          "nombre": "Cartón de 30 Huevos",
+          "imagen": "",
+          "etiqueta": "Básicos",
+          "destacado": false,
+          "descripcion": "Cartón completo de 30 huevos frescos.",
+          "precios": [
+            { "tamano": "Cartón 30 uds.", "monto": 205 }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviso Legal y Privacidad | Todo Brice RD</title>
+    <meta name="description" content="Aviso legal, privacidad y términos de uso de Todo Brice RD.">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="google9c41d89a0c874875">
+    <link rel="canonical" href="https://todo-brice-rd.pages.dev/aviso-legal.html">
+
+    <!-- Favicon & App Icons / Iconos de la Aplicación -->
+    <link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#1F2A60">
+
+    <!-- Social Media Meta Tags / Meta Etiquetas para Redes Sociales (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Todo Brice RD">
+    <meta property="og:locale" content="es_DO">
+    <meta property="og:title" content="Aviso Legal y Privacidad | Todo Brice RD">
+    <meta property="og:description" content="Aviso legal, privacidad y términos de uso de Todo Brice RD.">
+    <meta property="og:url" content="https://todo-brice-rd.pages.dev/aviso-legal.html">
+    <meta property="og:image" content="https://todo-brice-rd.pages.dev/img/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags / Meta Etiquetas para Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Aviso Legal y Privacidad | Todo Brice RD">
+    <meta name="twitter:description" content="Aviso legal, privacidad y términos de uso de Todo Brice RD.">
+    <meta name="twitter:image" content="https://todo-brice-rd.pages.dev/img/og-image.jpg">
+    <!-- Tailwind CSS Framework -->
+    <!-- Dark Mode Toggle Script / Script de Modo Oscuro -->
+    <!-- Evita el "flash" del tema incorrecto al cargar / Prevents incorrect theme flash on load -->
+    <script>
+        (function () {
+            var stored = localStorage.getItem('brice-theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (stored === 'dark' || (!stored && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+    <style>:root{--brand-blue:#1F2A60;--brand-green:#2E9E46;--brand-orange:#EB5C27;}</style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: 'var(--brand-blue)',
+                        brandGreen: 'var(--brand-green)',
+                        brandOrange: 'var(--brand-orange)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Transiciones elegantes entre páginas (navegadores Chromium modernos) */
+        @view-transition {
+            navigation: auto;
+        }
+        /* Fallback: fundido suave de entrada para todos los navegadores */
+        body {
+            animation: briceFadeIn .45s ease both;
+        }
+        @keyframes briceFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        /* Transición suave de colores al cambiar de tema */
+        html.theme-ready, html.theme-ready * {
+            transition: background-color .25s ease, border-color .25s ease, color .25s ease;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            body { animation: none; }
+            html.theme-ready, html.theme-ready * { transition: none !important; }
+        }
+    </style>
+    <script src="assets/site.js" defer></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans flex flex-col min-h-screen">
+
+    <!-- Barra superior -->
+    <div class="bg-brandBlue text-white text-xs py-2 px-4 text-center font-medium flex justify-center items-center gap-4 flex-wrap">
+        <span data-cms="banner.contacto">🛵 Servicio a Domicilio en Santo Domingo Este</span>
+        <span class="hidden md:inline">•</span>
+        <span>📞 Tel: <span data-cms="contacto.telefono_visible">(809) 385-2381</span></span>
+        <span class="hidden md:inline">•</span>
+        <span>📲 WhatsApp de Pedidos: <strong data-cms="contacto.whatsapp_visible">(829) 379-5820</strong></span>
+    </div>
+
+    <!-- Navigation Bar / Barra de Navegación -->
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 border-b-4 border-brandGreen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center h-full py-2">
+                    <a href="index.html" class="flex items-center h-full">
+                        <span class="inline-flex items-center rounded-xl px-2.5 py-1 dark:bg-white dark:shadow-md transition-colors h-full">
+                            <img data-cms-src="medios.logo" src="img/logo-transparent.png" alt="Todo Brice Logo" class="h-10 md:h-12 w-auto object-contain">
+                        </span>
+                    </a>
+                </div>
+                
+                <!-- Enlaces -->
+                <nav class="hidden md:flex space-x-8 h-full">
+                    <a href="index.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Inicio</a>
+                    <a href="nosotros.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Nosotros</a>
+                    <a href="productos.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Productos & Servicios</a>
+                    <a href="contacto.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Contacto</a>
+                </nav>
+
+                <!-- Botón WhatsApp Directo -->
+                <div class="flex items-center gap-3">
+                    <div class="hidden md:flex items-center">
+                        <a href="https://wa.me/18293795820" target="_blank" rel="noopener" class="bg-brandOrange text-white px-5 py-2.5 rounded-full hover:bg-orange-600 transition font-bold shadow-lg flex items-center gap-2 text-sm">
+                            <span>📲 WhatsApp: (829) 379-5820</span>
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="theme-toggle" type="button" aria-label="Cambiar tema claro/oscuro" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 transition">
+                            <svg id="icon-sun" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+                            <svg id="icon-moon" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        </button>
+                        <button id="menu-toggle" type="button" aria-label="Abrir menú" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-brandBlue dark:text-blue-300 border border-gray-200 dark:border-gray-700">
+                            <svg id="icon-menu-open" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                            <svg id="icon-menu-close" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+            <nav class="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
+                <a href="index.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Inicio</a>
+                <a href="nosotros.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Nosotros</a>
+                <a href="productos.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Productos & Servicios</a>
+                <a href="contacto.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Contacto</a>
+                <a href="https://wa.me/18293795820" target="_blank" rel="noopener" class="mt-2 text-center bg-brandOrange text-white px-5 py-3 rounded-xl hover:bg-orange-600 transition font-bold shadow-md">
+                    📲 WhatsApp: (829) 379-5820
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Page Header / Encabezado de Página -->
+        <section class="bg-brandBlue text-white py-14">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span class="text-brandOrange font-bold text-xs uppercase tracking-widest block mb-2">Transparencia</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-3">Aviso Legal y Privacidad</h1>
+                <p class="text-blue-200 text-sm md:text-base max-w-2xl mx-auto">Cómo funcionan tus datos, tus pedidos y tus recargas cuando usas este sitio.</p>
+            </div>
+        </section>
+
+        <!-- Contenido del Aviso Legal -->
+        <section class="py-14">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+
+                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-2xl p-5 flex items-start gap-3">
+                    <span class="text-xl">🔒</span>
+                    <p class="text-sm text-gray-700 dark:text-gray-200"><strong>Resumen rápido:</strong> esta página no tiene formularios que guarden tus datos ni base de datos propia. Los números de teléfono, montos y pedidos que escribes se envían directo a WhatsApp de Manuel Brice y no quedan almacenados en este sitio web.</p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-extrabold text-brandBlue dark:text-blue-300 mb-3">1. ¿Quiénes somos?</h2>
+                    <p>Este sitio web (<span data-cms="contacto.direccion">Santo Domingo Este, República Dominicana</span>) pertenece a <strong>Manuel Brice</strong>, propietario del negocio <strong>Todo Brice RD</strong>, dedicado a la venta de productos de limpieza, artículos de conveniencia, recargas telefónicas y pago de servicios (CAASD/EDEESTE).</p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-extrabold text-brandBlue dark:text-blue-300 mb-3">2. ¿Qué datos recolecta este sitio?</h2>
+                    <p class="mb-3">Este sitio es una página informativa y de catálogo. <strong>No tiene servidor propio ni base de datos:</strong> no guarda contraseñas, no crea cuentas de usuario y no almacena tu número de teléfono, tu nombre ni tus datos de pago.</p>
+                    <p>Cuando usas el cotizador de productos, el simulador de recarga o los botones de pedido, la información que escribes (producto, monto, número a recargar) se coloca en un mensaje que se abre directamente en tu WhatsApp para enviarlo a Manuel Brice. Ese mensaje viaja de tu teléfono a WhatsApp — este sitio nunca lo recibe ni lo guarda.</p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-extrabold text-brandBlue dark:text-blue-300 mb-3">3. Recargas y pago de servicios (CAASD/EDEESTE)</h2>
+                    <p class="mb-3">Las recargas telefónicas y los pagos de facturas que se coordinan por este medio son gestionados <strong>manualmente por Manuel Brice</strong> a través de WhatsApp, y no son procesados de forma automática por este sitio web.</p>
+                    <p>Todo Brice RD no es una entidad bancaria ni una operadora de telecomunicaciones: actúa como intermediario para facilitar el trámite. Confirma siempre el monto, el número y el método de pago directamente con Manuel Brice antes de transferir dinero.</p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-extrabold text-brandBlue dark:text-blue-300 mb-3">4. Precios y disponibilidad</h2>
+                    <p>Los precios, presentaciones y productos mostrados en este sitio son referenciales y pueden cambiar sin previo aviso por variaciones del mercado. El precio final y la disponibilidad se confirman siempre por WhatsApp o en el local antes de completar un pedido.</p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-extrabold text-brandBlue dark:text-blue-300 mb-3">5. Cookies y navegación</h2>
+                    <p>Este sitio solo guarda en tu propio navegador (no en un servidor) tu preferencia de tema claro/oscuro. No se usan cookies de rastreo ni herramientas de publicidad o analítica de terceros.</p>
+                </div>
+
+                <div>
+                    <h2 class="text-xl font-extrabold text-brandBlue dark:text-blue-300 mb-3">6. Contacto</h2>
+                    <p>Para cualquier duda sobre este aviso, un pedido o una recarga, escríbenos por WhatsApp al <span data-cms="contacto.whatsapp_visible">(829) 379-5820</span> o llama al <span data-cms="contacto.telefono_visible">(809) 385-2381</span>.</p>
+                </div>
+
+                <p class="text-xs text-gray-400 dark:text-gray-500 pt-4 border-t border-gray-200 dark:border-gray-700">Este aviso es una guía general de transparencia y no sustituye asesoría legal profesional. Última actualización: 2026.</p>
+            </div>
+        </section>
+    <!-- Footer / Pie de Página -->
+    <footer class="bg-gray-900 text-white py-12 mt-auto border-t-4 border-brandOrange">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <span class="inline-flex items-center rounded-xl px-2.5 py-1.5 mb-4 bg-white shadow-md"><img data-cms-src="medios.logo" src="img/logo-transparent.png" alt="Todo Brice Logo" class="h-12 w-auto object-contain"></span>
+                <p class="text-gray-400 dark:text-gray-400 text-sm leading-relaxed">Calidad, Variedad y Buenos Precios. Tu punto de conveniencia y productos de limpieza en Santo Domingo Este.</p>
+            </div>
+            <div>
+                <h4 class="text-base font-bold mb-3 text-brandOrange uppercase tracking-wider">Navegación</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="index.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Inicio</a></li>
+                    <li><a href="nosotros.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Sobre Nosotros</a></li>
+                    <li><a href="productos.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Productos & Servicios</a></li>
+                    <li><a href="contacto.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Contacto & Delivery</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-base font-bold mb-3 text-brandGreen uppercase tracking-wider">Contacto & Tienda</h4>
+                <ul class="space-y-2.5 text-sm text-gray-400 dark:text-gray-400">
+                    <li class="flex items-center gap-2"><span>📍</span> <span data-cms="contacto.direccion">Santo Domingo Este, República Dominicana</span></li>
+                    <li class="flex items-center gap-2"><span>📞</span> Tel: <span data-cms="contacto.telefono_visible">(809) 385-2381</span></li>
+                    <li class="flex items-center gap-2"><span>📲</span> WhatsApp: <span data-cms="contacto.whatsapp_visible">(829) 379-5820</span></li>
+                      <li class="flex items-center gap-2 text-brandOrange"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg> <a href="https://www.instagram.com/todobrice/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition"><span data-cms="contacto.instagram_usuario">@todobrice</span></a></li>
+                    <li class="flex items-center gap-2"><span>🛵</span> Servicio a domicilio disponible</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 dark:text-gray-400 text-xs">
+            &copy; <span data-cms="pie_pagina.copyright">2026 Todo Brice RD. Todos los derechos reservados.</span>
+            &nbsp;•&nbsp;<a href="aviso-legal.html" class="hover:text-white transition underline">Aviso Legal y Privacidad</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- Tema claro/oscuro ---
+        var html = document.documentElement;
+        var sun = document.getElementById('icon-sun');
+        var moon = document.getElementById('icon-moon');
+        function syncThemeIcon() {
+            var isDark = html.classList.contains('dark');
+            sun.classList.toggle('hidden', !isDark);
+            moon.classList.toggle('hidden', isDark);
+        }
+        syncThemeIcon();
+        window.addEventListener('load', function () {
+            requestAnimationFrame(function () { html.classList.add('theme-ready'); });
+        });
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            html.classList.toggle('dark');
+            localStorage.setItem('brice-theme', html.classList.contains('dark') ? 'dark' : 'light');
+            syncThemeIcon();
+        });
+
+        // --- Menú móvil ---
+        var menu = document.getElementById('mobile-menu');
+        var menuOpenIcon = document.getElementById('icon-menu-open');
+        var menuCloseIcon = document.getElementById('icon-menu-close');
+        document.getElementById('menu-toggle').addEventListener('click', function () {
+            var isHidden = menu.classList.toggle('hidden');
+            menuOpenIcon.classList.toggle('hidden', !isHidden);
+            menuCloseIcon.classList.toggle('hidden', isHidden);
+        });
+    </script>
+</body>
+</html>

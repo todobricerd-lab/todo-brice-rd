@@ -1,0 +1,74 @@
+{
+  "colores": {
+    "azul": "#1F2A60",
+    "verde": "#2E9E46",
+    "naranja": "#EB5C27"
+  },
+  "banner": {
+    "inicio": "📍 Tienda física en Santo Domingo Este",
+    "nosotros": "📍 Tienda física en Santo Domingo Este, RD",
+    "productos": "📦 Ventas al detalle y al por mayor",
+    "contacto": "🛵 Servicio a Domicilio en Santo Domingo Este"
+  },
+  "contacto": {
+    "telefono_visible": "(809) 385-2381",
+    "whatsapp_visible": "(829) 379-5820",
+    "direccion": "Santo Domingo Este, República Dominicana",
+    "instagram_usuario": "@todobrice"
+  },
+  "whatsapp": {
+    "numero": "18293795820",
+    "mensaje_general": "Hola Todo Brice, quiero hacer un pedido"
+  },
+  "recarga_pagos": {
+    "banco": "Banco Santa Cruz",
+    "titular": "Manuel Brice",
+    "cuenta": "11395000015661",
+    "caasd_edeeste_texto": "Trae tu factura de agua o luz a la tienda o envíanos el NIC/Contrato por WhatsApp para gestionarlo rápidamente."
+  },
+  "pie_pagina": {
+    "copyright": "2026 Todo Brice RD. Todos los derechos reservados."
+  },
+  "medios": {
+    "logo": "img/logo-transparent.png",
+    "fachada": "img/tienda-fachada.jpg",
+    "retrato_fundador": "img/manuel-portrait.jpg",
+    "video_inicio": "img/video/al-frente-de-todo-brice.mp4",
+    "poster_video_inicio": "img/video/al-frente-de-todo-brice-poster.jpg",
+    "video_nosotros": "img/video/este_es_la_marca_de_manual_bri.mp4",
+    "poster_video_nosotros": "img/suavizante.jpg"
+  },
+  "contenido": {
+    "inicio": {
+      "sello": "Calidad, Variedad y Buenos Precios",
+      "titulo": "Al frente de Todo Brice está Manuel Brice",
+      "descripcion": "Conoce la cara detrás de nuestra tienda y de la línea Brice Limpieza & Hogar: cercanía, compromiso y atención personalizada para cada cliente en Santo Domingo Este.",
+      "boton_productos": "Ver Productos & Servicios",
+      "boton_whatsapp": "💬 Pedir por WhatsApp",
+      "tarjeta_video_etiqueta": "Conócenos",
+      "tarjeta_video_titulo": "Manuel Brice — Fundador",
+      "tarjeta_video_sello": "100% Confianza"
+    },
+    "nosotros": {
+      "intro_etiqueta": "Nuestra Historia",
+      "intro_titulo": "Aquí encuentras de todo, con la confianza de siempre",
+      "intro_descripcion": "Todo Brice nació para ser el punto de apoyo donde el sector resuelve de todo: recargas al instante, pago de servicios básicos y productos esenciales para el hogar.",
+      "video_etiqueta": "En Video",
+      "video_titulo": "Conoce Nuestra Marca",
+      "video_descripcion": "Un vistazo de cerca al trabajo, los productos y el servicio que ofrecemos a diario."
+    },
+    "productos": {
+      "etiqueta": "Catálogo Oficial",
+      "titulo": "Productos & Servicios",
+      "descripcion": "Nuestra línea exclusiva de limpieza y módulo de recargas rápidas para todo el país.",
+      "vitrina_etiqueta": "Tienda de Conveniencia",
+      "vitrina_titulo": "Todo lo que Necesitas en un Solo Lugar",
+      "vitrina_descripcion": "Selecciona una categoría para ver los productos disponibles."
+    },
+    "contacto": {
+      "etiqueta": "Atención Directa",
+      "titulo": "Contacto & Servicio a Domicilio",
+      "descripcion": "Visítanos en nuestra tienda física o comunícate vía WhatsApp para despachos y pedidos inmediatos."
+    }
+  }
+}

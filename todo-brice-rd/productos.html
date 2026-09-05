@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos & Servicios | Todo Brice RD</title>
+    <meta name="description" content="Suavizante, desinfectante Brice-Fresh, jabón líquido multiuso, recargas móviles y pago de facturas. Descubre el catálogo completo de Todo Brice RD.">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="google9c41d89a0c874875">
+    <link rel="canonical" href="https://todo-brice-rd.pages.dev/productos.html">
+
+    <!-- Favicon & App Icons / Iconos de la Aplicación -->
+    <link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#1F2A60">
+
+    <!-- Social Media Meta Tags / Meta Etiquetas para Redes Sociales (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Todo Brice RD">
+    <meta property="og:locale" content="es_DO">
+    <meta property="og:title" content="Productos & Servicios | Todo Brice RD">
+    <meta property="og:description" content="Suavizante, desinfectante Brice-Fresh, jabón líquido multiuso, recargas y pago de facturas. Catálogo completo de Todo Brice RD.">
+    <meta property="og:url" content="https://todo-brice-rd.pages.dev/productos.html">
+    <meta property="og:image" content="https://todo-brice-rd.pages.dev/img/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags / Meta Etiquetas para Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Productos & Servicios | Todo Brice RD">
+    <meta name="twitter:description" content="Suavizante, desinfectante Brice-Fresh, jabón líquido multiuso, recargas y pago de facturas.">
+    <meta name="twitter:image" content="https://todo-brice-rd.pages.dev/img/og-image.jpg">
+    <!-- Tailwind CSS Framework -->
+    <!-- Dark Mode Toggle Script / Script de Modo Oscuro -->
+    <!-- Evita el "flash" del tema incorrecto al cargar / Prevents incorrect theme flash on load -->
+    <script>
+        (function () {
+            var stored = localStorage.getItem('brice-theme');
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (stored === 'dark' || (!stored && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+    <style>:root{--brand-blue:#1F2A60;--brand-green:#2E9E46;--brand-orange:#EB5C27;}</style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: 'var(--brand-blue)',
+                        brandGreen: 'var(--brand-green)',
+                        brandOrange: 'var(--brand-orange)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Transiciones elegantes entre páginas (navegadores Chromium modernos) */
+        @view-transition {
+            navigation: auto;
+        }
+        /* Fallback: fundido suave de entrada para todos los navegadores */
+        body {
+            animation: briceFadeIn .45s ease both;
+        }
+        @keyframes briceFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        /* Transición suave de colores al cambiar de tema */
+        html.theme-ready, html.theme-ready * {
+            transition: background-color .25s ease, border-color .25s ease, color .25s ease;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            body { animation: none; }
+            html.theme-ready, html.theme-ready * { transition: none !important; }
+        }
+    </style>
+    <script src="assets/site.js" defer></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans flex flex-col min-h-screen">
+
+    <!-- Barra superior -->
+    <div class="bg-brandBlue text-white text-xs py-2 px-4 text-center font-medium flex justify-center items-center gap-4 flex-wrap">
+        <span data-cms="banner.productos">📦 Ventas al detalle y al por mayor</span>
+        <span class="hidden md:inline">•</span>
+        <span>📞 Tel: <span data-cms="contacto.telefono_visible">(809) 385-2381</span></span>
+        <span class="hidden md:inline">•</span>
+        <span>🛵 Delivery & WhatsApp: <strong data-cms="contacto.whatsapp_visible">(829) 379-5820</strong></span>
+    </div>
+
+    <!-- Navigation Bar / Barra de Navegación -->
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 border-b-4 border-brandGreen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center h-full py-2">
+                    <a href="index.html" class="flex items-center h-full">
+                        <span class="inline-flex items-center rounded-xl px-2.5 py-1 dark:bg-white dark:shadow-md transition-colors h-full">
+                            <img data-cms-src="medios.logo" src="img/logo-transparent.png" alt="Todo Brice Logo" class="h-10 md:h-12 w-auto object-contain">
+                        </span>
+                    </a>
+                </div>
+                
+                <!-- Enlaces -->
+                <nav class="hidden md:flex space-x-8 h-full">
+                    <a href="index.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Inicio</a>
+                    <a href="nosotros.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Nosotros</a>
+                    <a href="productos.html" class="flex items-center text-brandBlue dark:text-blue-300 font-bold border-b-2 border-brandOrange h-full px-1">Productos & Servicios</a>
+                    <a href="contacto.html" class="flex items-center text-gray-600 dark:text-gray-300 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition border-b-2 border-transparent hover:border-brandBlue h-full px-1">Contacto</a>
+                </nav>
+
+                <!-- Botón WhatsApp Directo -->
+                <div class="flex items-center gap-3">
+                    <div class="hidden md:flex items-center">
+                        <a href="https://wa.me/18293795820" target="_blank" rel="noopener" class="bg-brandOrange text-white px-5 py-2.5 rounded-full hover:bg-orange-600 transition font-bold shadow-lg flex items-center gap-2 text-sm">
+                            <span>📲 WhatsApp: (829) 379-5820</span>
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="theme-toggle" type="button" aria-label="Cambiar tema claro/oscuro" class="w-10 h-10 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 transition">
+                            <svg id="icon-sun" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+                            <svg id="icon-moon" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                        </button>
+                        <button id="menu-toggle" type="button" aria-label="Abrir menú" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center text-brandBlue dark:text-blue-300 border border-gray-200 dark:border-gray-700">
+                            <svg id="icon-menu-open" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                            <svg id="icon-menu-close" class="w-5 h-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+            <nav class="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
+                <a href="index.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Inicio</a>
+                <a href="nosotros.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Nosotros</a>
+                <a href="productos.html" class="block px-4 py-3 rounded-lg bg-brandBlue/5 text-brandBlue dark:text-blue-300 font-bold">Productos & Servicios</a>
+                <a href="contacto.html" class="block px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-brandBlue dark:hover:text-blue-300 font-semibold transition">Contacto</a>
+                <a href="https://wa.me/18293795820" target="_blank" rel="noopener" class="mt-2 text-center bg-brandOrange text-white px-5 py-3 rounded-xl hover:bg-orange-600 transition font-bold shadow-md">
+                    📲 WhatsApp: (829) 379-5820
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Page Header / Encabezado de Página -->
+        <section class="bg-brandBlue text-white py-14">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <span class="text-brandOrange font-bold text-xs uppercase tracking-widest block mb-2">Catálogo Oficial</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-3">Productos & Servicios</h1>
+                <p class="text-blue-200 text-sm md:text-base max-w-2xl mx-auto">Nuestra línea exclusiva de limpieza y módulo de recargas rápidas para todo el país.</p>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             SECCIÓN 0: VITRINA POR CATEGORÍAS — TABS + CUADRÍCULA
+             ─────────────────────────────────────────────────────────
+             • Botones de categoría arriba (pills/tabs)
+             • Al hacer clic en una categoría se muestran sus productos
+             • Tarjetas con foto, nombre, precios y botón de pedir
+             • Se alimenta de data/productos.json (editable desde el CMS)
+             ================================================================ -->
+        <section class="py-16 bg-gray-50 dark:bg-gray-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <!-- Encabezado de sección -->
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <span class="text-brandGreen font-bold text-xs uppercase tracking-wider block mb-1">Tienda de Conveniencia</span>
+                    <h2 class="text-3xl font-extrabold text-brandBlue dark:text-blue-300">Todo lo que Necesitas en un Solo Lugar</h2>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-2">Selecciona una categoría para ver los productos disponibles.</p>
+                </div>
+
+                <!-- Barra de tabs / filtros de categorías -->
+                <div id="categoriaTabs" class="flex flex-wrap justify-center gap-2 mb-8">
+                    <p class="text-sm text-gray-400 dark:text-gray-500">Cargando categorías…</p>
+                </div>
+
+                <!-- Vitrina: cuadrícula de tarjetas de productos -->
+                <div id="vitrinalGrid" class="max-w-6xl mx-auto">
+                    <!-- JS lo rellena al seleccionar una categoría -->
+                </div>
+
+                <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-8">¿No encuentras lo que buscas? <a href="https://wa.me/18293795820?text=Hola%20Todo%20Brice,%20busco%20un%20producto%20que%20no%20veo%20en%20la%20página" target="_blank" rel="noopener noreferrer" class="text-brandGreen font-bold hover:underline">Pregúntanos por WhatsApp</a></p>
+            </div>
+        </section>
+
+        <!-- Sección anterior conservada solo por compatibilidad; el catálogo dinámico de arriba es la única vitrina visible. -->
+        <section class="hidden" aria-hidden="true">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="border-b border-gray-200 dark:border-gray-700 pb-6 mb-10">
+                    <span class="text-brandGreen font-bold text-xs uppercase tracking-wider block mb-1">Fórmulas Propias</span>
+                    <h2 class="text-3xl font-extrabold text-brandBlue dark:text-blue-300">Línea Brice Limpieza & Hogar</h2>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Limpieza que cuida, calidad que se nota. Disponible por unidad o al por mayor para colmados, hogares y negocios.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Suavizante Brice -->
+                    <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col hover:shadow-xl transition">
+                        <div class="h-56 bg-white dark:bg-gray-800 p-6 flex items-center justify-center border-b border-gray-100 dark:border-gray-700">
+                            <img src="img/suavizante.jpg" alt="Suavizante Textil Brice" class="h-full object-contain hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <span class="text-brandGreen text-xs font-bold uppercase tracking-wider">Cuidado de Ropa</span>
+                                <h3 class="text-xl font-bold text-brandBlue dark:text-blue-300 mt-1 mb-3">Suavizante Brice</h3>
+                                <!-- Precios confirmados por Manuel Brice / Prices confirmed by Manuel Brice -->
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex justify-between items-center bg-white dark:bg-gray-800 rounded-xl px-3 py-2 border border-gray-100 dark:border-gray-700">
+                                        <span class="text-xs font-semibold text-gray-600 dark:text-gray-300">Galón grande</span>
+                                        <span class="text-sm font-extrabold text-brandBlue dark:text-blue-300">RD$250</span>
+                                    </div>
+                                    <div class="flex justify-between items-center bg-white dark:bg-gray-800 rounded-xl px-3 py-2 border border-gray-100 dark:border-gray-700">
+                                        <span class="text-xs font-semibold text-gray-600 dark:text-gray-300">Galón mediano</span>
+                                        <span class="text-sm font-extrabold text-brandBlue dark:text-blue-300">RD$170</span>
+                                    </div>
+                                    <div class="flex justify-between items-center bg-white dark:bg-gray-800 rounded-xl px-3 py-2 border border-gray-100 dark:border-gray-700">
+                                        <span class="text-xs font-semibold text-gray-600 dark:text-gray-300">Pote pequeño</span>
+                                        <span class="text-sm font-extrabold text-brandBlue dark:text-blue-300">RD$110</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300 text-xs leading-relaxed mb-4">Suavidad profunda y aroma prolongado que protege las fibras de toda tu ropa, lavada tras lavada.</p>
+                            </div>
+                            <a href="https://wa.me/18293795820?text=Hola%20Manuel%20Brice,%20quiero%20pedir%20Suavizante%20Brice" target="_blank" rel="noopener" class="block w-full py-2.5 text-center bg-brandBlue text-white font-bold text-sm rounded-xl hover:bg-blue-900 transition shadow">
+                                Pedir por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Brice-Fresh — fondo naranja / Orange background card -->
+                    <div class="bg-brandOrange rounded-2xl border border-orange-400 overflow-hidden flex flex-col hover:shadow-xl transition relative">
+                        <div class="absolute top-3 right-3 bg-white text-brandOrange text-[11px] font-bold px-2.5 py-1 rounded-full z-10 shadow">Más Vendido</div>
+                        <div class="h-56 bg-orange-50 p-6 flex items-center justify-center border-b border-orange-300">
+                            <img src="img/brice-fresh.jpg" alt="Brice-Fresh Desinfectante" class="h-full object-contain hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <span class="text-white/80 text-xs font-bold uppercase tracking-wider">Ambientador Multiuso</span>
+                                <h3 class="text-xl font-bold text-white mt-1 mb-3">Brice-Fresh</h3>
+                                <!-- Precios confirmados por Manuel Brice / Prices confirmed by Manuel Brice -->
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex justify-between items-center bg-white/20 rounded-xl px-3 py-2">
+                                        <span class="text-xs font-semibold text-white">Grande</span>
+                                        <span class="text-sm font-extrabold text-white">RD$200</span>
+                                    </div>
+                                    <div class="flex justify-between items-center bg-white/20 rounded-xl px-3 py-2">
+                                        <span class="text-xs font-semibold text-white">Mediano</span>
+                                        <span class="text-sm font-extrabold text-white">RD$150</span>
+                                    </div>
+                                    <div class="flex justify-between items-center bg-white/20 rounded-xl px-3 py-2">
+                                        <span class="text-xs font-semibold text-white">Pequeño</span>
+                                        <span class="text-sm font-extrabold text-white">RD$80</span>
+                                    </div>
+                                </div>
+                                <p class="text-orange-100 text-xs leading-relaxed mb-4">Poderosa fragancia y desinfección antibacteriana que mantiene tus pisos y baños frescos por horas.</p>
+                            </div>
+                            <a href="https://wa.me/18293795820?text=Hola%20Manuel%20Brice,%20quiero%20pedir%20Brice-Fresh" target="_blank" rel="noopener" class="block w-full py-2.5 text-center bg-white text-brandOrange font-bold text-sm rounded-xl hover:bg-orange-50 transition shadow">
+                                Pedir por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Jabón Líquido Brice — nombre corregido / name corrected -->
+                    <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col hover:shadow-xl transition">
+                        <div class="h-56 bg-white dark:bg-gray-800 p-6 flex items-center justify-center border-b border-gray-100 dark:border-gray-700">
+                            <img src="img/jabon-liquido.jpg" alt="Jabón Líquido Concentrado Brice" class="h-full object-contain hover:scale-105 transition duration-300">
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <span class="text-brandGreen text-xs font-bold uppercase tracking-wider">Súper Rendidor</span>
+                                <h3 class="text-xl font-bold text-brandBlue dark:text-blue-300 mt-1 mb-3">Jabón Líquido Brice</h3>
+                                <!-- Precios confirmados por Manuel Brice / Prices confirmed by Manuel Brice -->
+                                <div class="space-y-2 mb-4">
+                                    <div class="flex justify-between items-center bg-white dark:bg-gray-800 rounded-xl px-3 py-2 border border-gray-100 dark:border-gray-700">
+                                        <span class="text-xs font-semibold text-gray-600 dark:text-gray-300">Galón grande</span>
+                                        <span class="text-sm font-extrabold text-brandBlue dark:text-blue-300">RD$220</span>
+                                    </div>
+                                    <div class="flex justify-between items-center bg-white dark:bg-gray-800 rounded-xl px-3 py-2 border border-gray-100 dark:border-gray-700">
+                                        <span class="text-xs font-semibold text-gray-600 dark:text-gray-300">Mediano</span>
+                                        <span class="text-sm font-extrabold text-brandBlue dark:text-blue-300">RD$150</span>
+                                    </div>
+                                    <div class="flex justify-between items-center bg-white dark:bg-gray-800 rounded-xl px-3 py-2 border border-gray-100 dark:border-gray-700">
+                                        <span class="text-xs font-semibold text-gray-600 dark:text-gray-300">Pequeño</span>
+                                        <span class="text-sm font-extrabold text-brandBlue dark:text-blue-300">RD$100</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 dark:text-gray-300 text-xs leading-relaxed mb-4">Fórmula arranca grasa densa que cuida tus manos, ideal para lozas y múltiples superficies de cocina.</p>
+                            </div>
+                            <a href="https://wa.me/18293795820?text=Hola%20Manuel%20Brice,%20quiero%20pedir%20Jab%C3%B3n%20L%C3%ADquido%20Brice" target="_blank" rel="noopener" class="block w-full py-2.5 text-center bg-brandBlue text-white font-bold text-sm rounded-xl hover:bg-blue-900 transition shadow">
+                                Pedir por WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: COTIZADOR RÁPIDO — Precios reales confirmados por Manuel Brice -->
+        <section class="py-16 bg-gradient-to-b from-blue-50/70 to-white dark:from-gray-900 dark:to-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-brandOrange font-bold text-xs uppercase tracking-wider block mb-1">Arma tu Pedido</span>
+                    <h2 class="text-3xl font-extrabold text-brandBlue dark:text-blue-200">Cotizador Rápido</h2>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Elige las cantidades y mira el total al instante.</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 md:p-10">
+                    <!-- ================================================================
+                         COTIZADOR MODULAR
+                         ─────────────────────────────────────────────────
+                         • Cada producto es UNA sola fila, sin importar cuántas
+                           presentaciones/tamaños tenga: el tamaño se elige con un
+                           <select> y la cantidad con [−][+]. Así el cotizador no
+                           se alarga cuando un producto tiene 3, 4 o 5 precios.
+                         • Los productos están agrupados en acordeones por
+                           categoría (misma idea que el catálogo de arriba, pero
+                           con ids "cot-<categoria>" para no chocar con los ids
+                           del catálogo).
+                         • Para agregar un producto nuevo al cotizador: copia un
+                           bloque "data-product" (con su select de
+                           tamaños/precios), dentro de la categoría que
+                           corresponda (o crea una categoría nueva copiando el
+                           bloque de acordeón completo). No hace falta tocar
+                           el JavaScript — cotChange/cotUpdateTotal/
+                           enviarCotizacionWhatsApp leen cualquier fila nueva
+                           automáticamente por su estructura (data-product +
+                           .cot-size + .qty).
+                         ================================================================ -->
+                    <div id="cotizadorItems" class="space-y-3">
+                        <p class="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Cargando productos y precios…</p>
+                    </div>
+
+
+                    <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                        <span class="text-lg font-bold text-brandBlue dark:text-blue-300">Total estimado</span>
+                        <span id="cotTotal" class="text-3xl font-extrabold text-brandGreen">RD$0</span>
+                    </div>
+                    <!-- Datos Bancarios -->
+                    <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-100 dark:border-blue-800 flex items-start gap-4">
+                        <div class="bg-white dark:bg-gray-800 p-2.5 rounded-lg shadow-sm shrink-0 border border-gray-100 dark:border-gray-700">
+                            <svg class="w-6 h-6 text-brandBlue dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" /></svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-brandBlue dark:text-blue-300 uppercase tracking-wider mb-1">Transferencia Directa</p>
+                            <p class="text-sm text-gray-800 dark:text-gray-200"><strong>Banco Santa Cruz</strong></p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Nombre: Manuel Brice</p>
+                            <p class="text-sm font-mono font-bold text-brandGreen dark:text-green-400 mt-0.5 tracking-wide">11395000015661</p>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="enviarCotizacionWhatsApp()" class="mt-6 w-full py-4 bg-brandGreen hover:bg-green-700 text-white font-extrabold text-base md:text-lg rounded-2xl shadow-lg transition flex items-center justify-center gap-2">
+                        <span>📲 Pedir por WhatsApp</span>
+                    </button>
+                    <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-3">Precio de referencia — confirmamos el total exacto por WhatsApp antes de despachar.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: MÓDULO INTERACTIVO DE RECARGAS -->
+        <section class="py-16 bg-gradient-to-b from-blue-50/70 to-white dark:from-gray-900 dark:to-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-brandOrange font-bold text-xs uppercase tracking-wider block mb-1">Servicio Rápido en Línea</span>
+                    <h2 class="text-3xl font-extrabold text-brandBlue dark:text-blue-200">Módulo de Recargas Telefónicas</h2>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mt-1">Elige tu compañía, el monto y te aplicamos la recarga al instante vía WhatsApp.</p>
+                </div>
+
+                <!-- Caja Interactiva de Recarga -->
+                <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 md:p-10">
+                    <!-- Paso 1: Elegir Operador -->
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider mb-3">1. Selecciona tu Operadora:</label>
+                    <div class="grid grid-cols-3 sm:grid-cols-5 gap-3 mb-6" id="operatorGrid">
+
+                        <!-- ALTICE: logo real -->
+                        <button type="button" onclick="selectOp('Altice', this)" class="op-btn rounded-2xl border-4 border-transparent ring-2 ring-transparent hover:ring-white/60 transition-all flex items-center justify-center p-2" style="background:#0047BB;">
+                            <img src="img/logos/altice.png" alt="Altice" class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover" loading="lazy">
+                        </button>
+
+                        <!-- VIVA: logo real -->
+                        <button type="button" onclick="selectOp('Viva', this)" class="op-btn rounded-2xl border-4 border-transparent ring-2 ring-transparent hover:ring-white/60 transition-all flex items-center justify-center p-2" style="background:#3AAA35;">
+                            <img src="img/logos/viva.png" alt="Viva" class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover" loading="lazy">
+                        </button>
+
+                        <!-- CLARO: logo real -->
+                        <button type="button" onclick="selectOp('Claro', this)" class="op-btn rounded-2xl border-4 border-transparent ring-2 ring-transparent hover:ring-white/60 transition-all flex items-center justify-center p-2" style="background:#DA291C;">
+                            <img src="img/logos/claro.png" alt="Claro" class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover" loading="lazy">
+                        </button>
+
+                        <!-- DIGICEL: logo real -->
+                        <button type="button" onclick="selectOp('Digicel', this)" class="op-btn rounded-2xl border-4 border-transparent ring-2 ring-transparent hover:ring-white/60 transition-all flex items-center justify-center p-2" style="background:#F47920;">
+                            <img src="img/logos/digicel.png" alt="Digicel" class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover" loading="lazy">
+                        </button>
+
+                        <!-- NATCOM: logo real -->
+                        <button type="button" onclick="selectOp('Natcom', this)" class="op-btn rounded-2xl border-4 border-transparent ring-2 ring-transparent hover:ring-white/60 transition-all flex items-center justify-center p-2" style="background:#5C2D91;">
+                            <img src="img/logos/natcom.png" alt="Natcom" class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-cover" loading="lazy">
+                        </button>
+
+                    </div>
+
+                    <!-- Paso 2: Monto Rápido -->
+                    <label class="block text-xs font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider mb-3">2. Monto de la Recarga (RD$):</label>
+                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-3" id="amountGrid">
+                        <button type="button" onclick="selectAmount('50', this)" class="amt-btn py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5">RD$50</button>
+                        <button type="button" onclick="selectAmount('100', this)" class="amt-btn py-2.5 rounded-lg border-2 border-brandBlue bg-blue-50 dark:bg-gray-800/60 text-brandBlue dark:text-blue-300 font-extrabold text-sm">RD$100</button>
+                        <button type="button" onclick="selectAmount('150', this)" class="amt-btn py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5">RD$150</button>
+                        <button type="button" onclick="selectAmount('200', this)" class="amt-btn py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5">RD$200</button>
+                        <button type="button" onclick="selectAmount('300', this)" class="amt-btn py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5">RD$300</button>
+                        <button type="button" onclick="selectAmount('500', this)" class="amt-btn py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5">RD$500</button>
+                    </div>
+
+                    <!-- Monto personalizado: máx. 4 cifras (hasta RD$9,999) -->
+                    <div class="mb-6">
+                        <label for="recarga_custom" class="block text-[11px] font-semibold text-gray-500 dark:text-gray-400 mb-1.5">¿Otro monto? Escríbelo aquí (máx. RD$9,999):</label>
+                        <div class="relative max-w-[180px]">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-gray-400">RD$</span>
+                            <input
+                                type="text"
+                                inputmode="numeric"
+                                pattern="[0-9]*"
+                                maxlength="4"
+                                id="recarga_custom"
+                                placeholder="0000"
+                                class="w-full pl-10 pr-3 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
+                                oninput="onCustomAmountInput(this)"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Paso 3: Número de Teléfono y Método de Pago -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider mb-2">3. Número a Recargar:</label>
+                            <input type="tel" id="recarga_phone" placeholder="Ej. 829-000-0000" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-brandBlue font-mono text-base font-bold bg-gray-50 dark:bg-gray-900">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wider mb-2">4. Forma de Pago:</label>
+                            <select id="recarga_payment" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-brandBlue text-sm bg-gray-50 dark:bg-gray-900 font-medium">
+                                <option>Transferencia (Banreservas / BHD / Qik)</option>
+                                <option>Efectivo (en el local o contra entrega)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                                        <!-- Datos Bancarios Recargas -->
+                    <div class="mb-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-100 dark:border-blue-800 flex items-start gap-4">
+                        <div class="bg-white dark:bg-gray-800 p-2.5 rounded-lg shadow-sm shrink-0 border border-gray-100 dark:border-gray-700">
+                            <svg class="w-6 h-6 text-brandBlue dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" /></svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-brandBlue dark:text-blue-300 uppercase tracking-wider mb-1">Cuentas para Pago</p>
+                            <p class="text-sm text-gray-800 dark:text-gray-200"><strong data-cms="recarga_pagos.banco">Banco Santa Cruz</strong></p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Nombre: <span data-cms="recarga_pagos.titular">Manuel Brice</span></p>
+                            <p class="text-sm font-mono font-bold text-brandGreen dark:text-green-400 mt-0.5 tracking-wide"><span data-cms="recarga_pagos.cuenta">11395000015661</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Botón Disparador WhatsApp -->
+                    <button type="button" onclick="enviarRecargaWhatsApp()" class="w-full py-4 bg-brandGreen hover:bg-green-700 text-white font-extrabold text-base md:text-lg rounded-2xl shadow-lg transition flex items-center justify-center gap-2">
+                        <span>⚡ Solicitar Recarga Inmediata por WhatsApp</span>
+                    </button>
+                    <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-3">Al presionar se abrirá el chat con el pedido listo para ser aplicado por Manuel Brice.</p>
+                    <p class="text-center text-[11px] text-gray-400 dark:text-gray-500 mt-1 flex items-center justify-center gap-1">🔒 No guardamos tu número: solo se envía por WhatsApp a Manuel y no queda almacenado en esta página.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: Pago de Servicios CAASD & EDEESTE -->
+        <section class="py-16 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div>
+                        <span class="text-brandOrange font-bold text-xs uppercase tracking-wider">Sin Filas</span>
+                        <h3 class="text-2xl font-extrabold text-brandBlue dark:text-blue-300 mt-1 mb-2">Pago de Facturas CAASD y EDEESTE</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm max-w-md" data-cms="recarga_pagos.caasd_edeeste_texto">Trae tu factura de agua o luz a la tienda o envíanos el NIC/Contrato por WhatsApp para gestionarlo rápidamente.</p>
+                    </div>
+                    <a href="https://wa.me/18293795820?text=Hola%20Todo%20Brice,%20quiero%20pagar%20una%20factura%20de%20CAASD/EDEESTE" target="_blank" rel="noopener" class="bg-brandBlue text-white px-6 py-3 rounded-xl hover:bg-blue-900 transition font-bold text-sm whitespace-nowrap shadow">
+                        Consultar Pago por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer / Pie de Página -->
+    <footer class="bg-gray-900 text-white py-12 mt-auto border-t-4 border-brandOrange">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <span class="inline-flex items-center rounded-xl px-2.5 py-1.5 mb-4 bg-white shadow-md"><img data-cms-src="medios.logo" src="img/logo-transparent.png" alt="Todo Brice Logo" class="h-12 w-auto object-contain"></span>
+                <p class="text-gray-400 dark:text-gray-400 text-sm leading-relaxed">Calidad, Variedad y Buenos Precios. Tu punto de conveniencia y productos de limpieza en Santo Domingo Este.</p>
+            </div>
+            <div>
+                <h4 class="text-base font-bold mb-3 text-brandOrange uppercase tracking-wider">Navegación</h4>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="index.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Inicio</a></li>
+                    <li><a href="nosotros.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Sobre Nosotros</a></li>
+                    <li><a href="productos.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Productos & Servicios</a></li>
+                    <li><a href="contacto.html" class="text-gray-400 dark:text-gray-400 hover:text-white transition">Contacto & Delivery</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-base font-bold mb-3 text-brandGreen uppercase tracking-wider">Contacto & Tienda</h4>
+                <ul class="space-y-2.5 text-sm text-gray-400 dark:text-gray-400">
+                    <li class="flex items-center gap-2"><span>📍</span> <span data-cms="contacto.direccion">Santo Domingo Este, República Dominicana</span></li>
+                    <li class="flex items-center gap-2"><span>📞</span> Tel: <span data-cms="contacto.telefono_visible">(809) 385-2381</span></li>
+                    <li class="flex items-center gap-2"><span>📲</span> WhatsApp: <span data-cms="contacto.whatsapp_visible">(829) 379-5820</span></li>
+                      <li class="flex items-center gap-2 text-brandOrange"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg> <a href="https://www.instagram.com/todobrice/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition"><span data-cms="contacto.instagram_usuario">@todobrice</span></a></li>
+                    <li class="flex items-center gap-2"><span>🛵</span> Servicio a domicilio disponible</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 dark:text-gray-400 text-xs">
+            &copy; <span data-cms="pie_pagina.copyright">2026 Todo Brice RD. Todos los derechos reservados.</span>
+            &nbsp;•&nbsp;<a href="aviso-legal.html" class="hover:text-white transition underline">Aviso Legal y Privacidad</a>
+        </div>
+    </footer>
+
+    <!-- ================================================================
+         SCRIPT: CATÁLOGO EN VIVO (CMS → data/productos.json → página)
+         ─────────────────────────────────────────────────
+         • El catálogo se pinta con fetch() leyendo data/productos.json,
+           el mismo archivo que edita Manuel desde el CMS (Pages CMS).
+           Cuando él guarda un producto o categoría nueva, aparece solo
+           aquí — nadie tiene que copiar nada a mano.
+         • Esto funciona porque el sitio vive en Cloudflare Pages (https).
+           Si alguien abre este archivo directo con doble clic
+           (protocolo file://), el navegador bloquea la lectura del JSON
+           por seguridad y verá el aviso de "no se pudo cargar" de abajo
+           — es esperado, y no ocurre en el sitio publicado.
+         • Regla para decidir vitrina vs. acordeón: una categoría con
+           "abierta: true" en el CMS se muestra siempre visible arriba
+           (la vitrina de la línea propia). El resto vive en el acordeón
+           de "Más categorías", colapsado hasta que el cliente lo toca.
+         • El Cotizador Rápido (más abajo en la página) sigue siendo un
+           bloque aparte con precios escritos a mano — no lee este JSON.
+           Si más adelante quieres que también se actualice solo, es un
+           paso aparte que podemos hacer después.
+         ================================================================ -->
+    <script>
+        /* ── Acordeón: abre o cierra el panel de una categoría ── */
+        function toggleCategoria(id) {
+            var panel = document.getElementById('panel-' + id);
+            var arrow = document.getElementById('arrow-' + id);
+            var button = document.getElementById('toggle-' + id);
+            if (!panel) return;
+            var abrir = panel.classList.contains('hidden');
+            panel.classList.toggle('hidden');
+            if (arrow) arrow.classList.toggle('rotate-180');
+            if (button) button.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+        }
+
+        /* ── Escapa texto que viene del CMS antes de meterlo en HTML ── */
+        function escHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = (str === undefined || str === null) ? '' : String(str);
+            return div.innerHTML;
+        }
+
+        function textoWhatsApp(nombreProducto) {
+            return 'https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent('Hola Todo Brice, quiero pedir ' + nombreProducto);
+        }
+
+        function textoWhatsAppInteres(nombreCategoria) {
+            return 'https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent('Hola Todo Brice, me interesa ' + nombreCategoria);
+        }
+
+        /* ── Tarjeta grande de la vitrina (línea propia, siempre visible) ── */
+        function tarjetaVitrina(producto) {
+            var precios = producto.precios || [];
+            var chips = precios.map(function (p, i) {
+                var borde = i === 0 ? 'border-2 border-brandBlue' : 'border border-gray-200 dark:border-gray-600';
+                return '<div class="rounded-lg ' + borde + ' text-center py-1.5 px-1">' +
+                    '<span class="block text-[9px] text-gray-500 dark:text-gray-400">' + escHtml(p.tamano) + '</span>' +
+                    '<span class="block text-xs font-bold text-brandBlue dark:text-blue-300">RD$' + escHtml(p.monto) + '</span></div>';
+            }).join('');
+            var foto = producto.imagen
+                ? '<img src="' + escHtml(producto.imagen) + '" alt="' + escHtml(producto.nombre) + '" class="h-full object-contain" loading="lazy">'
+                : '<span class="text-3xl opacity-40">📦</span>';
+            var badge = producto.destacado
+                ? '<span class="absolute top-3 left-3 z-10 text-[10px] font-bold text-white bg-brandOrange rounded-full px-2.5 py-1">Más vendido</span>'
+                : '';
+            return '<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col relative">' +
+                badge +
+                '<div class="h-40 flex items-center justify-center bg-gray-50 dark:bg-gray-900">' + foto + '</div>' +
+                '<div class="p-4 flex flex-col flex-1">' +
+                '<span class="text-[10px] text-gray-400 dark:text-gray-500">' + escHtml(producto.etiqueta) + '</span>' +
+                '<p class="font-bold text-brandBlue dark:text-blue-300 text-sm mb-2">' + escHtml(producto.nombre) + '</p>' +
+                '<div class="grid grid-cols-3 gap-1.5 mb-3">' + chips + '</div>' +
+                '<a href="' + textoWhatsApp(producto.nombre) + '" target="_blank" rel="noopener noreferrer" class="mt-auto block text-center text-xs font-bold text-white bg-brandGreen rounded-lg py-2.5 hover:bg-green-700 transition">Pedir por WhatsApp</a>' +
+                '</div></div>';
+        }
+
+        /* ── Tarjeta pequeña dentro de un panel de acordeón ── */
+        function tarjetaAcordeon(producto) {
+            var precios = producto.precios || [];
+            var filasPrecio = precios.map(function (p) {
+                return '<div class="flex justify-between text-[11px]"><span class="text-gray-500 dark:text-gray-400">' + escHtml(p.tamano) + '</span><span class="font-bold text-brandGreen">RD$' + escHtml(p.monto) + '</span></div>';
+            }).join('');
+            var foto = producto.imagen
+                ? '<div class="h-24 flex items-center justify-center mb-2"><img src="' + escHtml(producto.imagen) + '" alt="' + escHtml(producto.nombre) + '" class="h-full object-contain" loading="lazy"></div>'
+                : '<div class="h-16 flex items-center justify-center mb-2 text-3xl opacity-40">📦</div>';
+            var anillo = producto.destacado ? ' ring-2 ring-brandOrange' : '';
+            return '<div class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-700 p-3 flex flex-col' + anillo + '">' +
+                foto +
+                (producto.destacado ? '<span class="text-[9px] font-bold text-brandOrange uppercase tracking-wider mb-1">⭐ Más Vendido</span>' : '') +
+                '<p class="font-bold text-xs text-brandBlue dark:text-blue-300 leading-tight">' + escHtml(producto.nombre) + '</p>' +
+                '<span class="text-[10px] text-gray-400 dark:text-gray-500">' + escHtml(producto.etiqueta) + '</span>' +
+                '<div class="mt-2 space-y-1">' + filasPrecio + '</div>' +
+                '<a href="' + textoWhatsApp(producto.nombre) + '" target="_blank" rel="noopener noreferrer" class="mt-2 block text-center text-[10px] font-bold text-brandBlue dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 rounded-lg py-1.5 hover:bg-blue-100 transition">Pedir</a>' +
+                '</div>';
+        }
+
+        /* ── Panel de categoría completo dentro del acordeón ── */
+        function panelCategoria(cat) {
+            var productos = cat.productos || [];
+            var contadorTxt = productos.length > 0
+                ? productos.length + ' producto' + (productos.length === 1 ? '' : 's')
+                : 'Próximamente';
+            var contadorClase = productos.length > 0
+                ? 'text-[11px] text-gray-400 dark:text-gray-500'
+                : 'text-[11px] text-brandOrange font-semibold';
+            var interior = productos.length > 0
+                ? '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-4">' + productos.map(tarjetaAcordeon).join('') + '</div>'
+                : '<div class="text-center py-6">' +
+                  '<p class="text-gray-400 dark:text-gray-500 text-sm mb-2">Estamos organizando esta categoría.</p>' +
+                  '<a href="' + textoWhatsAppInteres(cat.nombre) + '" target="_blank" rel="noopener noreferrer" class="text-brandGreen text-xs font-bold hover:underline">Pregúntanos por WhatsApp →</a></div>';
+            return '<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">' +
+                '<button type="button" onclick="toggleCategoria(\'' + cat.id + '\')" class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition group">' +
+                '<div class="flex items-center gap-3"><span class="text-2xl">' + escHtml(cat.icono) + '</span>' +
+                '<div class="text-left"><h3 class="font-bold text-brandBlue dark:text-blue-300 text-sm md:text-base">' + escHtml(cat.nombre) + '</h3>' +
+                '<span class="' + contadorClase + '">' + contadorTxt + '</span></div></div>' +
+                '<svg id="arrow-' + cat.id + '" class="w-5 h-5 text-gray-400 dark:text-gray-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
+                '</button>' +
+                '<div id="panel-' + cat.id + '" class="border-t border-gray-100 dark:border-gray-700 px-5 pb-5 hidden">' + interior + '</div>' +
+                '</div>';
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           VITRINA POR CATEGORÍAS — TABS + CUADRÍCULA
+           ─────────────────────────────────────────────────────────
+           Lee data/productos.json y construye:
+             1. Botones de categoría (tabs) en #categoriaTabs
+             2. Cuadrícula de tarjetas en #vitrinalGrid al hacer clic
+           ═══════════════════════════════════════════════════════════ */
+
+        var _catalogoCats = [];  /* guarda todas las categorías al cargar */
+
+        /* ── Renderiza la categoría seleccionada ── */
+        function mostrarCategoria(idx) {
+            var cat = _catalogoCats[idx];
+            if (!cat) return;
+
+            document.querySelectorAll('.cat-tab').forEach(function (btn, i) {
+                var activa = i === idx;
+                btn.setAttribute('aria-selected', activa ? 'true' : 'false');
+                btn.classList.toggle('bg-brandBlue', activa);
+                btn.classList.toggle('text-white', activa);
+                btn.classList.toggle('border-brandOrange', activa);
+                btn.classList.toggle('ring-2', activa);
+                btn.classList.toggle('ring-brandOrange/40', activa);
+                btn.classList.toggle('bg-white', !activa);
+                btn.classList.toggle('dark:bg-gray-800', !activa);
+                btn.classList.toggle('text-gray-700', !activa);
+                btn.classList.toggle('dark:text-gray-200', !activa);
+                btn.classList.toggle('border-gray-200', !activa);
+                btn.classList.toggle('dark:border-gray-600', !activa);
+            });
+
+            var grid = document.getElementById('vitrinalGrid');
+            var productos = cat.productos || [];
+            if (productos.length === 0) {
+                grid.innerHTML =
+                    '<div class="text-center py-16">' +
+                    '<p class="text-4xl mb-3">' + escHtml(cat.icono) + '</p>' +
+                    '<h3 class="font-bold text-brandBlue dark:text-blue-300 text-lg mb-2">' + escHtml(cat.nombre) + '</h3>' +
+                    '<p class="text-gray-400 dark:text-gray-500 text-sm mb-4">Estamos preparando esta sección. ¡Pronto habrá productos aquí!</p>' +
+                    '<a href="' + textoWhatsAppInteres(cat.nombre) + '" target="_blank" rel="noopener noreferrer" class="inline-block bg-brandGreen text-white text-sm font-bold px-5 py-2.5 rounded-xl hover:bg-green-700 transition">Preguntar por WhatsApp</a>' +
+                    '</div>';
+                return;
+            }
+
+            grid.innerHTML = '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">' +
+                productos.map(function (prod) {
+                    var precios = prod.precios || [];
+                    var imgHtml = prod.imagen
+                        ? '<img src="' + escHtml(prod.imagen) + '" alt="' + escHtml(prod.nombre) + '" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy">'
+                        : '<span class="text-5xl opacity-30">📦</span>';
+                    var preciosHtml = precios.length > 0
+                        ? '<div class="mt-2 space-y-1">' + precios.map(function (precio) {
+                            return '<div class="flex items-center justify-between gap-2 rounded-lg bg-gray-50 dark:bg-gray-900 px-2 py-1 text-[11px]">' +
+                                '<span class="text-gray-600 dark:text-gray-300">' + escHtml(precio.tamano) + '</span>' +
+                                '<strong class="text-brandGreen whitespace-nowrap">RD$' + escHtml(precio.monto) + '</strong></div>';
+                        }).join('') + '</div>'
+                        : '<p class="mt-2 text-[11px] text-gray-400">Precio por confirmar</p>';
+                    var badge = prod.destacado
+                        ? '<span class="absolute top-2 left-2 bg-brandOrange text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded-full shadow">⭐ Más vendido</span>'
+                        : '';
+                    var waTexto = 'Hola Todo Brice, quiero información sobre ' + prod.nombre;
+                    return '<article class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-lg transition-all flex flex-col">' +
+                        '<div class="relative h-44 bg-gray-50 dark:bg-gray-900 flex items-center justify-center overflow-hidden">' + imgHtml + badge + '</div>' +
+                        '<div class="p-4 flex flex-col flex-grow">' +
+                        '<p class="font-bold text-brandBlue dark:text-blue-300 leading-snug">' + escHtml(prod.nombre) + '</p>' +
+                        (prod.etiqueta ? '<p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">' + escHtml(prod.etiqueta) + '</p>' : '') +
+                        (prod.descripcion ? '<p class="mt-2 text-xs leading-relaxed text-gray-500 dark:text-gray-400">' + escHtml(prod.descripcion) + '</p>' : '') +
+                        preciosHtml +
+                        '<div class="mt-auto pt-3"><a href="https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent(waTexto) + '" target="_blank" rel="noopener noreferrer" class="block w-full text-center text-xs font-bold text-white bg-brandBlue hover:bg-blue-900 px-3 py-2.5 rounded-lg transition">Pedir por WhatsApp</a></div>' +
+                        '</div></article>';
+                }).join('') + '</div>';
+        }
+
+        /* ── Carga el catálogo y construye los tabs ── */
+        async function cargarCatalogo() {
+            var tabsEl = document.getElementById('categoriaTabs');
+            var gridEl = document.getElementById('vitrinalGrid');
+            try {
+                var resp = await fetch('data/productos.json');
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                var data = await resp.json();
+                _catalogoCats = data.categorias || [];
+                renderCotizador(_catalogoCats);
+
+                if (_catalogoCats.length === 0) {
+                    tabsEl.innerHTML = '<p class="text-sm text-gray-400 dark:text-gray-500">No hay categorías todavía.</p>';
+                    return;
+                }
+
+                /* Pintar tabs */
+                tabsEl.innerHTML = _catalogoCats.map(function (cat, idx) {
+                    var tieneProds = (cat.productos || []).length > 0;
+                    var badge = !tieneProds
+                        ? ' <span class="ml-1 text-[9px] bg-brandOrange/20 text-brandOrange font-semibold px-1.5 py-0.5 rounded-full">Próx.</span>'
+                        : '';
+                    return '<button type="button" onclick="mostrarCategoria(' + idx + ')" ' +
+                        'class="cat-tab flex items-center gap-1.5 px-4 py-2 rounded-full border text-sm font-semibold transition ' +
+                        (idx === 0 ? 'bg-brandBlue text-white border-brandBlue' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:border-brandBlue hover:text-brandBlue') + '">' +
+                        '<span>' + escHtml(cat.icono) + '</span>' +
+                        '<span>' + escHtml(cat.nombre) + '</span>' +
+                        badge +
+                        '</button>';
+                }).join('');
+
+                /* Mostrar la primera categoría por defecto */
+                mostrarCategoria(0);
+
+            } catch (err) {
+                tabsEl.innerHTML = '';
+                gridEl.innerHTML =
+                    '<p class="text-center text-sm text-gray-400 dark:text-gray-500 py-8">' +
+                    'El catálogo se muestra en el sitio publicado. ' +
+                    '<a href="https://wa.me/18293795820" target="_blank" class="text-brandGreen font-bold hover:underline">Contáctanos por WhatsApp</a>.' +
+                    '</p>';
+                console.error('Error cargando data/productos.json:', err);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', cargarCatalogo);
+
+        /* ── Cotizador: se construye desde data/productos.json ── */
+        function renderCotizador(categorias) {
+            var contenedor = document.getElementById('cotizadorItems');
+            if (!contenedor) return;
+            var categoriasConProductos = categorias.map(function (cat) {
+                var productos = (cat.productos || []).filter(function (producto) {
+                    return (producto.precios || []).length > 0;
+                });
+                return { categoria: cat, productos: productos };
+            }).filter(function (grupo) { return grupo.productos.length > 0; });
+
+            if (categoriasConProductos.length === 0) {
+                contenedor.innerHTML = '<p class="text-center text-sm text-gray-400 py-4">Aún no hay productos con precios para cotizar.</p>';
+                return;
+            }
+
+            contenedor.innerHTML = categoriasConProductos.map(function (grupo, indice) {
+                var cat = grupo.categoria;
+                var id = 'cot-' + cat.id;
+                var abierta = indice === 0;
+                var filas = grupo.productos.map(function (producto) {
+                    var opciones = producto.precios.map(function (precio) {
+                        return '<option value="' + escHtml(precio.monto) + '" data-label="' + escHtml(precio.tamano) + '">' + escHtml(precio.tamano) + ' — RD$' + escHtml(precio.monto) + '</option>';
+                    }).join('');
+                    return '<div class="flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-3" data-product="' + escHtml(producto.nombre) + '">' +
+                        '<div class="min-w-0 flex-1"><p class="text-sm font-semibold text-gray-700 dark:text-gray-200 truncate">' + escHtml(producto.nombre) + '</p>' +
+                        (producto.etiqueta ? '<p class="text-[11px] text-gray-400 dark:text-gray-500">' + escHtml(producto.etiqueta) + '</p>' : '') + '</div>' +
+                        '<div class="flex items-center justify-between gap-2 sm:justify-end">' +
+                        '<label class="sr-only">Presentación de ' + escHtml(producto.nombre) + '</label>' +
+                        '<select class="cot-size max-w-[13rem] text-xs border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-2 bg-white dark:bg-gray-800 dark:text-gray-200" onchange="cotUpdateTotal()">' + opciones + '</select>' +
+                        '<div class="flex items-center gap-1.5 shrink-0"><button type="button" aria-label="Quitar uno" onclick="cotChange(this,-1)" class="text-brandBlue dark:text-blue-300 font-bold w-7 h-7 rounded bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 flex items-center justify-center transition">−</button>' +
+                        '<span class="qty text-sm font-bold w-5 text-center" aria-live="polite">0</span>' +
+                        '<button type="button" aria-label="Añadir uno" onclick="cotChange(this,1)" class="text-brandBlue dark:text-blue-300 font-bold w-7 h-7 rounded bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 flex items-center justify-center transition">+</button></div></div></div>';
+                }).join('');
+                return '<section class="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">' +
+                    '<button id="toggle-' + id + '" type="button" aria-controls="panel-' + id + '" aria-expanded="' + (abierta ? 'true' : 'false') + '" onclick="toggleCategoria(\'' + id + '\')" class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition">' +
+                    '<span class="font-bold text-xs text-brandBlue dark:text-blue-300 uppercase tracking-wider">' + escHtml(cat.icono) + ' ' + escHtml(cat.nombre) + '</span>' +
+                    '<svg id="arrow-' + id + '" class="w-4 h-4 text-gray-400 transition-transform ' + (abierta ? 'rotate-180' : '') + '" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>' +
+                    '<div id="panel-' + id + '" class="divide-y divide-gray-100 dark:divide-gray-700 border-t border-gray-100 dark:border-gray-700' + (abierta ? '' : ' hidden') + '">' + filas + '</div></section>';
+            }).join('');
+        }
+        /* ── Botones [−] y [+] de cada fila del cotizador ──
+           Cada fila es un producto (data-product); el tamaño elegido
+           en el <select class="cot-size"> es lo que decide el precio. */
+        function cotChange(btn, delta) {
+            var row = btn.closest('[data-product]');
+            var qtyEl = row.querySelector('.qty');
+            var qty = parseInt(qtyEl.textContent, 10) + delta;
+            if (qty < 0) qty = 0;
+            qtyEl.textContent = qty;
+            cotUpdateTotal();
+        }
+
+        /* ── Recalcula y muestra el total estimado ──
+           También se llama cuando el cliente cambia el tamaño en el
+           <select>, por si ese producto ya tenía cantidad puesta. */
+        function cotUpdateTotal() {
+            var total = 0;
+            document.querySelectorAll('#cotizadorItems [data-product]').forEach(function (row) {
+                var price = parseInt(row.querySelector('.cot-size').value, 10);
+                var qty = parseInt(row.querySelector('.qty').textContent, 10);
+                total += price * qty;
+            });
+            document.getElementById('cotTotal').textContent = 'RD$' + total.toLocaleString('es-DO');
+        }
+
+        /* ── Arma el resumen del pedido y lo envía por WhatsApp ──
+           Por cada producto con cantidad > 0, toma el nombre (data-product),
+           el tamaño elegido (data-label de la opción seleccionada) y el
+           precio (value de esa opción). */
+        function enviarCotizacionWhatsApp() {
+            var rows = document.querySelectorAll('#cotizadorItems [data-product]');
+            var lines = [];
+            var total = 0;
+            rows.forEach(function (row) {
+                var qty = parseInt(row.querySelector('.qty').textContent, 10);
+                if (qty > 0) {
+                    var select = row.querySelector('.cot-size');
+                    var opcion = select.options[select.selectedIndex];
+                    var price = parseInt(select.value, 10);
+                    var talla = opcion.dataset.label || opcion.textContent;
+                    var name = row.dataset.product;
+                    lines.push('- ' + name + ' (' + talla + ') x' + qty + ' = RD$' + (price * qty));
+                    total += price * qty;
+                }
+            });
+            if (lines.length === 0) {
+                alert('Selecciona al menos un producto para cotizar.');
+                return;
+            }
+            var texto = 'Hola Todo Brice! Quiero cotizar este pedido:\n' + lines.join('\n') + '\n\nTotal estimado: RD$' + total;
+            window.open('https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent(texto), '_blank');
+        }
+    </script>
+
+    <!-- Lógica JS del Módulo de Recargas -->
+    <script>
+        let currentOp = 'Claro';
+        let currentAmount = '100';
+
+        function selectOp(op, btn) {
+            currentOp = op;
+            document.querySelectorAll('.op-btn').forEach(b => {
+                b.className = 'op-btn py-3 px-2 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-bold text-sm hover:border-brandBlue transition flex flex-col items-center gap-1';
+            });
+            btn.className = 'op-btn py-3 px-2 rounded-xl border-2 border-brandBlue bg-blue-50 dark:bg-gray-800/60 text-brandBlue dark:text-blue-300 font-extrabold text-sm shadow-sm transition flex flex-col items-center gap-1';
+        }
+
+        function selectAmount(amt, btn) {
+            currentAmount = amt;
+            document.querySelectorAll('.amt-btn').forEach(b => {
+                b.className = 'amt-btn py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 font-bold text-sm hover:bg-gray-50';
+            });
+            btn.className = 'amt-btn py-2.5 rounded-lg border-2 border-brandBlue bg-blue-50 dark:bg-gray-800/60 text-brandBlue dark:text-blue-300 font-extrabold text-sm';
+            // Un monto rápido gana: limpiamos el campo de monto personalizado.
+            var custom = document.getElementById('recarga_custom');
+            if (custom) custom.value = '';
+        }
+
+        function onCustomAmountInput(input) {
+            // Solo dígitos, máximo 4 cifras (tope RD$9,999 — nadie recarga 5 cifras en un solo pedido).
+            var digitsOnly = input.value.replace(/\D/g, '').slice(0, 4);
+            input.value = digitsOnly;
+            if (digitsOnly === '') return;
+            currentAmount = digitsOnly;
+            // Un monto escrito a mano gana: quitamos la selección de los botones rápidos.
+            document.querySelectorAll('.amt-btn').forEach(b => {
+                b.className = 'amt-btn py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 font-bold text-sm hover:bg-gray-50';
+            });
+        }
+
+        function enviarRecargaWhatsApp() {
+            const phone = document.getElementById('recarga_phone').value.trim();
+            const payment = document.getElementById('recarga_payment').value;
+
+            if (!phone) {
+                alert('Por favor escribe el número de teléfono que deseas recargar.');
+                document.getElementById('recarga_phone').focus();
+                return;
+            }
+
+            const texto = `Hola Todo Brice! Quiero solicitar una recarga:\n- Operadora: ${currentOp}\n- Monto: RD$ ${currentAmount}\n- Número: ${phone}\n- Método de pago: ${payment}`;
+            window.open('https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent(texto), '_blank');
+        }
+    </script>
+
+    <script>
+        // --- Tema claro/oscuro ---
+        var html = document.documentElement;
+        var sun = document.getElementById('icon-sun');
+        var moon = document.getElementById('icon-moon');
+        function syncThemeIcon() {
+            var isDark = html.classList.contains('dark');
+            sun.classList.toggle('hidden', !isDark);
+            moon.classList.toggle('hidden', isDark);
+        }
+        syncThemeIcon();
+        window.addEventListener('load', function () {
+            requestAnimationFrame(function () { html.classList.add('theme-ready'); });
+        });
+        document.getElementById('theme-toggle').addEventListener('click', function () {
+            html.classList.toggle('dark');
+            localStorage.setItem('brice-theme', html.classList.contains('dark') ? 'dark' : 'light');
+            syncThemeIcon();
+        });
+
+        // --- Menú móvil ---
+        var menu = document.getElementById('mobile-menu');
+        var menuOpenIcon = document.getElementById('icon-menu-open');
+        var menuCloseIcon = document.getElementById('icon-menu-close');
+        document.getElementById('menu-toggle').addEventListener('click', function () {
+            var isHidden = menu.classList.toggle('hidden');
+            menuOpenIcon.classList.toggle('hidden', !isHidden);
+            menuCloseIcon.classList.toggle('hidden', isHidden);
+        });
+    </script>
+</body>
+</html>
