@@ -127,12 +127,6 @@
           ]
         }
       ]
-    },
-    {
-      "id": "Ferreteria",
-      "nombre": "Ferreteria",
-      "color": "pink-500",
-      "abierta": true
     }
   ]
 }
