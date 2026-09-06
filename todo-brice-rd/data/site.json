@@ -42,7 +42,7 @@
     "inicio": {
       "sello": "Calidad, Variedad y Buenos Precios",
       "titulo": "Al frente de <span class=\"text-brandOrange\">Todo Brice</span> está Manuel Brice",
-      "descripcion": "Conoce la cara detrás de nuestra tienda y de la línea <strong>Brice Limpieza & Hogar</strong>: cercanía, compromiso y atención personalizada para cada cliente en Santo Domingo Este.",
+      "descripcion": "Conoce la cara detrás de nuestra tienda y de la línea <strong>Brice</strong>: cercanía, compromiso y atención personalizada para cada cliente en Santo Domingo Este.",
       "boton_productos": "Ver Productos & Servicios",
       "boton_whatsapp": "💬 Pedir por WhatsApp",
       "tarjeta_video_etiqueta": "Conócenos",
@@ -52,7 +52,7 @@
     "nosotros": {
       "intro_etiqueta": "Nuestra Historia",
       "intro_titulo": "Aquí encuentras <span class=\"text-brandOrange\">de todo</span>, con la confianza de siempre",
-      "intro_descripcion": "Todo Brice nació para ser el punto de apoyo donde el sector resuelve de todo: recargas al instante, pago de servicios básicos (CAASD, EDEESTE) y productos esenciales para el hogar. De esa necesidad diaria surgió <strong>Brice</strong>, nuestra propia línea de limpieza, formulada para que la calidad se note en cada botella sin pagar de más.",
+      "intro_descripcion": "Todo Brice nació para ser el punto de apoyo donde el sector resuelve de todo: recargas al instante, pago de servicios básicos (CAASD, EDEESTE) y productos esenciales para el hogar. De esa necesidad diaria surgió <strong>Brice</strong>, nuestra marca propia, formulada para que la calidad se note en cada botella sin pagar de más.",
       "video_etiqueta": "En Video",
       "video_titulo": "Conoce Nuestra Marca",
       "video_descripcion": "Un vistazo de cerca al trabajo, los productos y el servicio que ofrecemos a diario."
@@ -60,8 +60,8 @@
     "productos": {
       "etiqueta": "Catálogo Oficial",
       "titulo": "Productos & Servicios",
-      "descripcion": "Nuestra línea exclusiva de limpieza y módulo de recargas rápidas para todo el país.",
-      "vitrina_etiqueta": "Tienda de Conveniencia",
+      "descripcion": "Nuestra línea exclusiva de productos y módulo de recargas rápidas para todo el país.",
+      "vitrina_etiqueta": "Minimarket",
       "vitrina_titulo": "Todo lo que Necesitas en un Solo Lugar",
       "vitrina_descripcion": "Selecciona una categoría para ver los productos disponibles."
     },
