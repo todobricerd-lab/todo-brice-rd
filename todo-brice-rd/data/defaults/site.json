@@ -32,7 +32,7 @@
   "medios": {
     "logo": "img/logo-transparent.png",
     "fachada": "img/tienda-fachada.jpg",
-    "retrato_fundador": "img/manuel-portrait.jpg",
+    "retrato_fundador": "img/retrato_fondo_naranja.jpg",
     "video_inicio": "img/video/al-frente-de-todo-brice.mp4",
     "poster_video_inicio": "img/video/al-frente-de-todo-brice-poster.jpg",
     "video_nosotros": "img/video/este_es_la_marca_de_manual_bri.mp4",
@@ -41,8 +41,8 @@
   "contenido": {
     "inicio": {
       "sello": "Calidad, Variedad y Buenos Precios",
-      "titulo": "Al frente de Todo Brice está Manuel Brice",
-      "descripcion": "Conoce la cara detrás de nuestra tienda y de la línea Brice Limpieza & Hogar: cercanía, compromiso y atención personalizada para cada cliente en Santo Domingo Este.",
+      "titulo": "Al frente de <span class=\"text-brandOrange\">Todo Brice</span> está Manuel Brice",
+      "descripcion": "Conoce la cara detrás de nuestra tienda y de la línea <strong>Brice Limpieza & Hogar</strong>: cercanía, compromiso y atención personalizada para cada cliente en Santo Domingo Este.",
       "boton_productos": "Ver Productos & Servicios",
       "boton_whatsapp": "💬 Pedir por WhatsApp",
       "tarjeta_video_etiqueta": "Conócenos",
@@ -51,8 +51,8 @@
     },
     "nosotros": {
       "intro_etiqueta": "Nuestra Historia",
-      "intro_titulo": "Aquí encuentras de todo, con la confianza de siempre",
-      "intro_descripcion": "Todo Brice nació para ser el punto de apoyo donde el sector resuelve de todo: recargas al instante, pago de servicios básicos y productos esenciales para el hogar.",
+      "intro_titulo": "Aquí encuentras <span class=\"text-brandOrange\">de todo</span>, con la confianza de siempre",
+      "intro_descripcion": "Todo Brice nació para ser el punto de apoyo donde el sector resuelve de todo: recargas al instante, pago de servicios básicos (CAASD, EDEESTE) y productos esenciales para el hogar. De esa necesidad diaria surgió <strong>Brice</strong>, nuestra propia línea de limpieza, formulada para que la calidad se note en cada botella sin pagar de más.",
       "video_etiqueta": "En Video",
       "video_titulo": "Conoce Nuestra Marca",
       "video_descripcion": "Un vistazo de cerca al trabajo, los productos y el servicio que ofrecemos a diario."

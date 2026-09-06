@@ -12,12 +12,33 @@
     if (colores.naranja) root.setProperty('--brand-orange', colores.naranja);
   }
 
+  /* Reescribe TODOS los enlaces wa.me al número configurado en el CMS,
+     incluidos los que el JavaScript genera después (catálogo, cotizador, promos). */
+  function reescribirEnlacesWa(numero) {
+    var re = /wa\.me\/\d+/;
+    document.querySelectorAll('a[href*="wa.me/"]').forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (href && re.test(href)) a.setAttribute('href', href.replace(re, 'wa.me/' + numero));
+    });
+  }
+
   function aplicarWhatsapp(whatsapp) {
     if (!whatsapp || !whatsapp.numero) return;
     window.BRICE_WA_NUMERO = whatsapp.numero;
-    document.querySelectorAll('a[href*="wa.me/18293795820"]').forEach(function (a) {
-      a.setAttribute('href', a.getAttribute('href').replace('18293795820', whatsapp.numero));
-    });
+    reescribirEnlacesWa(whatsapp.numero);
+    /* El catálogo y el cotizador se pintan después de este fetch:
+       observamos el DOM para corregir los enlaces nuevos. */
+    if (window.MutationObserver) {
+      var pendiente = false;
+      new MutationObserver(function () {
+        if (pendiente) return;
+        pendiente = true;
+        requestAnimationFrame(function () {
+          pendiente = false;
+          reescribirEnlacesWa(window.BRICE_WA_NUMERO);
+        });
+      }).observe(document.body, { childList: true, subtree: true });
+    }
   }
 
   function obtenerValor(sitio, ruta) {
@@ -34,6 +55,26 @@
     document.querySelectorAll('[data-cms]').forEach(function (el) {
       var val = obtenerValor(sitio, el.getAttribute('data-cms'));
       if (typeof val === 'string') el.textContent = val;
+    });
+  }
+
+  /* Campos que conservan marcado interno (negritas, palabras en naranja).
+     El valor guardado en site.json incluye ese HTML. */
+  function aplicarTextosHtml(sitio) {
+    document.querySelectorAll('[data-cms-html]').forEach(function (el) {
+      var val = obtenerValor(sitio, el.getAttribute('data-cms-html'));
+      if (typeof val === 'string') el.innerHTML = val;
+    });
+  }
+
+  /* El enlace tel: se arma con los dígitos del teléfono del CMS. */
+  function aplicarTelefonos(sitio) {
+    document.querySelectorAll('[data-cms-tel]').forEach(function (el) {
+      var val = obtenerValor(sitio, el.getAttribute('data-cms-tel'));
+      if (typeof val !== 'string') return;
+      var d = val.replace(/\D/g, '');
+      if (d.length === 10) d = '1' + d;
+      if (d.length >= 10) el.setAttribute('href', 'tel:+' + d);
     });
   }
 
@@ -55,6 +96,8 @@
       aplicarColores(sitio.colores);
       aplicarWhatsapp(sitio.whatsapp);
       aplicarTextos(sitio);
+      aplicarTextosHtml(sitio);
+      aplicarTelefonos(sitio);
       aplicarMedios(sitio);
     })
     .catch(function (err) {
