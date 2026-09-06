@@ -82,6 +82,42 @@
             body { animation: none; }
             html.theme-ready, html.theme-ready * { transition: none !important; }
         }
+
+        /* ── Marco vivo del retrato: dos líneas girando alrededor de la tarjeta ──
+           El haz es un cuadrado con degradado cónico que rota detrás; el
+           contenedor lo recorta y solo se ve el borde de 3px. */
+        .marco-vivo {
+            position: relative;
+            padding: 3px;
+            border-radius: 1.15rem;
+            overflow: hidden;
+            isolation: isolate;
+            background: rgba(148, 163, 184, .35);
+        }
+        html.dark .marco-vivo { background: rgba(255, 255, 255, .14); }
+        .marco-vivo__haz {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 190%;
+            height: 190%;
+            z-index: 0;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0 6%,
+                var(--brand-orange) 13%,
+                transparent 21% 56%,
+                var(--brand-green) 63%,
+                transparent 71% 100%);
+            animation: marcoGira 4.5s linear infinite;
+        }
+        @keyframes marcoGira {
+            from { transform: translate(-50%, -50%) rotate(0turn); }
+            to   { transform: translate(-50%, -50%) rotate(1turn); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .marco-vivo__haz { animation: none; }
+        }
     </style>
     <script src="assets/site.js" defer></script>
 </head>
@@ -173,12 +209,14 @@
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-2/5 flex justify-center">
                     <div class="relative max-w-xs w-full">
-                        <div class="absolute -top-3 -left-3 w-full h-full bg-brandOrange rounded-3xl -rotate-2 shadow-lg"></div>
-                        <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700 p-2">
+                        <div class="marco-vivo shadow-xl">
+                            <span class="marco-vivo__haz" aria-hidden="true"></span>
+                            <div class="relative z-10 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 p-2">
                             <img data-cms-src="medios.retrato_fundador" src="img/retrato_fondo_naranja.jpg" alt="Manuel Brice, fundador de Todo Brice" width="1176" height="1337" class="w-full h-80 md:h-96 object-cover object-top rounded-xl shadow-inner">
                             <div class="p-3 text-center bg-gray-50 dark:bg-gray-900 rounded-xl mt-2">
                                 <h3 class="font-extrabold text-brandBlue dark:text-blue-300 text-lg">Manuel Brice</h3>
                                 <p class="text-xs font-bold text-brandGreen uppercase">Fundador &amp; Dirección</p>
+                            </div>
                             </div>
                         </div>
                     </div>
