@@ -3,7 +3,7 @@
     {
       "activa": true,
       "tipoMedio": "imagen",
-      "imagen": "img/promos/promo-bricefresh-suavizante.png",
+      "imagen": "img/promos/promo-bricefresh-suavizante.jpg",
       "etiqueta": "🔥 RD$80",
       "colorEtiqueta": "naranja",
       "categoria": "Brice-Fresh",
@@ -15,7 +15,7 @@
     {
       "activa": true,
       "tipoMedio": "imagen",
-      "imagen": "img/promos/promo-suavizante-galon.png",
+      "imagen": "img/promos/promo-suavizante-galon.jpg",
       "etiqueta": "💧 SOLO ESTE MES",
       "colorEtiqueta": "verde",
       "categoria": "Suavizante Brice",
@@ -27,7 +27,7 @@
     {
       "activa": true,
       "tipoMedio": "imagen",
-      "imagen": "img/promos/promo-jabon-galon.png",
+      "imagen": "img/promos/promo-jabon-galon.jpg",
       "etiqueta": "🆕 LANZAMIENTO",
       "colorEtiqueta": "azul",
       "categoria": "Jabón Líquido",
