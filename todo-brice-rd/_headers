@@ -16,7 +16,7 @@
 /*.js
   Cache-Control: public, max-age=604800
 
-# La dirección vieja (.pages.dev) no debe salir en buscadores: la oficial es www.todobricerd.com
+# La dirección vieja (.pages.dev) no debe salir en buscadores: la oficial es www.todobrice.com
 https://:project.pages.dev/*
   X-Robots-Tag: noindex
 

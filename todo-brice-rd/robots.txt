@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.todobricerd.com/sitemap.xml
+Sitemap: https://www.todobrice.com/sitemap.xml
