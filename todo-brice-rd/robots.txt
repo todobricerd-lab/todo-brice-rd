@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.todobrice.com/sitemap.xml
+Sitemap: https://todobrice.com/sitemap.xml
