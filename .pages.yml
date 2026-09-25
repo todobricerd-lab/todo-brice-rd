@@ -381,3 +381,68 @@ content:
                   - name: monto
                     type: number
                     label: "Precio en RD$"
+
+  # ──────────────────────────────────────────────
+  # 4) SERVICIOS PARA AIRBNB
+  # ──────────────────────────────────────────────
+  - name: airbnb
+    label: "🏠 Servicios para Airbnb"
+    type: file
+    path: todo-brice-rd/data/airbnb.json
+    fields:
+      - name: encabezado
+        type: object
+        label: "Encabezado de la página"
+        fields:
+          - name: rotulo
+            type: string
+            label: "Rótulo pequeño de arriba"
+            description: "Ej: Servicios para propietarios"
+          - name: titulo
+            type: string
+            label: "Título grande"
+          - name: entrada
+            type: text
+            label: "Párrafo de entrada"
+          - name: boton
+            type: string
+            label: "Texto del botón"
+            description: "Ej: Pedir una cotización"
+      - name: servicios
+        type: object
+        label: "Servicio"
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{fields.titulo}"
+        fields:
+          - name: titulo
+            type: string
+            label: "Nombre del servicio"
+            description: "Ej: Limpieza profunda"
+          - name: resumen
+            type: text
+            label: "Descripción corta"
+            description: "Una o dos líneas explicando de qué se trata."
+          - name: detalles
+            type: string
+            label: "Lo que incluye"
+            list: true
+            description: "Un punto por renglón. Puede quedar vacío si el resumen ya lo dice todo."
+      - name: cierre
+        type: object
+        label: "Cierre de la página"
+        fields:
+          - name: titulo
+            type: string
+            label: "Título del cierre"
+          - name: texto
+            type: text
+            label: "Párrafo del cierre"
+          - name: boton
+            type: string
+            label: "Texto del botón"
+          - name: mensaje_whatsapp
+            type: text
+            label: "Mensaje que se manda por WhatsApp"
+            description: "Es el texto que aparece ya escrito cuando el cliente toca el botón."

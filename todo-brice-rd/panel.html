@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acceso</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico">
+<!--
+  Acceso al catálogo desde el celular.
+
+  Está escrito a mano, sin framework ni CDN, por dos razones: carga en
+  una conexión mala y no depende de que un servicio de terceros siga
+  existiendo dentro de dos años.
+
+  La contraseña no está aquí: se manda a /api/sesion y el servidor la
+  compara con un secreto de Cloudflare. Lo único que guarda el navegador
+  es una cookie firmada que él no puede falsificar.
+-->
+<style>
+  :root {
+    --azul: #1F2A60; --verde: #2E9E46; --naranja: #E8751A;
+    --fondo: #F4F6FA; --panel: #FFFFFF; --borde: #DCE3ED;
+    --texto: #16203A; --suave: #64748B; --rojo: #C0392B;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--fondo); color: var(--texto);
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+    padding-bottom: 96px;
+  }
+  header {
+    background: var(--azul); color: #fff; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  header b { font-size: 17px; }
+  header small { color: #A9B6D6; display: block; font-size: 12.5px; }
+  header button { margin-left: auto; }
+
+  .env { max-width: 760px; margin: 0 auto; padding: 16px; }
+
+  button {
+    font: inherit; font-weight: 700; cursor: pointer; border-radius: 10px;
+    border: 1px solid transparent; padding: 11px 16px;
+  }
+  .primario { background: var(--verde); color: #fff; }
+  .neutro { background: var(--panel); color: var(--texto); border-color: var(--borde); }
+  .peligro { background: transparent; color: var(--rojo); border-color: #F0C9C4; padding: 7px 12px; font-size: 14px; }
+  .chico { padding: 8px 13px; font-size: 14px; }
+
+  label { display: block; margin-top: 12px; font-size: 13.5px; font-weight: 700; color: var(--suave); }
+  input {
+    font: inherit; width: 100%; margin-top: 5px; padding: 11px 12px;
+    border: 1px solid var(--borde); border-radius: 10px; background: #fff; color: var(--texto);
+  }
+  input:focus { outline: 3px solid rgba(46,158,70,.35); outline-offset: 1px; border-color: var(--verde); }
+
+  .tarjeta {
+    background: var(--panel); border: 1px solid var(--borde);
+    border-radius: 14px; padding: 16px; margin-top: 14px;
+  }
+  .categoria > summary {
+    cursor: pointer; font-weight: 800; font-size: 17px; color: var(--azul);
+    list-style: none; display: flex; align-items: center; gap: 9px; padding: 4px 0;
+  }
+  .categoria > summary::before { content: "▸"; color: var(--suave); font-size: 14px; }
+  .categoria[open] > summary::before { content: "▾"; }
+  .categoria > summary span { font-weight: 500; font-size: 13px; color: var(--suave); }
+
+  .producto { border: 1px solid var(--borde); border-radius: 12px; padding: 14px; margin-top: 12px; background: #FCFDFF; }
+  .precio { display: flex; gap: 9px; align-items: flex-end; margin-top: 9px; }
+  .precio > div:first-child { flex: 1.6; }
+  .precio > div:nth-child(2) { flex: 1; }
+  .precio label { margin-top: 0; }
+  .fila-botones { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 14px; }
+
+  .barra {
+    position: fixed; left: 0; right: 0; bottom: 0; background: var(--panel);
+    border-top: 1px solid var(--borde); padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .barra .env { display: flex; align-items: center; gap: 12px; width: 100%; padding: 0; }
+  .aviso { font-size: 13.5px; color: var(--suave); }
+  .aviso.malo { color: var(--rojo); font-weight: 700; }
+  .aviso.bien { color: var(--verde); font-weight: 700; }
+
+  .entrada { max-width: 380px; margin: 14vh auto; padding: 0 16px; }
+  .entrada .tarjeta { text-align: center; }
+  .entrada h1 { font-size: 21px; margin: 0 0 4px; color: var(--azul); }
+  .entrada p { margin: 0; color: var(--suave); font-size: 14px; }
+  .entrada button { width: 100%; margin-top: 16px; }
+  .oculto { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ Entrar ══════════ -->
+<section class="entrada" id="entrada">
+  <div class="tarjeta">
+    <h1>Acceso restringido</h1>
+    <p>Solo para personal autorizado.</p>
+    <form id="form-entrar">
+      <label for="clave">Contraseña</label>
+      <input type="password" id="clave" autocomplete="current-password" required>
+      <button class="primario" type="submit">Entrar</button>
+    </form>
+    <p class="aviso malo oculto" id="error-entrar" role="status"></p>
+  </div>
+</section>
+
+<!-- ══════════ Editor ══════════ -->
+<div id="editor" class="oculto">
+  <header>
+    <div>
+      <b>Catálogo</b>
+      <small>Productos y precios</small>
+    </div>
+    <button class="neutro chico" id="salir">Salir</button>
+  </header>
+
+  <div class="env">
+    <div id="categorias"></div>
+    <div class="fila-botones">
+      <button class="neutro" id="add-categoria">+ Agregar sección</button>
+    </div>
+  </div>
+
+  <div class="barra">
+    <div class="env">
+      <button class="primario" id="guardar">Guardar cambios</button>
+      <span class="aviso" id="estado"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+/*
+ * Todo el estado vive en `datos`. Los campos escriben directo sobre ese
+ * objeto según se teclea, y "Guardar" manda el objeto completo. No se
+ * guarda solo a propósito: Manuel tiene que poder equivocarse y recargar
+ * la página sin haber roto nada.
+ */
+(function () {
+  var datos = { categorias: [] };
+  var sucio = false;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var mostrar = function (el, si) { el.classList.toggle('oculto', !si); };
+
+  var aviso = function (texto, clase) {
+    var e = $('estado');
+    e.textContent = texto || '';
+    e.className = 'aviso' + (clase ? ' ' + clase : '');
+  };
+
+  var marcarSucio = function () {
+    sucio = true;
+    aviso('Hay cambios sin guardar');
+  };
+
+  /* ---------- Pintar ---------------------------------------- */
+
+  var campo = function (etiqueta, valor, alCambiar, tipo) {
+    var cont = document.createElement('div');
+    var lab = document.createElement('label');
+    lab.textContent = etiqueta;
+    var inp = document.createElement('input');
+    inp.type = tipo || 'text';
+    inp.value = valor == null ? '' : valor;
+    if (tipo === 'number') { inp.min = '0'; inp.inputMode = 'decimal'; }
+    inp.addEventListener('input', function () { alCambiar(inp.value); marcarSucio(); });
+    lab.appendChild(inp);
+    cont.appendChild(lab);
+    return cont;
+  };
+
+  var pintarProducto = function (cat, prod, i) {
+    var caja = document.createElement('div');
+    caja.className = 'producto';
+
+    caja.appendChild(campo('Nombre del producto', prod.nombre, function (v) { prod.nombre = v; }));
+    caja.appendChild(campo('Descripción', prod.descripcion, function (v) { prod.descripcion = v; }));
+    caja.appendChild(campo('Etiqueta corta', prod.etiqueta, function (v) { prod.etiqueta = v; }));
+    caja.appendChild(campo('Foto (ruta del archivo)', prod.imagen, function (v) { prod.imagen = v; }));
+
+    var titulo = document.createElement('label');
+    titulo.textContent = 'Presentaciones y precios';
+    caja.appendChild(titulo);
+
+    var lista = document.createElement('div');
+    caja.appendChild(lista);
+
+    var pintarPrecios = function () {
+      lista.innerHTML = '';
+      (prod.precios || []).forEach(function (precio, j) {
+        var fila = document.createElement('div');
+        fila.className = 'precio';
+        fila.appendChild(campo('Presentación', precio.tamano, function (v) { precio.tamano = v; }));
+        fila.appendChild(campo('RD$', precio.monto, function (v) { precio.monto = Number(v); }, 'number'));
+        var quitar = document.createElement('button');
+        quitar.className = 'peligro';
+        quitar.type = 'button';
+        quitar.textContent = 'Quitar';
+        quitar.addEventListener('click', function () {
+          prod.precios.splice(j, 1);
+          pintarPrecios();
+          marcarSucio();
+        });
+        fila.appendChild(quitar);
+        lista.appendChild(fila);
+      });
+    };
+    pintarPrecios();
+
+    var botones = document.createElement('div');
+    botones.className = 'fila-botones';
+
+    var masPrecio = document.createElement('button');
+    masPrecio.className = 'neutro chico';
+    masPrecio.type = 'button';
+    masPrecio.textContent = '+ Otra presentación';
+    masPrecio.addEventListener('click', function () {
+      prod.precios = prod.precios || [];
+      prod.precios.push({ tamano: '', monto: 0 });
+      pintarPrecios();
+      marcarSucio();
+    });
+
+    var borrar = document.createElement('button');
+    borrar.className = 'peligro';
+    borrar.type = 'button';
+    borrar.textContent = 'Eliminar producto';
+    borrar.addEventListener('click', function () {
+      if (!confirm('¿Eliminar "' + (prod.nombre || 'este producto') + '"?')) return;
+      cat.productos.splice(i, 1);
+      pintar();
+      marcarSucio();
+    });
+
+    botones.appendChild(masPrecio);
+    botones.appendChild(borrar);
+    caja.appendChild(botones);
+    return caja;
+  };
+
+  var pintar = function () {
+    var cont = $('categorias');
+    cont.innerHTML = '';
+
+    datos.categorias.forEach(function (cat, ci) {
+      var det = document.createElement('details');
+      det.className = 'tarjeta categoria';
+
+      var res = document.createElement('summary');
+      res.textContent = cat.nombre || '(sección sin nombre)';
+      var cuenta = document.createElement('span');
+      var n = (cat.productos || []).length;
+      cuenta.textContent = n === 1 ? '1 producto' : n + ' productos';
+      res.appendChild(cuenta);
+      det.appendChild(res);
+
+      det.appendChild(campo('Nombre de la sección', cat.nombre, function (v) {
+        cat.nombre = v;
+        res.firstChild.textContent = v || '(sección sin nombre)';
+      }));
+
+      (cat.productos || []).forEach(function (prod, pi) {
+        det.appendChild(pintarProducto(cat, prod, pi));
+      });
+
+      var botones = document.createElement('div');
+      botones.className = 'fila-botones';
+
+      var masProd = document.createElement('button');
+      masProd.className = 'neutro chico';
+      masProd.type = 'button';
+      masProd.textContent = '+ Agregar producto';
+      masProd.addEventListener('click', function () {
+        cat.productos = cat.productos || [];
+        cat.productos.push({ nombre: '', imagen: '', etiqueta: '', destacado: false, descripcion: '', precios: [{ tamano: '', monto: 0 }] });
+        det.setAttribute('open', '');
+        pintar();
+        marcarSucio();
+      });
+
+      var borrarCat = document.createElement('button');
+      borrarCat.className = 'peligro';
+      borrarCat.type = 'button';
+      borrarCat.textContent = 'Eliminar sección';
+      borrarCat.addEventListener('click', function () {
+        if (!confirm('¿Eliminar la sección "' + (cat.nombre || 'sin nombre') + '" y sus productos?')) return;
+        datos.categorias.splice(ci, 1);
+        pintar();
+        marcarSucio();
+      });
+
+      botones.appendChild(masProd);
+      botones.appendChild(borrarCat);
+      det.appendChild(botones);
+      cont.appendChild(det);
+    });
+  };
+
+  /* ---------- Servidor --------------------------------------- */
+
+  var cargar = function () {
+    return fetch('/api/catalogo')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        datos = d && Array.isArray(d.categorias) ? d : { categorias: [] };
+        pintar();
+        aviso('');
+        sucio = false;
+      });
+  };
+
+  var entrar = function () {
+    mostrar($('entrada'), false);
+    mostrar($('editor'), true);
+    cargar();
+  };
+
+  $('form-entrar').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var err = $('error-entrar');
+    mostrar(err, false);
+    fetch('/api/sesion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clave: $('clave').value }),
+    })
+      .then(function (r) { return r.ok ? entrar() : Promise.reject(); })
+      .catch(function () {
+        err.textContent = 'Contraseña incorrecta.';
+        mostrar(err, true);
+        $('clave').select();
+      });
+  });
+
+  $('salir').addEventListener('click', function () {
+    if (sucio && !confirm('Hay cambios sin guardar. ¿Salir de todos modos?')) return;
+    fetch('/api/sesion', { method: 'DELETE' }).then(function () { location.reload(); });
+  });
+
+  $('add-categoria').addEventListener('click', function () {
+    datos.categorias.push({ id: 'seccion-' + Date.now().toString(36), nombre: '', icono: '', productos: [] });
+    pintar();
+    marcarSucio();
+  });
+
+  $('guardar').addEventListener('click', function () {
+    aviso('Guardando…');
+    fetch('/api/catalogo', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos),
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.j && res.j.error ? res.j.error : 'No se pudo guardar');
+        sucio = false;
+        aviso('Guardado. Ya se ve en la página.', 'bien');
+      })
+      .catch(function (err) {
+        aviso(err.message || 'No se pudo guardar', 'malo');
+      });
+  });
+
+  window.addEventListener('beforeunload', function (e) {
+    if (sucio) { e.preventDefault(); e.returnValue = ''; }
+  });
+
+  /* Si la cookie sigue viva, se entra directo. */
+  fetch('/api/sesion')
+    .then(function (r) { return r.json(); })
+    .then(function (s) { if (s && s.ok) entrar(); });
+})();
+</script>
+</body>
+</html>
