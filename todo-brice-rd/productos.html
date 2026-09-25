@@ -212,25 +212,19 @@
 
                 <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 md:p-10">
                     <!-- ================================================================
-                         COTIZADOR MODULAR
+                         RESUMEN DEL PEDIDO
                          ─────────────────────────────────────────────────
-                         • Cada producto es UNA sola fila, sin importar cuántas
-                           presentaciones/tamaños tenga: el tamaño se elige con un
-                           <select> y la cantidad con [−][+]. Así el cotizador no
-                           se alarga cuando un producto tiene 3, 4 o 5 precios.
-                         • Los productos están agrupados en acordeones por
-                           categoría (misma idea que el catálogo de arriba, pero
-                           con ids "cot-<categoria>" para no chocar con los ids
-                           del catálogo).
-                         • Para agregar un producto nuevo al cotizador: copia un
-                           bloque "data-product" (con su select de
-                           tamaños/precios), dentro de la categoría que
-                           corresponda (o crea una categoría nueva copiando el
-                           bloque de acordeón completo). No hace falta tocar
-                           el JavaScript — cotChange/cotUpdateTotal/
-                           enviarCotizacionWhatsApp leen cualquier fila nueva
-                           automáticamente por su estructura (data-product +
-                           .cot-size + .qty).
+                         Aqui solo sale lo que el cliente ya agrego. El pedido se
+                         cuenta por PRESENTACION: dos galones y un pote del mismo
+                         producto son tres renglones distintos.
+
+                         Antes se listaba el catalogo entero con un cero al lado y
+                         el tamano se elegia con un <select>. Con treinta productos
+                         por categoria esa lista no habia quien la leyera, y un
+                         mismo producto no podia llevar dos tamanos a la vez.
+
+                         Lo pinta renderPedido() desde el objeto _pedido. No hay
+                         nada que copiar a mano aqui.
                          ================================================================ -->
                     <div id="cotizadorItems" class="space-y-3">
                         <p class="text-sm text-gray-400 dark:text-gray-500 text-center py-4">Cargando productos y precios…</p>
@@ -389,6 +383,20 @@
     </main>
 
     <!-- Footer / Pie de Página -->
+    <!-- Barra del pedido: aparece sola cuando hay algo agregado.
+         Con el catálogo largo, el total quedaba tan abajo que el cliente
+         no sabía cuánto llevaba hasta llegar al final. -->
+    <div id="barraPedido" class="fixed bottom-0 inset-x-0 z-40 translate-y-full transition-transform duration-300 bg-brandBlue text-white shadow-2xl">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
+            <div class="min-w-0">
+                <p class="text-[11px] uppercase tracking-wider text-blue-200" id="barraPiezas">0 artículos</p>
+                <p class="text-xl font-extrabold leading-tight" id="barraTotal">RD$0</p>
+            </div>
+            <a href="#cotizador" class="ml-auto text-xs font-bold bg-white/10 hover:bg-white/20 px-4 py-2.5 rounded-xl transition whitespace-nowrap">Ver pedido</a>
+            <button type="button" onclick="enviarCotizacionWhatsApp()" class="text-xs font-bold bg-brandGreen hover:brightness-110 px-4 py-2.5 rounded-xl transition whitespace-nowrap">Enviar</button>
+        </div>
+    </div>
+
     <footer class="bg-gray-900 text-white py-12 mt-auto border-t-4 border-brandOrange">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
@@ -546,16 +554,121 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           VITRINA POR CATEGORÍAS — TABS + CUADRÍCULA
+           CATÁLOGO Y PEDIDO
            ─────────────────────────────────────────────────────────
-           Lee data/productos.json y construye:
-             1. Botones de categoría (tabs) en #categoriaTabs
-             2. Cuadrícula de tarjetas en #vitrinalGrid al hacer clic
+           El pedido se cuenta por PRESENTACIÓN, no por producto: un
+           mismo suavizante puede llevar dos galones y un pote a la vez.
+           Antes el cotizador guardaba una sola cantidad por producto y
+           el tamaño salía de un <select>, así que eso era imposible.
+
+           Todo vive en _pedido. Las tarjetas, el resumen y el total se
+           pintan desde ahí, así que no hay dos cuentas que discrepen.
            ═══════════════════════════════════════════════════════════ */
 
-        var _catalogoCats = [];  /* guarda todas las categorías al cargar */
+        var _catalogoCats = [];
+        var _pedido = {};   /* "producto||tamaño" -> {nombre, tamano, monto, qty} */
 
-        /* ── Renderiza la categoría seleccionada ── */
+        function claveItem(nombre, tamano) { return nombre + '||' + tamano; }
+
+        function cantidadDe(nombre, tamano) {
+            var it = _pedido[claveItem(nombre, tamano)];
+            return it ? it.qty : 0;
+        }
+
+        function pedidoCambiar(nombre, tamano, monto, paso) {
+            var clave = claveItem(nombre, tamano);
+            var actual = _pedido[clave] ? _pedido[clave].qty : 0;
+            var qty = actual + paso;
+            if (qty <= 0) delete _pedido[clave];
+            else _pedido[clave] = { nombre: nombre, tamano: tamano, monto: monto, qty: qty };
+            sincronizar();
+        }
+
+        function totalPedido() {
+            var total = 0, piezas = 0;
+            Object.keys(_pedido).forEach(function (k) {
+                total += _pedido[k].monto * _pedido[k].qty;
+                piezas += _pedido[k].qty;
+            });
+            return { total: total, piezas: piezas };
+        }
+
+        /* Deja las tarjetas, el resumen, el total y la barra de abajo
+           mirando lo mismo. Se llama después de cualquier cambio. */
+        function sincronizar() {
+            document.querySelectorAll('[data-qty-de]').forEach(function (el) {
+                el.textContent = cantidadDe(el.getAttribute('data-qty-de'), el.getAttribute('data-qty-tam'));
+            });
+            renderPedido();
+            var t = totalPedido();
+            var elTotal = document.getElementById('cotTotal');
+            if (elTotal) elTotal.textContent = 'RD$' + t.total.toLocaleString('es-DO');
+
+            var barra = document.getElementById('barraPedido');
+            if (barra) {
+                barra.classList.toggle('translate-y-full', t.piezas === 0);
+                document.getElementById('barraTotal').textContent = 'RD$' + t.total.toLocaleString('es-DO');
+                document.getElementById('barraPiezas').textContent =
+                    t.piezas === 1 ? '1 artículo' : t.piezas + ' artículos';
+            }
+        }
+
+        /* ── Un renglón de precio con su [−] [n] [+] ── */
+        function filaPrecio(nombre, precio) {
+            var tam = precio.tamano;
+            return '<div class="flex items-center justify-between gap-2 rounded-lg bg-gray-50 dark:bg-gray-900/60 px-2.5 py-1.5">' +
+                '<span class="text-xs text-gray-600 dark:text-gray-300 truncate">' + escHtml(tam) + '</span>' +
+                '<span class="flex items-center gap-2 shrink-0">' +
+                '<strong class="text-xs text-brandGreen whitespace-nowrap">RD$' + escHtml(precio.monto) + '</strong>' +
+                '<span class="flex items-center gap-1">' +
+                botonPaso(nombre, tam, precio.monto, -1, 'Quitar uno') +
+                '<span class="text-xs font-bold w-4 text-center" data-qty-de="' + escHtml(nombre) + '" data-qty-tam="' + escHtml(tam) + '" aria-live="polite">0</span>' +
+                botonPaso(nombre, tam, precio.monto, 1, 'Añadir uno') +
+                '</span></span></div>';
+        }
+
+        function botonPaso(nombre, tam, monto, paso, etiqueta) {
+            return '<button type="button" class="w-6 h-6 rounded-md border border-gray-200 dark:border-gray-600 text-brandBlue dark:text-blue-300 text-xs font-bold leading-none hover:bg-white dark:hover:bg-gray-800 transition" ' +
+                'data-add="' + escHtml(nombre) + '" data-tam="' + escHtml(tam) + '" data-monto="' + escHtml(monto) + '" data-paso="' + paso + '" ' +
+                'aria-label="' + etiqueta + ' de ' + escHtml(nombre) + ', ' + escHtml(tam) + '">' + (paso > 0 ? '+' : '−') + '</button>';
+        }
+
+        /* Un solo escuchador para todo: la cuadrícula y el resumen se
+           vuelven a pintar constantemente, así que atar cada botón por
+           separado dejaría botones muertos. */
+        document.addEventListener('click', function (ev) {
+            var b = ev.target.closest('[data-add]');
+            if (!b) return;
+            pedidoCambiar(b.getAttribute('data-add'), b.getAttribute('data-tam'),
+                parseInt(b.getAttribute('data-monto'), 10), parseInt(b.getAttribute('data-paso'), 10));
+        });
+
+        /* ── La tarjeta de un producto ── */
+        function tarjetaProducto(prod) {
+            var precios = prod.precios || [];
+            var imgHtml = prod.imagen
+                ? '<img src="' + escHtml(prod.imagen) + '" alt="' + escHtml(prod.nombre) + '" class="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300" loading="lazy">'
+                : '<span class="text-5xl opacity-30">📦</span>';
+            var preciosHtml = precios.length > 0
+                ? '<div class="mt-2 space-y-1.5">' + precios.map(function (p) { return filaPrecio(prod.nombre, p); }).join('') + '</div>'
+                : '<p class="mt-2 text-[11px] text-gray-400">Precio por confirmar</p>';
+            var badge = prod.destacado
+                ? '<span class="absolute top-2 left-2 bg-brandOrange text-white text-[9px] font-bold uppercase tracking-wide px-2 py-1 rounded-full z-10">★ Más vendido</span>'
+                : '';
+            var waTexto = 'Hola Todo Brice, quiero información sobre ' + prod.nombre;
+
+            return '<article class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col hover:border-brandGreen hover:shadow-lg transition">' +
+                '<div class="relative h-40 bg-gray-50 dark:bg-gray-900 flex items-center justify-center overflow-hidden">' + badge + imgHtml + '</div>' +
+                '<div class="p-4 flex flex-col flex-grow">' +
+                '<p class="font-bold text-brandBlue dark:text-blue-300 leading-snug">' + escHtml(prod.nombre) + '</p>' +
+                (prod.etiqueta ? '<p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">' + escHtml(prod.etiqueta) + '</p>' : '') +
+                (prod.descripcion ? '<p class="mt-2 text-xs leading-relaxed text-gray-500 dark:text-gray-400">' + escHtml(prod.descripcion) + '</p>' : '') +
+                preciosHtml +
+                '<div class="mt-auto pt-3"><a href="https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent(waTexto) + '" target="_blank" rel="noopener noreferrer" class="block w-full text-center text-xs font-bold text-white bg-brandBlue hover:bg-blue-900 px-3 py-2.5 rounded-lg transition">Preguntar por este</a></div>' +
+                '</div></article>';
+        }
+
+        /* ── Muestra una categoría ── */
         function mostrarCategoria(idx) {
             var cat = _catalogoCats[idx];
             if (!cat) return;
@@ -563,17 +676,12 @@
             document.querySelectorAll('.cat-tab').forEach(function (btn, i) {
                 var activa = i === idx;
                 btn.setAttribute('aria-selected', activa ? 'true' : 'false');
-                btn.classList.toggle('bg-brandBlue', activa);
-                btn.classList.toggle('text-white', activa);
-                btn.classList.toggle('border-brandOrange', activa);
-                btn.classList.toggle('ring-2', activa);
-                btn.classList.toggle('ring-brandOrange/40', activa);
-                btn.classList.toggle('bg-white', !activa);
-                btn.classList.toggle('dark:bg-gray-800', !activa);
-                btn.classList.toggle('text-gray-700', !activa);
-                btn.classList.toggle('dark:text-gray-200', !activa);
-                btn.classList.toggle('border-gray-200', !activa);
-                btn.classList.toggle('dark:border-gray-600', !activa);
+                ['bg-brandBlue', 'text-white', 'border-brandOrange', 'ring-2', 'ring-brandOrange/40'].forEach(function (c) {
+                    btn.classList.toggle(c, activa);
+                });
+                ['bg-white', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-200', 'border-gray-200', 'dark:border-gray-600'].forEach(function (c) {
+                    btn.classList.toggle(c, !activa);
+                });
             });
 
             var grid = document.getElementById('vitrinalGrid');
@@ -584,239 +692,117 @@
                     '<p class="text-4xl mb-3">' + escHtml(cat.icono) + '</p>' +
                     '<h3 class="font-bold text-brandBlue dark:text-blue-300 text-lg mb-2">' + escHtml(cat.nombre) + '</h3>' +
                     '<p class="text-gray-400 dark:text-gray-500 text-sm mb-4">Estamos preparando esta sección. ¡Pronto habrá productos aquí!</p>' +
-                    '<a href="' + textoWhatsAppInteres(cat.nombre) + '" target="_blank" rel="noopener noreferrer" class="inline-block bg-brandGreen text-white text-sm font-bold px-5 py-2.5 rounded-xl hover:bg-green-700 transition">Preguntar por WhatsApp</a>' +
+                    '<a href="' + textoWhatsAppInteres(cat.nombre) + '" target="_blank" rel="noopener noreferrer" class="inline-block bg-brandGreen text-white text-sm font-bold px-5 py-2.5 rounded-xl hover:brightness-110 transition">Avísame cuando esté</a>' +
                     '</div>';
                 return;
             }
-
             grid.innerHTML = '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">' +
-                productos.map(function (prod) {
-                    var precios = prod.precios || [];
-                    var imgHtml = prod.imagen
-                        ? '<img src="' + escHtml(prod.imagen) + '" alt="' + escHtml(prod.nombre) + '" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy">'
-                        : '<span class="text-5xl opacity-30">📦</span>';
-                    var preciosHtml = precios.length > 0
-                        ? '<div class="mt-2 space-y-1">' + precios.map(function (precio) {
-                            return '<div class="flex items-center justify-between gap-2 rounded-lg bg-gray-50 dark:bg-gray-900 px-2 py-1 text-[11px]">' +
-                                '<span class="text-gray-600 dark:text-gray-300">' + escHtml(precio.tamano) + '</span>' +
-                                '<strong class="text-brandGreen whitespace-nowrap">RD$' + escHtml(precio.monto) + '</strong></div>';
-                        }).join('') + '</div>'
-                        : '<p class="mt-2 text-[11px] text-gray-400">Precio por confirmar</p>';
-                    var badge = prod.destacado
-                        ? '<span class="absolute top-2 left-2 bg-brandOrange text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded-full shadow">⭐ Más vendido</span>'
-                        : '';
-                    var waTexto = 'Hola Todo Brice, quiero información sobre ' + prod.nombre;
-                    return '<article class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-lg transition-all flex flex-col">' +
-                        '<div class="relative h-44 bg-gray-50 dark:bg-gray-900 flex items-center justify-center overflow-hidden">' + imgHtml + badge + '</div>' +
-                        '<div class="p-4 flex flex-col flex-grow">' +
-                        '<p class="font-bold text-brandBlue dark:text-blue-300 leading-snug">' + escHtml(prod.nombre) + '</p>' +
-                        (prod.etiqueta ? '<p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">' + escHtml(prod.etiqueta) + '</p>' : '') +
-                        (prod.descripcion ? '<p class="mt-2 text-xs leading-relaxed text-gray-500 dark:text-gray-400">' + escHtml(prod.descripcion) + '</p>' : '') +
-                        preciosHtml +
-                        '<div class="mt-3 flex items-center justify-between gap-2 rounded-xl bg-gray-50 dark:bg-gray-900/60 px-2.5 py-2" data-pedido="' + escHtml(prod.nombre) + '">' +
-                        '<span class="text-[11px] font-bold uppercase tracking-wide text-gray-400 dark:text-gray-500">En el pedido</span>' +
-                        '<span class="flex items-center gap-1.5 shrink-0">' +
-                        '<button type="button" data-paso="-1" aria-label="Quitar uno de ' + escHtml(prod.nombre) + '" class="w-7 h-7 rounded-lg border border-gray-200 dark:border-gray-600 text-brandBlue dark:text-blue-300 font-bold leading-none hover:bg-white dark:hover:bg-gray-800 transition">−</button>' +
-                        '<span class="pedido-qty text-sm font-bold w-5 text-center" aria-live="polite">0</span>' +
-                        '<button type="button" data-paso="1" aria-label="Añadir uno de ' + escHtml(prod.nombre) + '" class="w-7 h-7 rounded-lg border border-gray-200 dark:border-gray-600 text-brandBlue dark:text-blue-300 font-bold leading-none hover:bg-white dark:hover:bg-gray-800 transition">+</button>' +
-                        '</span></div>' +
-                        '<div class="mt-auto pt-3"><a href="https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent(waTexto) + '" target="_blank" rel="noopener noreferrer" class="block w-full text-center text-xs font-bold text-white bg-brandBlue hover:bg-blue-900 px-3 py-2.5 rounded-lg transition">Pedir por WhatsApp</a></div>' +
-                        '</div></article>';
-                }).join('') + '</div>';
+                productos.map(tarjetaProducto).join('') + '</div>';
+            sincronizar();
         }
 
-        /* ── Carga el catálogo y construye los tabs ── */
+        /* ── El resumen del pedido ──
+           Solo sale lo que tiene cantidad. Antes se listaban todos los
+           productos del catálogo con un cero al lado, y con treinta por
+           categoría eso es una lista imposible de leer. */
+        function renderPedido() {
+            var cont = document.getElementById('cotizadorItems');
+            if (!cont) return;
+            var claves = Object.keys(_pedido);
+
+            if (claves.length === 0) {
+                cont.innerHTML = '<p class="text-sm text-gray-400 dark:text-gray-500 text-center py-6">Todavía no has agregado nada. Usa los botones <strong>+</strong> de cada producto para armar tu pedido.</p>';
+                return;
+            }
+
+            cont.innerHTML = claves.map(function (k) {
+                var it = _pedido[k];
+                return '<div class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900/60">' +
+                    '<div class="min-w-0 flex-1">' +
+                    '<p class="text-sm font-semibold text-gray-700 dark:text-gray-200 truncate">' + escHtml(it.nombre) + '</p>' +
+                    '<p class="text-[11px] text-gray-400 dark:text-gray-500">' + escHtml(it.tamano) + ' · RD$' + it.monto.toLocaleString('es-DO') + '</p>' +
+                    '</div>' +
+                    '<span class="flex items-center gap-1 shrink-0">' +
+                    botonPaso(it.nombre, it.tamano, it.monto, -1, 'Quitar uno') +
+                    '<span class="text-sm font-bold w-5 text-center" data-qty-de="' + escHtml(it.nombre) + '" data-qty-tam="' + escHtml(it.tamano) + '">' + it.qty + '</span>' +
+                    botonPaso(it.nombre, it.tamano, it.monto, 1, 'Añadir uno') +
+                    '</span>' +
+                    '<strong class="text-sm text-brandGreen w-20 text-right whitespace-nowrap">RD$' + (it.monto * it.qty).toLocaleString('es-DO') + '</strong>' +
+                    '</div>';
+            }).join('');
+        }
+
+        /* ── Carga el catálogo y arma las pestañas ── */
         async function cargarCatalogo() {
             var tabsEl = document.getElementById('categoriaTabs');
             var gridEl = document.getElementById('vitrinalGrid');
             try {
                 /* Primero lo que Manuel haya guardado desde el panel; si esa
-                   ruta no existe todavía, el archivo del repositorio. Así la
-                   página sigue funcionando aunque el panel no esté montado. */
+                   ruta no existe todavía, el archivo del repositorio. */
                 var resp = await fetch('/api/catalogo');
                 if (!resp.ok) resp = await fetch('data/productos.json');
                 if (!resp.ok) throw new Error('HTTP ' + resp.status);
                 var data = await resp.json();
                 _catalogoCats = data.categorias || [];
-                renderCotizador(_catalogoCats);
 
                 if (_catalogoCats.length === 0) {
                     tabsEl.innerHTML = '<p class="text-sm text-gray-400 dark:text-gray-500">No hay categorías todavía.</p>';
                     return;
                 }
 
-                /* Pintar tabs */
                 tabsEl.innerHTML = _catalogoCats.map(function (cat, idx) {
-                    var tieneProds = (cat.productos || []).length > 0;
-                    var badge = !tieneProds
-                        ? ' <span class="ml-1 text-[9px] bg-brandOrange/20 text-brandOrange font-semibold px-1.5 py-0.5 rounded-full">Próx.</span>'
-                        : '';
-                    return '<button type="button" onclick="mostrarCategoria(' + idx + ')" ' +
+                    var n = (cat.productos || []).length;
+                    var cuenta = n === 0
+                        ? '<span class="ml-1 text-[9px] bg-brandOrange/20 text-brandOrange font-semibold px-1.5 py-0.5 rounded-full">Próx.</span>'
+                        : '<span class="ml-1 text-[10px] font-bold opacity-60">(' + n + ')</span>';
+                    return '<button type="button" onclick="mostrarCategoria(' + idx + ')" role="tab" aria-selected="' + (idx === 0 ? 'true' : 'false') + '" ' +
                         'class="cat-tab flex items-center gap-1.5 px-4 py-2 rounded-full border text-sm font-semibold transition ' +
-                        (idx === 0 ? 'bg-brandBlue text-white border-brandBlue' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:border-brandBlue hover:text-brandBlue') + '">' +
-                        '<span>' + escHtml(cat.icono) + '</span>' +
-                        '<span>' + escHtml(cat.nombre) + '</span>' +
-                        badge +
-                        '</button>';
+                        (idx === 0 ? 'bg-brandBlue text-white border-brandBlue' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-600') + '">' +
+                        '<span>' + escHtml(cat.icono) + '</span><span>' + escHtml(cat.nombre) + '</span>' + cuenta + '</button>';
                 }).join('');
 
-                /* Mostrar la primera categoría por defecto */
                 mostrarCategoria(0);
-
+                sincronizar();
             } catch (err) {
                 tabsEl.innerHTML = '';
                 gridEl.innerHTML =
                     '<p class="text-center text-sm text-gray-400 dark:text-gray-500 py-8">' +
                     'El catálogo se muestra en el sitio publicado. ' +
-                    '<a href="https://wa.me/18293795820" target="_blank" class="text-brandGreen font-bold hover:underline">Contáctanos por WhatsApp</a>.' +
+                    '<a href="https://wa.me/18293795820" target="_blank" class="text-brandGreen font-bold hover:underline">Escríbenos por WhatsApp</a>' +
                     '</p>';
-                console.error('Error cargando data/productos.json:', err);
+                console.error('Error cargando el catálogo:', err);
             }
         }
         document.addEventListener('DOMContentLoaded', cargarCatalogo);
 
-        /* ── Cotizador: se construye desde data/productos.json ── */
-        function renderCotizador(categorias) {
-            var contenedor = document.getElementById('cotizadorItems');
-            if (!contenedor) return;
-            var categoriasConProductos = categorias.map(function (cat) {
-                var productos = (cat.productos || []).filter(function (producto) {
-                    return (producto.precios || []).length > 0;
-                });
-                return { categoria: cat, productos: productos };
-            }).filter(function (grupo) { return grupo.productos.length > 0; });
-
-            if (categoriasConProductos.length === 0) {
-                contenedor.innerHTML = '<p class="text-center text-sm text-gray-400 py-4">Aún no hay productos con precios para cotizar.</p>';
-                return;
-            }
-
-            contenedor.innerHTML = categoriasConProductos.map(function (grupo, indice) {
-                var cat = grupo.categoria;
-                var id = 'cot-' + cat.id;
-                var abierta = indice === 0;
-                var filas = grupo.productos.map(function (producto) {
-                    var opciones = producto.precios.map(function (precio) {
-                        return '<option value="' + escHtml(precio.monto) + '" data-label="' + escHtml(precio.tamano) + '">' + escHtml(precio.tamano) + ' — RD$' + escHtml(precio.monto) + '</option>';
-                    }).join('');
-                    return '<div class="flex flex-col sm:flex-row sm:items-center gap-2 px-4 py-3" data-product="' + escHtml(producto.nombre) + '">' +
-                        '<div class="min-w-0 flex-1"><p class="text-sm font-semibold text-gray-700 dark:text-gray-200 truncate">' + escHtml(producto.nombre) + '</p>' +
-                        (producto.etiqueta ? '<p class="text-[11px] text-gray-400 dark:text-gray-500">' + escHtml(producto.etiqueta) + '</p>' : '') + '</div>' +
-                        '<div class="flex items-center justify-between gap-2 sm:justify-end">' +
-                        '<label class="sr-only">Presentación de ' + escHtml(producto.nombre) + '</label>' +
-                        '<select class="cot-size max-w-[13rem] text-xs border border-gray-200 dark:border-gray-700 rounded-lg px-2 py-2 bg-white dark:bg-gray-800 dark:text-gray-200" onchange="cotUpdateTotal()">' + opciones + '</select>' +
-                        '<div class="flex items-center gap-1.5 shrink-0"><button type="button" aria-label="Quitar uno" onclick="cotChange(this,-1)" class="text-brandBlue dark:text-blue-300 font-bold w-7 h-7 rounded bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 flex items-center justify-center transition">−</button>' +
-                        '<span class="qty text-sm font-bold w-5 text-center" aria-live="polite">0</span>' +
-                        '<button type="button" aria-label="Añadir uno" onclick="cotChange(this,1)" class="text-brandBlue dark:text-blue-300 font-bold w-7 h-7 rounded bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 flex items-center justify-center transition">+</button></div></div></div>';
-                }).join('');
-                return '<section class="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">' +
-                    '<button id="toggle-' + id + '" type="button" aria-controls="panel-' + id + '" aria-expanded="' + (abierta ? 'true' : 'false') + '" onclick="toggleCategoria(\'' + id + '\')" class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition">' +
-                    '<span class="font-bold text-xs text-brandBlue dark:text-blue-300 uppercase tracking-wider">' + escHtml(cat.icono) + ' ' + escHtml(cat.nombre) + '</span>' +
-                    '<svg id="arrow-' + id + '" class="w-4 h-4 text-gray-400 transition-transform ' + (abierta ? 'rotate-180' : '') + '" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>' +
-                    '<div id="panel-' + id + '" class="divide-y divide-gray-100 dark:divide-gray-700 border-t border-gray-100 dark:border-gray-700' + (abierta ? '' : ' hidden') + '">' + filas + '</div></section>';
-            }).join('');
-        }
-        /* ── Botones [−] y [+] de cada fila del cotizador ──
-           Cada fila es un producto (data-product); el tamaño elegido
-           en el <select class="cot-size"> es lo que decide el precio. */
-        /* ── Los [−] [+] de las tarjetas del catálogo ──
-           No llevan un pedido aparte: mueven la misma fila del cotizador,
-           que es donde vive el total y de donde sale el mensaje de
-           WhatsApp. Así no hay dos cuentas que puedan discrepar, y el
-           cliente puede armar el pedido desde arriba sin bajar.
-
-           La presentación es la que esté elegida en el cotizador; por
-           defecto, la primera de la lista. */
-        function filaCotizador(nombre) {
-            var filas = document.querySelectorAll('#cotizadorItems [data-product]');
-            for (var i = 0; i < filas.length; i++) {
-                if (filas[i].getAttribute('data-product') === nombre) return filas[i];
-            }
-            return null;
-        }
-
-        /* Deja los números de las tarjetas iguales a los del cotizador,
-           se haya tocado arriba o abajo. */
-        function sincronizarTarjetas() {
-            document.querySelectorAll('[data-pedido]').forEach(function (caja) {
-                var fila = filaCotizador(caja.getAttribute('data-pedido'));
-                var marca = caja.querySelector('.pedido-qty');
-                if (!marca) return;
-                var qty = fila ? parseInt(fila.querySelector('.qty').textContent, 10) : 0;
-                marca.textContent = qty;
-                caja.classList.toggle('ring-2', qty > 0);
-                caja.classList.toggle('ring-brandGreen/40', qty > 0);
-            });
-        }
-
-        /* Un solo escuchador para todas las tarjetas, presentes y futuras:
-           la cuadrícula se vuelve a pintar cada vez que se cambia de
-           categoría, así que atarlo a cada botón no serviría. */
-        document.addEventListener('click', function (ev) {
-            var boton = ev.target.closest('[data-pedido] [data-paso]');
-            if (!boton) return;
-            var caja = boton.closest('[data-pedido]');
-            var fila = filaCotizador(caja.getAttribute('data-pedido'));
-            if (!fila) return;
-
-            var qtyEl = fila.querySelector('.qty');
-            var qty = parseInt(qtyEl.textContent, 10) + parseInt(boton.getAttribute('data-paso'), 10);
-            if (qty < 0) qty = 0;
-            qtyEl.textContent = qty;
-            cotUpdateTotal();
-            sincronizarTarjetas();
+        /* La barra del pedido se cuelga del <html>, no del <body>.
+           El fundido de entrada de la página deja un transform puesto en el
+           <body>, y un elemento con transform pasa a ser el marco de
+           referencia de todo lo que lleve position:fixed dentro. Sin esto la
+           barra se queda al final del documento en vez de pegarse al borde
+           de abajo de la pantalla. */
+        document.addEventListener('DOMContentLoaded', function () {
+            var barra = document.getElementById('barraPedido');
+            if (barra) document.documentElement.appendChild(barra);
         });
 
-        function cotChange(btn, delta) {
-            var row = btn.closest('[data-product]');
-            var qtyEl = row.querySelector('.qty');
-            var qty = parseInt(qtyEl.textContent, 10) + delta;
-            if (qty < 0) qty = 0;
-            qtyEl.textContent = qty;
-            cotUpdateTotal();
-            sincronizarTarjetas();
-        }
-
-        /* ── Recalcula y muestra el total estimado ──
-           También se llama cuando el cliente cambia el tamaño en el
-           <select>, por si ese producto ya tenía cantidad puesta. */
-        function cotUpdateTotal() {
-            var total = 0;
-            document.querySelectorAll('#cotizadorItems [data-product]').forEach(function (row) {
-                var price = parseInt(row.querySelector('.cot-size').value, 10);
-                var qty = parseInt(row.querySelector('.qty').textContent, 10);
-                total += price * qty;
-            });
-            document.getElementById('cotTotal').textContent = 'RD$' + total.toLocaleString('es-DO');
-        }
-
-        /* ── Arma el resumen del pedido y lo envía por WhatsApp ──
-           Por cada producto con cantidad > 0, toma el nombre (data-product),
-           el tamaño elegido (data-label de la opción seleccionada) y el
-           precio (value de esa opción). */
+        /* ── Manda el pedido por WhatsApp ── */
         function enviarCotizacionWhatsApp() {
-            var rows = document.querySelectorAll('#cotizadorItems [data-product]');
-            var lines = [];
-            var total = 0;
-            rows.forEach(function (row) {
-                var qty = parseInt(row.querySelector('.qty').textContent, 10);
-                if (qty > 0) {
-                    var select = row.querySelector('.cot-size');
-                    var opcion = select.options[select.selectedIndex];
-                    var price = parseInt(select.value, 10);
-                    var talla = opcion.dataset.label || opcion.textContent;
-                    var name = row.dataset.product;
-                    lines.push('- ' + name + ' (' + talla + ') x' + qty + ' = RD$' + (price * qty));
-                    total += price * qty;
-                }
-            });
-            if (lines.length === 0) {
-                alert('Selecciona al menos un producto para cotizar.');
+            var claves = Object.keys(_pedido);
+            if (claves.length === 0) {
+                alert('Agrega al menos un producto con el botón +.');
                 return;
             }
-            var texto = 'Hola Todo Brice! Quiero cotizar este pedido:\n' + lines.join('\n') + '\n\nTotal estimado: RD$' + total;
+            var lineas = claves.map(function (k) {
+                var it = _pedido[k];
+                return '- ' + it.nombre + ' (' + it.tamano + ') x' + it.qty + ' = RD$' + (it.monto * it.qty);
+            });
+            var t = totalPedido();
+            var texto = 'Hola Todo Brice! Quiero cotizar este pedido:\n' + lineas.join('\n') +
+                '\n\nTotal estimado: RD$' + t.total.toLocaleString('es-DO');
             window.open('https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent(texto), '_blank');
         }
+
     </script>
 
     <!-- Lógica JS del Módulo de Recargas -->
