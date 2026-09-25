@@ -1,3 +1,5 @@
 .dev.vars
 .wrangler/
 node_modules/
+todo-brice-rd/.dev.vars
+todo-brice-rd/.wrangler/
