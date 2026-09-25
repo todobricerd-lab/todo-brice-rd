@@ -104,6 +104,14 @@ content:
         label: "Número real de WhatsApp"
         description: "Este es el número al que de verdad llegan los mensajes de todos los botones de WhatsApp del sitio."
         fields:
+          - name: correo
+            type: string
+            label: "Correo"
+            description: "El que sale en el pie de todas las páginas."
+          - name: tiktok_usuario
+            type: string
+            label: "TikTok"
+            description: "Con arroba, ej: @todobricerd"
           - name: numero
             type: string
             label: "Número de WhatsApp"
