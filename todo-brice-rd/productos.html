@@ -186,14 +186,23 @@
                     <p class="text-gray-600 dark:text-gray-300 text-sm mt-2" data-cms="contenido.productos.vitrina_descripcion">Selecciona una categoría para ver los productos disponibles.</p>
                 </div>
 
-                <!-- Barra de tabs / filtros de categorías -->
-                <div id="categoriaTabs" class="flex flex-wrap justify-center gap-2 mb-8">
-                    <p class="text-sm text-gray-400 dark:text-gray-500">Cargando categorías…</p>
+                <!-- Buscador: con muchos productos, buscar gana a navegar -->
+                <div class="max-w-xl mx-auto mb-8">
+                    <label for="buscador" class="sr-only">Buscar un producto</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+                        </span>
+                        <input id="buscador" type="search" autocomplete="off"
+                               placeholder="Buscar un producto, ej: suavizante"
+                               class="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brandGreen focus:border-brandGreen transition">
+                    </div>
+                    <p id="buscadorAviso" class="mt-2 text-sm text-center text-gray-500 dark:text-gray-400 hidden" role="status"></p>
                 </div>
 
-                <!-- Vitrina: cuadrícula de tarjetas de productos -->
-                <div id="vitrinalGrid" class="max-w-6xl mx-auto">
-                    <!-- JS lo rellena al seleccionar una categoría -->
+                <!-- Catálogo en acordeón: una sección por categoría -->
+                <div id="catalogoAcordeon" class="max-w-6xl mx-auto space-y-3">
+                    <p class="text-center text-sm text-gray-400 dark:text-gray-500 py-8">Cargando el catálogo…</p>
                 </div>
 
                 <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-8">¿No encuentras lo que buscas? <a href="https://wa.me/18293795820?text=Hola%20Todo%20Brice,%20busco%20un%20producto%20que%20no%20veo%20en%20la%20página" target="_blank" rel="noopener noreferrer" class="text-brandGreen font-bold hover:underline">Pregúntanos por WhatsApp</a></p>
@@ -546,82 +555,150 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-           VITRINA POR CATEGORÍAS — TABS + CUADRÍCULA
+           CATÁLOGO EN ACORDEÓN
            ─────────────────────────────────────────────────────────
-           Lee data/productos.json y construye:
-             1. Botones de categoría (tabs) en #categoriaTabs
-             2. Cuadrícula de tarjetas en #vitrinalGrid al hacer clic
+           Una sección por categoría, todas a la vista, como el pasillo
+           de un supermercado. Antes eran pestañas: solo se veía una
+           categoría y en el celular los botones se enrollaban en tres
+           filas, así que el cliente no sabía que había más.
+
+           El buscador filtra sobre todas las categorías a la vez. Con
+           treinta productos por sección, buscar gana a navegar.
            ═══════════════════════════════════════════════════════════ */
 
-        var _catalogoCats = [];  /* guarda todas las categorías al cargar */
+        var _catalogoCats = [];   /* el catálogo completo, tal como llegó */
+        var _filtro = '';        /* lo que hay escrito en el buscador */
 
-        /* ── Renderiza la categoría seleccionada ── */
-        function mostrarCategoria(idx) {
-            var cat = _catalogoCats[idx];
-            if (!cat) return;
+        /* Sin tildes y en minúsculas: así "jabon" encuentra "jabón". */
+        function normalizar(s) {
+            return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        }
 
-            document.querySelectorAll('.cat-tab').forEach(function (btn, i) {
-                var activa = i === idx;
-                btn.setAttribute('aria-selected', activa ? 'true' : 'false');
-                btn.classList.toggle('bg-brandBlue', activa);
-                btn.classList.toggle('text-white', activa);
-                btn.classList.toggle('border-brandOrange', activa);
-                btn.classList.toggle('ring-2', activa);
-                btn.classList.toggle('ring-brandOrange/40', activa);
-                btn.classList.toggle('bg-white', !activa);
-                btn.classList.toggle('dark:bg-gray-800', !activa);
-                btn.classList.toggle('text-gray-700', !activa);
-                btn.classList.toggle('dark:text-gray-200', !activa);
-                btn.classList.toggle('border-gray-200', !activa);
-                btn.classList.toggle('dark:border-gray-600', !activa);
+        function coincide(prod, filtro) {
+            if (!filtro) return true;
+            var heno = normalizar([prod.nombre, prod.etiqueta, prod.descripcion].join(' '));
+            /* Cada palabra por separado: "jabon galon" encuentra el que tenga las dos. */
+            return normalizar(filtro).split(/\s+/).filter(Boolean).every(function (aguja) {
+                return heno.indexOf(aguja) !== -1;
             });
+        }
 
-            var grid = document.getElementById('vitrinalGrid');
-            var productos = cat.productos || [];
-            if (productos.length === 0) {
-                grid.innerHTML =
-                    '<div class="text-center py-16">' +
-                    '<p class="text-4xl mb-3">' + escHtml(cat.icono) + '</p>' +
-                    '<h3 class="font-bold text-brandBlue dark:text-blue-300 text-lg mb-2">' + escHtml(cat.nombre) + '</h3>' +
-                    '<p class="text-gray-400 dark:text-gray-500 text-sm mb-4">Estamos preparando esta sección. ¡Pronto habrá productos aquí!</p>' +
-                    '<a href="' + textoWhatsAppInteres(cat.nombre) + '" target="_blank" rel="noopener noreferrer" class="inline-block bg-brandGreen text-white text-sm font-bold px-5 py-2.5 rounded-xl hover:bg-green-700 transition">Preguntar por WhatsApp</a>' +
-                    '</div>';
+        /* ── La tarjeta de un producto ── */
+        function tarjetaProducto(prod) {
+            var precios = prod.precios || [];
+            var imgHtml = prod.imagen
+                ? '<img src="' + escHtml(prod.imagen) + '" alt="' + escHtml(prod.nombre) + '" class="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300" loading="lazy">'
+                : '<span class="text-5xl opacity-30">📦</span>';
+            var preciosHtml = precios.length > 0
+                ? '<div class="mt-2 space-y-1">' + precios.map(function (precio) {
+                    return '<div class="flex items-center justify-between gap-2 rounded-lg bg-gray-50 dark:bg-gray-900/60 px-2.5 py-1.5 text-xs">' +
+                        '<span class="text-gray-600 dark:text-gray-300">' + escHtml(precio.tamano) + '</span>' +
+                        '<strong class="text-brandGreen whitespace-nowrap">RD$' + escHtml(precio.monto) + '</strong></div>';
+                }).join('') + '</div>'
+                : '<p class="mt-2 text-[11px] text-gray-400">Precio por confirmar</p>';
+            var badge = prod.destacado
+                ? '<span class="absolute top-2 left-2 bg-brandOrange text-white text-[9px] font-bold uppercase tracking-wide px-2 py-1 rounded-full">★ Más vendido</span>'
+                : '';
+            var waTexto = 'Hola Todo Brice, quiero información sobre ' + prod.nombre;
+
+            return '<article class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col hover:border-brandGreen hover:shadow-lg transition">' +
+                '<div class="relative h-44 bg-gray-50 dark:bg-gray-900 flex items-center justify-center overflow-hidden">' + badge + imgHtml + '</div>' +
+                '<div class="p-4 flex flex-col flex-grow">' +
+                '<p class="font-bold text-brandBlue dark:text-blue-300 leading-snug">' + escHtml(prod.nombre) + '</p>' +
+                (prod.etiqueta ? '<p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">' + escHtml(prod.etiqueta) + '</p>' : '') +
+                (prod.descripcion ? '<p class="mt-2 text-xs leading-relaxed text-gray-500 dark:text-gray-400">' + escHtml(prod.descripcion) + '</p>' : '') +
+                preciosHtml +
+                '<div class="mt-auto pt-3"><a href="https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent(waTexto) + '" target="_blank" rel="noopener noreferrer" class="block text-center bg-brandBlue text-white text-sm font-bold py-2.5 rounded-xl hover:bg-blue-900 transition">Pedir por WhatsApp</a></div>' +
+                '</div></article>';
+        }
+
+        /* ── Abre y cierra una sección ── */
+        function alternarSeccion(id) {
+            var panel = document.getElementById('cat-panel-' + id);
+            var boton = document.getElementById('cat-boton-' + id);
+            var flecha = document.getElementById('cat-flecha-' + id);
+            if (!panel || !boton) return;
+            var abierta = !panel.classList.contains('hidden');
+            panel.classList.toggle('hidden', abierta);
+            boton.setAttribute('aria-expanded', abierta ? 'false' : 'true');
+            if (flecha) flecha.classList.toggle('rotate-180', !abierta);
+        }
+        window.alternarSeccion = alternarSeccion;
+
+        /* ── Pinta el catálogo entero ──
+           Todas las categorías se ven de una vez, como en el pasillo de un
+           supermercado: se baja con el dedo en vez de adivinar detrás de qué
+           pestaña está lo que se busca. Con el buscador escrito, solo salen
+           las secciones que tienen algo y se abren solas. */
+        function renderCatalogo() {
+            var cont = document.getElementById('catalogoAcordeon');
+            var aviso = document.getElementById('buscadorAviso');
+            if (!cont) return;
+
+            if (_catalogoCats.length === 0) {
+                cont.innerHTML = '<p class="text-center text-sm text-gray-400 dark:text-gray-500 py-8">No hay categorías todavía.</p>';
                 return;
             }
 
-            grid.innerHTML = '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">' +
-                productos.map(function (prod) {
-                    var precios = prod.precios || [];
-                    var imgHtml = prod.imagen
-                        ? '<img src="' + escHtml(prod.imagen) + '" alt="' + escHtml(prod.nombre) + '" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy">'
-                        : '<span class="text-5xl opacity-30">📦</span>';
-                    var preciosHtml = precios.length > 0
-                        ? '<div class="mt-2 space-y-1">' + precios.map(function (precio) {
-                            return '<div class="flex items-center justify-between gap-2 rounded-lg bg-gray-50 dark:bg-gray-900 px-2 py-1 text-[11px]">' +
-                                '<span class="text-gray-600 dark:text-gray-300">' + escHtml(precio.tamano) + '</span>' +
-                                '<strong class="text-brandGreen whitespace-nowrap">RD$' + escHtml(precio.monto) + '</strong></div>';
-                        }).join('') + '</div>'
-                        : '<p class="mt-2 text-[11px] text-gray-400">Precio por confirmar</p>';
-                    var badge = prod.destacado
-                        ? '<span class="absolute top-2 left-2 bg-brandOrange text-white text-[9px] font-bold uppercase px-2 py-0.5 rounded-full shadow">⭐ Más vendido</span>'
-                        : '';
-                    var waTexto = 'Hola Todo Brice, quiero información sobre ' + prod.nombre;
-                    return '<article class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-lg transition-all flex flex-col">' +
-                        '<div class="relative h-44 bg-gray-50 dark:bg-gray-900 flex items-center justify-center overflow-hidden">' + imgHtml + badge + '</div>' +
-                        '<div class="p-4 flex flex-col flex-grow">' +
-                        '<p class="font-bold text-brandBlue dark:text-blue-300 leading-snug">' + escHtml(prod.nombre) + '</p>' +
-                        (prod.etiqueta ? '<p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">' + escHtml(prod.etiqueta) + '</p>' : '') +
-                        (prod.descripcion ? '<p class="mt-2 text-xs leading-relaxed text-gray-500 dark:text-gray-400">' + escHtml(prod.descripcion) + '</p>' : '') +
-                        preciosHtml +
-                        '<div class="mt-auto pt-3"><a href="https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent(waTexto) + '" target="_blank" rel="noopener noreferrer" class="block w-full text-center text-xs font-bold text-white bg-brandBlue hover:bg-blue-900 px-3 py-2.5 rounded-lg transition">Pedir por WhatsApp</a></div>' +
-                        '</div></article>';
-                }).join('') + '</div>';
+            var buscando = _filtro.length > 0;
+            var encontrados = 0;
+
+            var html = _catalogoCats.map(function (cat, idx) {
+                var id = 'c' + idx;
+                var todos = cat.productos || [];
+                var visibles = buscando ? todos.filter(function (p) { return coincide(p, _filtro); }) : todos;
+                encontrados += visibles.length;
+
+                /* Buscando, una sección sin resultados no se dibuja. */
+                if (buscando && visibles.length === 0) return '';
+
+                var abierta = buscando || (!buscando && idx === 0);
+                var cuenta = todos.length === 1 ? '1 producto' : todos.length + ' productos';
+
+                var cuerpo;
+                if (visibles.length === 0) {
+                    cuerpo =
+                        '<div class="text-center py-10 px-4">' +
+                        '<p class="text-4xl mb-3">' + escHtml(cat.icono) + '</p>' +
+                        '<p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Estamos preparando esta sección. ¡Pronto habrá productos aquí!</p>' +
+                        '<a href="' + textoWhatsAppInteres(cat.nombre) + '" target="_blank" rel="noopener noreferrer" class="inline-block bg-brandGreen text-white text-sm font-bold px-5 py-2.5 rounded-xl hover:brightness-110 transition">Avísame cuando esté</a>' +
+                        '</div>';
+                } else {
+                    cuerpo = '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">' +
+                        visibles.map(tarjetaProducto).join('') + '</div>';
+                }
+
+                return '<section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">' +
+                    '<h3>' +
+                    '<button id="cat-boton-' + id + '" type="button" aria-controls="cat-panel-' + id + '" aria-expanded="' + (abierta ? 'true' : 'false') + '" ' +
+                    'onclick="alternarSeccion(\'' + id + '\')" ' +
+                    'class="w-full flex items-center gap-3 px-4 sm:px-5 py-4 text-left hover:bg-gray-50 dark:hover:bg-gray-900/40 transition">' +
+                    '<span class="text-2xl" aria-hidden="true">' + escHtml(cat.icono) + '</span>' +
+                    '<span class="flex-1 min-w-0">' +
+                    '<span class="block font-extrabold text-brandBlue dark:text-blue-300 truncate">' + escHtml(cat.nombre) + '</span>' +
+                    '<span class="block text-xs text-gray-400 dark:text-gray-500">' + (buscando ? visibles.length + ' de ' + cuenta : cuenta) + '</span>' +
+                    '</span>' +
+                    (todos.length === 0 ? '<span class="text-[10px] bg-brandOrange/20 text-brandOrange font-bold px-2 py-1 rounded-full whitespace-nowrap">Próx.</span>' : '') +
+                    '<svg id="cat-flecha-' + id + '" class="w-5 h-5 text-gray-400 shrink-0 transition-transform ' + (abierta ? 'rotate-180' : '') + '" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>' +
+                    '</button></h3>' +
+                    '<div id="cat-panel-' + id + '" class="border-t border-gray-100 dark:border-gray-700' + (abierta ? '' : ' hidden') + '">' + cuerpo + '</div>' +
+                    '</section>';
+            }).join('');
+
+            if (buscando && encontrados === 0) {
+                html = '<p class="text-center text-sm text-gray-500 dark:text-gray-400 py-10">No se encontró nada con esa palabra. Prueba con otra, o <a href="https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '" target="_blank" class="text-brandGreen font-bold hover:underline">pregúntanos por WhatsApp</a>.</p>';
+            }
+            cont.innerHTML = html;
+
+            if (aviso) {
+                aviso.textContent = buscando ? (encontrados === 1 ? '1 producto encontrado' : encontrados + ' productos encontrados') : '';
+                aviso.classList.toggle('hidden', !buscando);
+            }
         }
 
-        /* ── Carga el catálogo y construye los tabs ── */
+        /* ── Carga el catálogo ── */
         async function cargarCatalogo() {
-            var tabsEl = document.getElementById('categoriaTabs');
-            var gridEl = document.getElementById('vitrinalGrid');
+            var cont = document.getElementById('catalogoAcordeon');
             try {
                 /* Primero lo que Manuel haya guardado desde el panel; si esa
                    ruta no existe todavía, el archivo del repositorio. Así la
@@ -632,38 +709,26 @@
                 var data = await resp.json();
                 _catalogoCats = data.categorias || [];
                 renderCotizador(_catalogoCats);
+                renderCatalogo();
 
-                if (_catalogoCats.length === 0) {
-                    tabsEl.innerHTML = '<p class="text-sm text-gray-400 dark:text-gray-500">No hay categorías todavía.</p>';
-                    return;
+                var buscador = document.getElementById('buscador');
+                if (buscador) {
+                    var pendiente;
+                    buscador.addEventListener('input', function () {
+                        clearTimeout(pendiente);
+                        pendiente = setTimeout(function () {
+                            _filtro = buscador.value.trim();
+                            renderCatalogo();
+                        }, 150);
+                    });
                 }
-
-                /* Pintar tabs */
-                tabsEl.innerHTML = _catalogoCats.map(function (cat, idx) {
-                    var tieneProds = (cat.productos || []).length > 0;
-                    var badge = !tieneProds
-                        ? ' <span class="ml-1 text-[9px] bg-brandOrange/20 text-brandOrange font-semibold px-1.5 py-0.5 rounded-full">Próx.</span>'
-                        : '';
-                    return '<button type="button" onclick="mostrarCategoria(' + idx + ')" ' +
-                        'class="cat-tab flex items-center gap-1.5 px-4 py-2 rounded-full border text-sm font-semibold transition ' +
-                        (idx === 0 ? 'bg-brandBlue text-white border-brandBlue' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:border-brandBlue hover:text-brandBlue') + '">' +
-                        '<span>' + escHtml(cat.icono) + '</span>' +
-                        '<span>' + escHtml(cat.nombre) + '</span>' +
-                        badge +
-                        '</button>';
-                }).join('');
-
-                /* Mostrar la primera categoría por defecto */
-                mostrarCategoria(0);
-
             } catch (err) {
-                tabsEl.innerHTML = '';
-                gridEl.innerHTML =
+                cont.innerHTML =
                     '<p class="text-center text-sm text-gray-400 dark:text-gray-500 py-8">' +
                     'El catálogo se muestra en el sitio publicado. ' +
-                    '<a href="https://wa.me/18293795820" target="_blank" class="text-brandGreen font-bold hover:underline">Contáctanos por WhatsApp</a>.' +
+                    '<a href="https://wa.me/18293795820" target="_blank" class="text-brandGreen font-bold hover:underline">Escríbenos por WhatsApp</a>' +
                     '</p>';
-                console.error('Error cargando data/productos.json:', err);
+                console.error('Error cargando el catálogo:', err);
             }
         }
         document.addEventListener('DOMContentLoaded', cargarCatalogo);
