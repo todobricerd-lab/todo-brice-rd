@@ -613,6 +613,13 @@
                         (prod.etiqueta ? '<p class="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">' + escHtml(prod.etiqueta) + '</p>' : '') +
                         (prod.descripcion ? '<p class="mt-2 text-xs leading-relaxed text-gray-500 dark:text-gray-400">' + escHtml(prod.descripcion) + '</p>' : '') +
                         preciosHtml +
+                        '<div class="mt-3 flex items-center justify-between gap-2 rounded-xl bg-gray-50 dark:bg-gray-900/60 px-2.5 py-2" data-pedido="' + escHtml(prod.nombre) + '">' +
+                        '<span class="text-[11px] font-bold uppercase tracking-wide text-gray-400 dark:text-gray-500">En el pedido</span>' +
+                        '<span class="flex items-center gap-1.5 shrink-0">' +
+                        '<button type="button" data-paso="-1" aria-label="Quitar uno de ' + escHtml(prod.nombre) + '" class="w-7 h-7 rounded-lg border border-gray-200 dark:border-gray-600 text-brandBlue dark:text-blue-300 font-bold leading-none hover:bg-white dark:hover:bg-gray-800 transition">−</button>' +
+                        '<span class="pedido-qty text-sm font-bold w-5 text-center" aria-live="polite">0</span>' +
+                        '<button type="button" data-paso="1" aria-label="Añadir uno de ' + escHtml(prod.nombre) + '" class="w-7 h-7 rounded-lg border border-gray-200 dark:border-gray-600 text-brandBlue dark:text-blue-300 font-bold leading-none hover:bg-white dark:hover:bg-gray-800 transition">+</button>' +
+                        '</span></div>' +
                         '<div class="mt-auto pt-3"><a href="https://wa.me/' + (window.BRICE_WA_NUMERO || '18293795820') + '?text=' + encodeURIComponent(waTexto) + '" target="_blank" rel="noopener noreferrer" class="block w-full text-center text-xs font-bold text-white bg-brandBlue hover:bg-blue-900 px-3 py-2.5 rounded-lg transition">Pedir por WhatsApp</a></div>' +
                         '</div></article>';
                 }).join('') + '</div>';
@@ -712,6 +719,54 @@
         /* ── Botones [−] y [+] de cada fila del cotizador ──
            Cada fila es un producto (data-product); el tamaño elegido
            en el <select class="cot-size"> es lo que decide el precio. */
+        /* ── Los [−] [+] de las tarjetas del catálogo ──
+           No llevan un pedido aparte: mueven la misma fila del cotizador,
+           que es donde vive el total y de donde sale el mensaje de
+           WhatsApp. Así no hay dos cuentas que puedan discrepar, y el
+           cliente puede armar el pedido desde arriba sin bajar.
+
+           La presentación es la que esté elegida en el cotizador; por
+           defecto, la primera de la lista. */
+        function filaCotizador(nombre) {
+            var filas = document.querySelectorAll('#cotizadorItems [data-product]');
+            for (var i = 0; i < filas.length; i++) {
+                if (filas[i].getAttribute('data-product') === nombre) return filas[i];
+            }
+            return null;
+        }
+
+        /* Deja los números de las tarjetas iguales a los del cotizador,
+           se haya tocado arriba o abajo. */
+        function sincronizarTarjetas() {
+            document.querySelectorAll('[data-pedido]').forEach(function (caja) {
+                var fila = filaCotizador(caja.getAttribute('data-pedido'));
+                var marca = caja.querySelector('.pedido-qty');
+                if (!marca) return;
+                var qty = fila ? parseInt(fila.querySelector('.qty').textContent, 10) : 0;
+                marca.textContent = qty;
+                caja.classList.toggle('ring-2', qty > 0);
+                caja.classList.toggle('ring-brandGreen/40', qty > 0);
+            });
+        }
+
+        /* Un solo escuchador para todas las tarjetas, presentes y futuras:
+           la cuadrícula se vuelve a pintar cada vez que se cambia de
+           categoría, así que atarlo a cada botón no serviría. */
+        document.addEventListener('click', function (ev) {
+            var boton = ev.target.closest('[data-pedido] [data-paso]');
+            if (!boton) return;
+            var caja = boton.closest('[data-pedido]');
+            var fila = filaCotizador(caja.getAttribute('data-pedido'));
+            if (!fila) return;
+
+            var qtyEl = fila.querySelector('.qty');
+            var qty = parseInt(qtyEl.textContent, 10) + parseInt(boton.getAttribute('data-paso'), 10);
+            if (qty < 0) qty = 0;
+            qtyEl.textContent = qty;
+            cotUpdateTotal();
+            sincronizarTarjetas();
+        });
+
         function cotChange(btn, delta) {
             var row = btn.closest('[data-product]');
             var qtyEl = row.querySelector('.qty');
@@ -719,6 +774,7 @@
             if (qty < 0) qty = 0;
             qtyEl.textContent = qty;
             cotUpdateTotal();
+            sincronizarTarjetas();
         }
 
         /* ── Recalcula y muestra el total estimado ──
