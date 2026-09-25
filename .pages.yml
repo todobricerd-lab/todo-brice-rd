@@ -446,3 +446,31 @@ content:
             type: text
             label: "Mensaje que se manda por WhatsApp"
             description: "Es el texto que aparece ya escrito cuando el cliente toca el botón."
+      - name: contacto
+        type: object
+        label: "Contacto (al pie de la página)"
+        fields:
+          - name: titulo
+            type: string
+            label: "Título de la sección"
+          - name: whatsapp
+            type: string
+            label: "WhatsApp"
+            description: "Ej: 829-379-5820"
+          - name: telefono
+            type: string
+            label: "Teléfono"
+          - name: correo
+            type: string
+            label: "Correo"
+          - name: web
+            type: string
+            label: "Página web"
+          - name: instagram
+            type: string
+            label: "Instagram"
+            description: "Con arroba, ej: @todobrice"
+          - name: tiktok
+            type: string
+            label: "TikTok"
+            description: "Con arroba, ej: @todobricerd"

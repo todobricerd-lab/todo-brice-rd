@@ -1,14 +1,14 @@
 {
   "encabezado": {
-    "rotulo": "Servicios para propietarios",
+    "rotulo": "Servicios profesionales para Airbnb y propiedades de alquiler",
     "titulo": "Tu propiedad lista, limpia y en perfectas condiciones",
-    "entrada": "En Todo Brice ofrecemos servicios integrales de limpieza, mantenimiento y preparación de propiedades Airbnb, ayudando a propietarios y administradores a mantener sus espacios presentables, funcionales y listos para recibir a cada huésped.",
+    "entrada": "En TODO BRICE ofrecemos servicios integrales de limpieza, mantenimiento y preparación de propiedades Airbnb, ayudando a propietarios y administradores a mantener sus espacios presentables, funcionales y listos para recibir a cada huésped.",
     "boton": "Pedir una cotización"
   },
   "servicios": [
     {
       "titulo": "Limpieza profunda",
-      "resumen": "Realizamos una limpieza completa de la propiedad.",
+      "resumen": "Realizamos una limpieza completa de la propiedad, incluyendo:",
       "detalles": [
         "Limpieza de habitaciones, baños, cocina y áreas comunes",
         "Limpieza de pisos, ventanas y superficies",
@@ -24,17 +24,17 @@
     },
     {
       "titulo": "Mantenimiento general",
-      "resumen": "Atendemos las necesidades generales de mantenimiento de la propiedad.",
+      "resumen": "Atendemos las necesidades generales de mantenimiento de la propiedad:",
       "detalles": [
         "Revisión y corrección de pequeños desperfectos",
         "Ajustes y reparaciones básicas",
         "Revisión de puertas, cerraduras, muebles y accesorios",
-        "Mantenimiento preventivo para conservar la propiedad en buenas condiciones"
+        "Mantenimiento preventivo para ayudar a conservar la propiedad en buenas condiciones"
       ]
     },
     {
       "titulo": "Servicios de electricidad",
-      "resumen": "Apoyamos con trabajos eléctricos básicos.",
+      "resumen": "Apoyamos con trabajos eléctricos básicos, tales como:",
       "detalles": [
         "Cambio o instalación de bombillos",
         "Revisión de interruptores y tomacorrientes",
@@ -44,7 +44,7 @@
     },
     {
       "titulo": "Servicios de plomería",
-      "resumen": "Atendemos necesidades básicas de plomería.",
+      "resumen": "Atendemos necesidades básicas de plomería:",
       "detalles": [
         "Revisión de fugas",
         "Cambio de llaves y accesorios",
@@ -54,7 +54,7 @@
     },
     {
       "titulo": "Pintura y retoques",
-      "resumen": "Mantenemos los espacios con una apariencia renovada.",
+      "resumen": "Mantenemos los espacios con una apariencia renovada:",
       "detalles": [
         "Pintura de habitaciones y áreas comunes",
         "Retoques de paredes",
@@ -65,7 +65,7 @@
     },
     {
       "titulo": "Preparación de habitaciones",
-      "resumen": "Preparamos las habitaciones para que estén listas para recibir a los huéspedes.",
+      "resumen": "Preparamos las habitaciones para que estén listas para recibir a los huéspedes:",
       "detalles": [
         "Organización de camas y habitaciones",
         "Revisión general del espacio",
@@ -75,7 +75,7 @@
     },
     {
       "titulo": "Preparación del Airbnb antes de la llegada",
-      "resumen": "Antes del check-in realizamos una revisión general de la propiedad.",
+      "resumen": "Antes del check-in podemos realizar una revisión general de la propiedad:",
       "detalles": [
         "Limpieza y desinfección",
         "Organización de habitaciones",
@@ -86,7 +86,7 @@
     },
     {
       "titulo": "Limpieza después del check-out",
-      "resumen": "Después de la salida de los huéspedes dejamos la propiedad preparada para la próxima reserva.",
+      "resumen": "Después de la salida de los huéspedes, dejamos la propiedad preparada para la próxima reserva:",
       "detalles": [
         "Retiro de basura",
         "Limpieza y desinfección",
@@ -100,8 +100,17 @@
   ],
   "cierre": {
     "titulo": "Servicio integral para tu Airbnb",
-    "texto": "Con Todo Brice puedes centralizar la limpieza y el mantenimiento de tu propiedad con un solo equipo, ayudando a mantener tu Airbnb limpio, organizado, funcional y listo para cada nueva reserva.",
+    "texto": "Con TODO BRICE, puedes centralizar la limpieza y el mantenimiento de tu propiedad con un solo equipo, ayudando a mantener tu Airbnb limpio, organizado, funcional y listo para cada nueva reserva.",
     "boton": "Escribir por WhatsApp",
     "mensaje_whatsapp": "Hola Todo Brice, quiero información sobre los servicios para mi propiedad Airbnb."
+  },
+  "contacto": {
+    "titulo": "Contacto",
+    "whatsapp": "829-379-5820",
+    "telefono": "809-385-2381",
+    "correo": "todobricerd@gmail.com",
+    "web": "todobrice.com",
+    "instagram": "@todobrice",
+    "tiktok": "@todobricerd"
   }
 }
