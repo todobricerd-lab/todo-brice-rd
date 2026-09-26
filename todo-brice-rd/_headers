@@ -10,11 +10,14 @@
 /img/favicon/*
   Cache-Control: public, max-age=31536000, immutable
 
+# El CSS y el JS no llevan versión en el nombre, así que una caché
+# larga deja el sitio sirviendo código viejo hasta que expira. Con esto el
+# navegador pregunta siempre y se trae el archivo solo si cambió.
 /*.css
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=0, must-revalidate
 
 /*.js
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=0, must-revalidate
 
 # La dirección vieja (.pages.dev) no debe salir en buscadores: la oficial es todobrice.com
 https://:project.pages.dev/*
