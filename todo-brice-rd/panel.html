@@ -161,6 +161,8 @@
     color: var(--suave); margin: 0 0 2px;
   }
   .nota { font-size: 12.5px; color: var(--suave); margin: 4px 0 0; }
+  .nota.malo { color: var(--rojo); font-weight: 700; }
+  .nota.bien { color: var(--verde); font-weight: 700; }
   .red { border: 1px solid var(--borde); border-radius: 12px; padding: 12px; margin-top: 10px; background: #FCFDFF; }
   select {
     font: inherit; width: 100%; margin-top: 5px; padding: 11px 12px;
@@ -855,6 +857,82 @@
     botones.appendChild(mas);
     gRedes.appendChild(botones);
     cont.appendChild(gRedes);
+
+    cont.appendChild(grupoClave());
+  }
+
+  /* ── Contraseña ──────────────────────────────────────────────
+     Va aparte del botón de Guardar: mezclarla con el resto haría que
+     cualquier retoque al teléfono mandara también la contraseña, y que
+     un fallo al guardar el catálogo dejara dudas de si cambió o no. */
+  function grupoClave() {
+    var g = grupo('Contraseña');
+
+    var estado = document.createElement('p');
+    estado.className = 'nota';
+    g.appendChild(estado);
+
+    fetch('/api/clave')
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        estado.textContent = j && j.propia
+          ? 'Está puesta la contraseña propia.'
+          : 'Todavía se entra con la contraseña inicial. Conviene cambiarla.';
+      })
+      .catch(function () { estado.textContent = ''; });
+
+    var actual = document.createElement('input');
+    var nueva = document.createElement('input');
+    var repetir = document.createElement('input');
+
+    [['Contraseña de ahora', actual], ['Nueva contraseña', nueva], ['Repite la nueva', repetir]]
+      .forEach(function (par) {
+        var lab = document.createElement('label');
+        lab.textContent = par[0];
+        par[1].type = 'password';
+        par[1].autocomplete = par[1] === actual ? 'current-password' : 'new-password';
+        lab.appendChild(par[1]);
+        g.appendChild(lab);
+      });
+
+    var aviso2 = document.createElement('p');
+    aviso2.className = 'nota';
+    g.appendChild(aviso2);
+
+    var decir = function (texto, clase) {
+      aviso2.textContent = texto;
+      aviso2.className = 'nota' + (clase ? ' ' + clase : '');
+    };
+
+    var fila = document.createElement('div');
+    fila.className = 'fila-botones';
+    var boton = document.createElement('button');
+    boton.className = 'neutro';
+    boton.type = 'button';
+    boton.textContent = 'Cambiar la contraseña';
+    boton.addEventListener('click', function () {
+      if (nueva.value !== repetir.value) { decir('Las dos nuevas no son iguales.', 'malo'); return; }
+      if (nueva.value.length < 8) { decir('La nueva debe tener al menos 8 caracteres.', 'malo'); return; }
+
+      decir('Cambiando…');
+      fetch('/api/clave', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ actual: actual.value, nueva: nueva.value }),
+      })
+        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.j && res.j.error ? res.j.error : 'No se pudo cambiar');
+          actual.value = nueva.value = repetir.value = '';
+          estado.textContent = 'Está puesta la contraseña propia.';
+          decir('Cambiada. La próxima vez se entra con la nueva.', 'bien');
+        })
+        .catch(function (err) { decir(err.message || 'No se pudo cambiar', 'malo'); });
+    });
+    fila.appendChild(boton);
+    g.appendChild(fila);
+
+    return g;
   }
 
   /* ---------- Pestañas --------------------------------------- */

@@ -43,12 +43,59 @@ function igualesSinFiltrar(a, b) {
   return diferencia === 0;
 }
 
+/* ── La contraseña que Manuel se pone él mismo ──────────────────
+ *
+ * Mientras no la cambie, vale la de Cloudflare (PANEL_CLAVE). En cuanto
+ * la cambia desde el panel, lo que manda es lo guardado en KV y
+ * PANEL_CLAVE deja de servir para entrar.
+ *
+ * Lo que se guarda no es la contraseña sino el resultado de pasarla por
+ * PBKDF2 con una sal distinta cada vez. Aunque alguien llegara a leer el
+ * KV, no tendría la contraseña: tendría que adivinarla, y cada intento
+ * le cuesta las 150.000 vueltas. Guardar un SHA-256 pelado no serviría,
+ * porque contra una contraseña corta se prueban millones por segundo.
+ */
+export const CLAVE_KV = 'clave';
+export const VUELTAS = 150000;
+
+const aBytes = (hex) => {
+  const salida = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < salida.length; i++) salida[i] = parseInt(hex.substr(i * 2, 2), 16);
+  return salida;
+};
+
+export async function amasar(texto, salHex, vueltas = VUELTAS) {
+  const base = await crypto.subtle.importKey('raw', codificar(texto), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt: aBytes(salHex), iterations: vueltas, hash: 'SHA-256' },
+    base,
+    256
+  );
+  return aHex(bits);
+}
+
+export const nuevaSal = () => aHex(crypto.getRandomValues(new Uint8Array(16)));
+
+export async function guardada(env) {
+  if (!env.CATALOGO) return null;
+  const registro = await env.CATALOGO.get(CLAVE_KV, 'json');
+  return registro && registro.sal && registro.hash ? registro : null;
+}
+
 export async function claveCorrecta(intento, env) {
+  const texto = String(intento ?? '');
+
+  const propia = await guardada(env);
+  if (propia) {
+    const calculado = await amasar(texto, propia.sal, propia.vueltas || VUELTAS);
+    return igualesSinFiltrar(calculado, propia.hash);
+  }
+
   if (!env.PANEL_CLAVE) return false;
   /* Se comparan los hash y no los textos: así la comparación siempre mide
      lo mismo aunque las longitudes difieran. */
   const [a, b] = await Promise.all([
-    firmar(String(intento ?? ''), env.PANEL_SECRETO || 'sal'),
+    firmar(texto, env.PANEL_SECRETO || 'sal'),
     firmar(env.PANEL_CLAVE, env.PANEL_SECRETO || 'sal'),
   ]);
   return igualesSinFiltrar(a, b);
