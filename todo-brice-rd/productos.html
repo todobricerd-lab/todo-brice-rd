@@ -613,10 +613,28 @@
         }
 
         /* ── Un renglón de precio con su [−] [n] [+] ── */
-        function filaPrecio(nombre, precio) {
+        function filaPrecio(prod, precio) {
+            var nombre = prod.nombre;
             var tam = precio.tamano;
-            return '<div class="flex items-center justify-between gap-2 rounded-lg bg-gray-50 dark:bg-gray-900/60 px-2.5 py-1.5">' +
-                '<span class="text-xs text-gray-600 dark:text-gray-300 truncate">' + escHtml(tam) + '</span>' +
+            /* Un tamaño puede traer su propia foto. Si la trae, el renglón
+               la anuncia y tocarlo cambia la imagen de la tarjeta: antes,
+               el que pedía el pote pequeño veía la foto del galón.
+
+               Los tamaños sin foto propia también llevan el dato, con la
+               foto general: sin eso, tocar uno de ellos dejaba puesta la
+               foto del tamaño anterior, que es justo el enredo que se
+               quería quitar. */
+            var suya = precio.imagen || prod.imagen || '';
+            var conFoto = suya
+                ? ' data-foto="' + escHtml(suya) + '" role="button" tabindex="0" title="Ver la foto de ' + escHtml(tam) + '"'
+                : '';
+            var pista = precio.imagen
+                ? '<span class="text-[10px] opacity-50 shrink-0" aria-hidden="true">📷</span>'
+                : '';
+            return '<div class="flex items-center justify-between gap-2 rounded-lg bg-gray-50 dark:bg-gray-900/60 px-2.5 py-1.5' +
+                (suya ? ' cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800' : '') + '"' + conFoto + '>' +
+                '<span class="flex items-center gap-1.5 min-w-0">' + pista +
+                '<span class="text-xs text-gray-600 dark:text-gray-300 truncate">' + escHtml(tam) + '</span></span>' +
                 '<span class="flex items-center gap-2 shrink-0">' +
                 '<strong class="text-xs text-brandGreen whitespace-nowrap">RD$' + escHtml(precio.monto) + '</strong>' +
                 '<span class="flex items-center gap-1">' +
@@ -624,6 +642,14 @@
                 '<span class="text-xs font-bold w-4 text-center" data-qty-de="' + escHtml(nombre) + '" data-qty-tam="' + escHtml(tam) + '" aria-live="polite">0</span>' +
                 botonPaso(nombre, tam, precio.monto, 1, 'Añadir uno') +
                 '</span></span></div>';
+        }
+
+        /* Cambia la foto grande de la tarjeta sin volver a pintar nada:
+           repintar la cuadrícula aquí cerraría el pedido a medio armar. */
+        function mostrarFoto(tarjeta, url) {
+            var img = tarjeta.querySelector('img[data-foto-general]');
+            if (!img || !url) return;
+            img.src = url;
         }
 
         function botonPaso(nombre, tam, monto, paso, etiqueta) {
@@ -636,20 +662,39 @@
            vuelven a pintar constantemente, así que atar cada botón por
            separado dejaría botones muertos. */
         document.addEventListener('click', function (ev) {
+            var fila = ev.target.closest('[data-foto]');
+            if (fila) {
+                var tarjeta = fila.closest('article');
+                if (tarjeta) mostrarFoto(tarjeta, fila.getAttribute('data-foto'));
+            }
+
             var b = ev.target.closest('[data-add]');
             if (!b) return;
             pedidoCambiar(b.getAttribute('data-add'), b.getAttribute('data-tam'),
                 parseInt(b.getAttribute('data-monto'), 10), parseInt(b.getAttribute('data-paso'), 10));
         });
 
+        /* Con el teclado, el renglón se comporta como el botón que dice ser. */
+        document.addEventListener('keydown', function (ev) {
+            if (ev.key !== 'Enter' && ev.key !== ' ') return;
+            var fila = ev.target.closest && ev.target.closest('[data-foto]');
+            if (!fila) return;
+            ev.preventDefault();
+            var tarjeta = fila.closest('article');
+            if (tarjeta) mostrarFoto(tarjeta, fila.getAttribute('data-foto'));
+        });
+
         /* ── La tarjeta de un producto ── */
         function tarjetaProducto(prod) {
             var precios = prod.precios || [];
-            var imgHtml = prod.imagen
-                ? '<img src="' + escHtml(prod.imagen) + '" alt="' + escHtml(prod.nombre) + '" class="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300" loading="lazy">'
+            /* La foto general es la que se ve al principio; los tamaños con
+               foto propia la reemplazan cuando se tocan. */
+            var primera = prod.imagen || (precios.find(function (p) { return p.imagen; }) || {}).imagen;
+            var imgHtml = primera
+                ? '<img src="' + escHtml(primera) + '" alt="' + escHtml(prod.nombre) + '" data-foto-general="' + escHtml(prod.imagen || primera) + '" class="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300" loading="lazy">'
                 : '<span class="text-5xl opacity-30">📦</span>';
             var preciosHtml = precios.length > 0
-                ? '<div class="mt-2 space-y-1.5">' + precios.map(function (p) { return filaPrecio(prod.nombre, p); }).join('') + '</div>'
+                ? '<div class="mt-2 space-y-1.5">' + precios.map(function (p) { return filaPrecio(prod, p); }).join('') + '</div>'
                 : '<p class="mt-2 text-[11px] text-gray-400">Precio por confirmar</p>';
             var badge = prod.destacado
                 ? '<span class="absolute top-2 left-2 bg-brandOrange text-white text-[9px] font-bold uppercase tracking-wide px-2 py-1 rounded-full z-10">★ Más vendido</span>'
