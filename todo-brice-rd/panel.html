@@ -100,8 +100,6 @@
   }
   .mini.vacia { display: flex; align-items: center; justify-content: center; font-size: 17px; opacity: .45; }
 
-  .presentacion { border: 1px solid var(--borde); border-radius: 12px; padding: 10px 12px 12px; margin-top: 10px; background: #fff; }
-  .presentacion .precio { margin-top: 0; }
   .precio { display: flex; gap: 9px; align-items: flex-end; margin-top: 9px; }
   .precio > div:first-child { flex: 1.6; }
   .precio > div:nth-child(2) { flex: 1; }
@@ -392,11 +390,8 @@
 
     mostrar(caja.querySelector('.quitar-foto'), !!obj[campo]);
 
-    /* Quién más tiene que enterarse queda dicho al crear la caja. No se
-       busca el producto con closest(): las presentaciones también llevan
-       caja de foto y cuelgan del mismo producto, así que por ahí se
-       acabaría pintando el encabezado con los datos del tamaño. */
-    if (caja.alPintar) caja.alPintar();
+    var fila = caja.closest('.producto');
+    if (fila) refrescarResumen(fila, obj);
   }
 
   function cajaDeFoto(obj, campo, opciones) {
@@ -404,7 +399,6 @@
     var caja = document.createElement('div');
     caja.className = 'foto';
     caja.tabIndex = 0;
-    caja.alPintar = opciones.alPintar || null;
 
     var hueco = document.createElement('div');
     hueco.className = 'hueco';
@@ -574,9 +568,7 @@
     var etiquetaFoto = document.createElement('label');
     etiquetaFoto.textContent = 'Foto';
     caja.appendChild(etiquetaFoto);
-    caja.appendChild(cajaDeFoto(prod, 'imagen', {
-      alPintar: function () { refrescarResumen(fila, prod); },
-    }));
+    caja.appendChild(cajaDeFoto(prod, 'imagen'));
 
     var titulo2 = document.createElement('label');
     titulo2.textContent = 'Presentaciones y precios';
@@ -588,9 +580,6 @@
     var pintarPrecios = function () {
       lista.innerHTML = '';
       (prod.precios || []).forEach(function (precio, j) {
-        var bloque = document.createElement('div');
-        bloque.className = 'presentacion';
-
         var linea = document.createElement('div');
         linea.className = 'precio';
         linea.appendChild(campo('Presentación', precio.tamano, function (v) { precio.tamano = v; }));
@@ -606,18 +595,7 @@
           marcarSucio();
         });
         linea.appendChild(quitar);
-        bloque.appendChild(linea);
-
-        /* Foto propia de esta presentación. Es opcional: sin ella la
-           tarjeta enseña la foto general del producto, que es como
-           estaba antes. Con ella, el que toca "Pote pequeño" ve el pote
-           y no el galón. */
-        var etiqueta = document.createElement('label');
-        etiqueta.textContent = 'Foto de esta presentación (opcional)';
-        bloque.appendChild(etiqueta);
-        bloque.appendChild(cajaDeFoto(precio, 'imagen'));
-
-        lista.appendChild(bloque);
+        lista.appendChild(linea);
       });
     };
     pintarPrecios();

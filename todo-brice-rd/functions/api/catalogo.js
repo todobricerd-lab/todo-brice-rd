@@ -58,14 +58,6 @@ function revisar(datos) {
         if (typeof precio.monto !== 'number' || !Number.isFinite(precio.monto) || precio.monto < 0) {
           return `"${p.nombre}" tiene un precio que no es un número`;
         }
-        /* Cada presentación puede llevar su propia foto; vale el mismo
-           límite, porque aquí también va la dirección y no la imagen. */
-        if (precio.imagen != null && typeof precio.imagen !== 'string') {
-          return `la foto de "${precio.tamano || p.nombre}" no es una dirección`;
-        }
-        if (typeof precio.imagen === 'string' && precio.imagen.length > 300) {
-          return `la foto de "${precio.tamano || p.nombre}" debe ser una dirección, no la imagen entera`;
-        }
       }
     }
   }
