@@ -43,6 +43,16 @@ function revisar(datos) {
       if (!p || typeof p.nombre !== 'string' || !p.nombre.trim()) {
         return `hay un producto sin nombre en "${cat.nombre}"`;
       }
+      /* La foto se guarda aparte (/api/foto/<id>) y aquí solo va su
+         dirección. El tope evita que alguien pegue la imagen entera
+         dentro del catálogo: eso haría que la página pública tuviera que
+         bajarse todas las fotos juntas antes de pintar nada. */
+      if (p.imagen != null && typeof p.imagen !== 'string') {
+        return `la foto de "${p.nombre}" no es una dirección`;
+      }
+      if (typeof p.imagen === 'string' && p.imagen.length > 300) {
+        return `la foto de "${p.nombre}" debe ser una dirección, no la imagen entera`;
+      }
       if (!Array.isArray(p.precios)) return `"${p.nombre}" no tiene precios`;
       for (const precio of p.precios) {
         if (typeof precio.monto !== 'number' || !Number.isFinite(precio.monto) || precio.monto < 0) {

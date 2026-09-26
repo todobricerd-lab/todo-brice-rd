@@ -64,16 +64,72 @@
     cursor: pointer; font-weight: 800; font-size: 17px; color: var(--azul);
     list-style: none; display: flex; align-items: center; gap: 9px; padding: 4px 0;
   }
+  .categoria > summary::-webkit-details-marker { display: none; }
   .categoria > summary::before { content: "▸"; color: var(--suave); font-size: 14px; }
   .categoria[open] > summary::before { content: "▾"; }
   .categoria > summary span { font-weight: 500; font-size: 13px; color: var(--suave); }
 
-  .producto { border: 1px solid var(--borde); border-radius: 12px; padding: 14px; margin-top: 12px; background: #FCFDFF; }
+  /* ── Buscador ──────────────────────────────────────────────
+     Con treinta productos por sección, desplegarlo todo y bajar
+     buscando con el dedo no es viable en un celular. */
+  .buscar { position: relative; }
+  .buscar input { margin-top: 0; padding-left: 38px; }
+  .buscar::before {
+    content: "🔍"; position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%); font-size: 15px; opacity: .55;
+  }
+  .sin-resultados { color: var(--suave); font-size: 14px; padding: 18px 2px; }
+
+  /* ── Productos: cerrados por defecto ───────────────────────
+     Antes se pintaban todos abiertos y la sección quedaba de
+     varias pantallas de alto. */
+  .producto { border: 1px solid var(--borde); border-radius: 12px; margin-top: 10px; background: #FCFDFF; }
+  .producto > summary {
+    cursor: pointer; list-style: none; padding: 10px 12px;
+    display: flex; align-items: center; gap: 11px;
+  }
+  .producto > summary::-webkit-details-marker { display: none; }
+  .producto[open] > summary { border-bottom: 1px solid var(--borde); }
+  .producto .cuerpo { padding: 4px 14px 14px; }
+  .producto .titulo { font-weight: 700; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .producto .titulo.vacio { color: var(--suave); font-weight: 500; font-style: italic; }
+  .producto .cuantos { font-size: 12.5px; color: var(--suave); white-space: nowrap; }
+  .mini {
+    width: 40px; height: 40px; border-radius: 9px; flex: none;
+    object-fit: contain; background: #fff; border: 1px solid var(--borde);
+  }
+  .mini.vacia { display: flex; align-items: center; justify-content: center; font-size: 17px; opacity: .45; }
+
   .precio { display: flex; gap: 9px; align-items: flex-end; margin-top: 9px; }
   .precio > div:first-child { flex: 1.6; }
   .precio > div:nth-child(2) { flex: 1; }
   .precio label { margin-top: 0; }
   .fila-botones { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 14px; }
+
+  /* ── Caja de la foto ───────────────────────────────────────
+     Tres maneras de poner la misma foto: elegir archivo, soltarla
+     encima, o copiar y pegar. En el celular el botón abre la cámara
+     o la galería; en la computadora, pegar es lo más rápido. */
+  .foto {
+    display: flex; gap: 12px; align-items: center; margin-top: 8px;
+    border: 1.5px dashed var(--borde); border-radius: 12px; padding: 10px;
+    background: #fff; cursor: pointer;
+  }
+  .foto:focus { outline: 3px solid rgba(46,158,70,.35); outline-offset: 1px; border-color: var(--verde); }
+  .foto.encima { border-color: var(--verde); background: #F1FBF3; }
+  .foto .vista {
+    width: 68px; height: 68px; flex: none; border-radius: 10px;
+    object-fit: contain; background: #fff; border: 1px solid var(--borde);
+  }
+  .foto .hueco {
+    width: 68px; height: 68px; flex: none; border-radius: 10px;
+    background: var(--fondo); border: 1px solid var(--borde);
+    display: flex; align-items: center; justify-content: center; font-size: 24px; opacity: .5;
+  }
+  .foto .texto { flex: 1; min-width: 0; }
+  .foto .pista { font-size: 12.5px; color: var(--suave); margin: 4px 0 0; }
+  .foto .pista.malo { color: var(--rojo); font-weight: 700; }
+  .foto .acciones { display: flex; gap: 8px; flex-wrap: wrap; }
 
   .barra {
     position: fixed; left: 0; right: 0; bottom: 0; background: var(--panel);
@@ -114,12 +170,16 @@
   <header>
     <div>
       <b>Catálogo</b>
-      <small>Productos y precios</small>
+      <small>Productos, precios y fotos</small>
     </div>
     <button class="neutro chico" id="salir">Salir</button>
   </header>
 
   <div class="env">
+    <div class="buscar">
+      <input type="search" id="filtro" placeholder="Buscar un producto…" autocomplete="off">
+    </div>
+    <p class="sin-resultados oculto" id="sin-resultados">Ningún producto coincide con esa búsqueda.</p>
     <div id="categorias"></div>
     <div class="fila-botones">
       <button class="neutro" id="add-categoria">+ Agregar sección</button>
@@ -134,16 +194,24 @@
   </div>
 </div>
 
+<!-- Un solo selector de archivos para todo el panel: crear uno por
+     producto llenaría la página de elementos que casi nunca se usan. -->
+<input type="file" id="selector-foto" accept="image/*" class="oculto">
+
 <script>
 /*
  * Todo el estado vive en `datos`. Los campos escriben directo sobre ese
  * objeto según se teclea, y "Guardar" manda el objeto completo. No se
  * guarda solo a propósito: Manuel tiene que poder equivocarse y recargar
  * la página sin haber roto nada.
+ *
+ * Las fotos son la excepción: esas sí suben en el momento, porque lo que
+ * se guarda en el catálogo es solo su dirección.
  */
 (function () {
   var datos = { categorias: [] };
   var sucio = false;
+  var cajaActiva = null;   /* a qué producto va la foto que se pegue */
 
   var $ = function (id) { return document.getElementById(id); };
   var mostrar = function (el, si) { el.classList.toggle('oculto', !si); };
@@ -158,6 +226,222 @@
     sucio = true;
     aviso('Hay cambios sin guardar');
   };
+
+  /* ---------- Fotos ------------------------------------------ */
+
+  /* Se reduce y se comprime aquí, en el navegador, antes de subir.
+     Una foto de celular pesa varios megas y la tienda no necesita más
+     de 1200 px de ancho; subirla entera por datos móviles sería lento
+     y llenaría el almacén sin necesidad.
+
+     El lienzo se pinta de blanco primero porque un PNG con fondo
+     transparente, al pasar a JPG, se volvería negro. */
+  var MAX_LADO = 1200;
+
+  /* createImageBitmap no existe en navegadores viejos de iPhone; ahí se
+     carga con una etiqueta <img>, que funciona en todos. */
+  function abrirImagen(archivo) {
+    if (typeof createImageBitmap === 'function') {
+      return createImageBitmap(archivo).catch(function () { return porEtiqueta(archivo); });
+    }
+    return porEtiqueta(archivo);
+  }
+
+  function porEtiqueta(archivo) {
+    return new Promise(function (listo, falla) {
+      var url = URL.createObjectURL(archivo);
+      var img = new Image();
+      img.onload = function () { URL.revokeObjectURL(url); listo(img); };
+      img.onerror = function () { URL.revokeObjectURL(url); falla(new Error('No se pudo leer la imagen')); };
+      img.src = url;
+    });
+  }
+
+  function prepararImagen(archivo) {
+    return abrirImagen(archivo).then(function (fuente) {
+      var anchoOrig = fuente.width || fuente.naturalWidth;
+      var altoOrig = fuente.height || fuente.naturalHeight;
+      var escala = Math.min(1, MAX_LADO / Math.max(anchoOrig, altoOrig));
+      var ancho = Math.round(anchoOrig * escala);
+      var alto = Math.round(altoOrig * escala);
+
+      var lienzo = document.createElement('canvas');
+      lienzo.width = ancho;
+      lienzo.height = alto;
+      var ctx = lienzo.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, ancho, alto);
+      ctx.drawImage(fuente, 0, 0, ancho, alto);
+      if (fuente.close) fuente.close();
+
+      return new Promise(function (listo, falla) {
+        lienzo.toBlob(function (blob) {
+          blob ? listo(blob) : falla(new Error('No se pudo preparar la imagen'));
+        }, 'image/jpeg', 0.82);
+      });
+    });
+  }
+
+  function subirFoto(archivo, prod, caja) {
+    var pista = caja.querySelector('.pista');
+    var decir = function (texto, malo) {
+      pista.textContent = texto;
+      pista.classList.toggle('malo', !!malo);
+    };
+
+    if (!archivo || archivo.type.indexOf('image/') !== 0) {
+      decir('Eso no es una imagen.', true);
+      return;
+    }
+
+    decir('Preparando la imagen…');
+    prepararImagen(archivo)
+      .then(function (blob) {
+        decir('Subiendo…');
+        return fetch('/api/foto', {
+          method: 'POST',
+          headers: { 'Content-Type': 'image/jpeg' },
+          body: blob,
+        });
+      })
+      .then(function (r) {
+        return r.json().then(function (j) { return { ok: r.ok, j: j }; });
+      })
+      .then(function (res) {
+        if (!res.ok || !res.j.url) {
+          throw new Error(res.j && res.j.error ? res.j.error : 'No se pudo subir');
+        }
+        prod.imagen = res.j.url;
+        pintarFoto(caja, prod);
+        marcarSucio();
+        decir('Foto lista. Falta guardar los cambios.');
+      })
+      .catch(function (err) {
+        decir(err.message || 'No se pudo subir la foto', true);
+      });
+  }
+
+  /* Repinta la caja de la foto y la miniatura del encabezado. */
+  function pintarFoto(caja, prod) {
+    var previo = caja.querySelector('.vista, .hueco');
+    var nuevo;
+    if (prod.imagen) {
+      nuevo = document.createElement('img');
+      nuevo.className = 'vista';
+      nuevo.src = prod.imagen;
+      nuevo.alt = '';
+    } else {
+      nuevo = document.createElement('div');
+      nuevo.className = 'hueco';
+      nuevo.textContent = '🖼️';
+    }
+    caja.replaceChild(nuevo, previo);
+
+    mostrar(caja.querySelector('.quitar-foto'), !!prod.imagen);
+
+    var fila = caja.closest('.producto');
+    if (fila) refrescarResumen(fila, prod);
+  }
+
+  function cajaDeFoto(prod) {
+    var caja = document.createElement('div');
+    caja.className = 'foto';
+    caja.tabIndex = 0;
+
+    var hueco = document.createElement('div');
+    hueco.className = 'hueco';
+    hueco.textContent = '🖼️';
+    caja.appendChild(hueco);
+
+    var texto = document.createElement('div');
+    texto.className = 'texto';
+
+    var acciones = document.createElement('div');
+    acciones.className = 'acciones';
+
+    var elegir = document.createElement('button');
+    elegir.className = 'neutro chico';
+    elegir.type = 'button';
+    elegir.textContent = 'Elegir foto';
+    elegir.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      abrirSelector(prod, caja);
+    });
+
+    var quitar = document.createElement('button');
+    quitar.className = 'peligro quitar-foto oculto';
+    quitar.type = 'button';
+    quitar.textContent = 'Quitar';
+    quitar.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      prod.imagen = '';
+      pintarFoto(caja, prod);
+      marcarSucio();
+    });
+
+    acciones.appendChild(elegir);
+    acciones.appendChild(quitar);
+    texto.appendChild(acciones);
+
+    var pista = document.createElement('p');
+    pista.className = 'pista';
+    pista.textContent = 'Arrastra una imagen aquí, o toca la caja y pega con Ctrl+V.';
+    texto.appendChild(pista);
+
+    caja.appendChild(texto);
+
+    /* Pegar: el evento solo llega al documento, así que hay que saber a
+       qué producto mandarlo. Se recuerda la última caja tocada. */
+    var activar = function () {
+      if (cajaActiva && cajaActiva.caja !== caja) cajaActiva.caja.classList.remove('encima');
+      cajaActiva = { caja: caja, prod: prod };
+    };
+    caja.addEventListener('focus', activar);
+    caja.addEventListener('click', activar);
+
+    caja.addEventListener('dragover', function (ev) {
+      ev.preventDefault();
+      caja.classList.add('encima');
+    });
+    caja.addEventListener('dragleave', function () { caja.classList.remove('encima'); });
+    caja.addEventListener('drop', function (ev) {
+      ev.preventDefault();
+      caja.classList.remove('encima');
+      var archivo = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0];
+      if (archivo) subirFoto(archivo, prod, caja);
+    });
+
+    pintarFoto(caja, prod);
+    return caja;
+  }
+
+  /* El selector de archivos es uno solo; se le cuelga a quién sirve
+     justo antes de abrirlo. */
+  var destinoSelector = null;
+  function abrirSelector(prod, caja) {
+    destinoSelector = { prod: prod, caja: caja };
+    var sel = $('selector-foto');
+    sel.value = '';
+    sel.click();
+  }
+  $('selector-foto').addEventListener('change', function () {
+    var archivo = this.files && this.files[0];
+    if (archivo && destinoSelector) {
+      subirFoto(archivo, destinoSelector.prod, destinoSelector.caja);
+    }
+  });
+
+  document.addEventListener('paste', function (ev) {
+    if (!cajaActiva) return;
+    var items = (ev.clipboardData && ev.clipboardData.items) || [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].kind === 'file' && items[i].type.indexOf('image/') === 0) {
+        ev.preventDefault();
+        subirFoto(items[i].getAsFile(), cajaActiva.prod, cajaActiva.caja);
+        return;
+      }
+    }
+  });
 
   /* ---------- Pintar ---------------------------------------- */
 
@@ -175,18 +459,68 @@
     return cont;
   };
 
-  var pintarProducto = function (cat, prod, i) {
-    var caja = document.createElement('div');
-    caja.className = 'producto';
+  /* El encabezado cerrado del producto: miniatura, nombre y cuántos
+     precios tiene. Se recalcula cuando cambia cualquiera de los tres. */
+  function refrescarResumen(fila, prod) {
+    var res = fila.querySelector('summary');
+    var previo = res.querySelector('.mini');
+    var nuevo;
+    if (prod.imagen) {
+      nuevo = document.createElement('img');
+      nuevo.className = 'mini';
+      nuevo.src = prod.imagen;
+      nuevo.alt = '';
+      nuevo.loading = 'lazy';
+    } else {
+      nuevo = document.createElement('div');
+      nuevo.className = 'mini vacia';
+      nuevo.textContent = '🖼️';
+    }
+    res.replaceChild(nuevo, previo);
 
-    caja.appendChild(campo('Nombre del producto', prod.nombre, function (v) { prod.nombre = v; }));
+    var titulo = res.querySelector('.titulo');
+    titulo.textContent = prod.nombre || 'Producto sin nombre';
+    titulo.classList.toggle('vacio', !prod.nombre);
+
+    var n = (prod.precios || []).length;
+    res.querySelector('.cuantos').textContent = n === 1 ? '1 precio' : n + ' precios';
+
+    fila.dataset.nombre = (prod.nombre || '').toLowerCase();
+  }
+
+  var pintarProducto = function (cat, prod, i) {
+    var fila = document.createElement('details');
+    fila.className = 'producto';
+
+    var res = document.createElement('summary');
+    res.appendChild(document.createElement('div')).className = 'mini vacia';
+    var titulo = document.createElement('div');
+    titulo.className = 'titulo';
+    res.appendChild(titulo);
+    var cuantos = document.createElement('span');
+    cuantos.className = 'cuantos';
+    res.appendChild(cuantos);
+    fila.appendChild(res);
+
+    var caja = document.createElement('div');
+    caja.className = 'cuerpo';
+    fila.appendChild(caja);
+
+    caja.appendChild(campo('Nombre del producto', prod.nombre, function (v) {
+      prod.nombre = v;
+      refrescarResumen(fila, prod);
+    }));
     caja.appendChild(campo('Descripción', prod.descripcion, function (v) { prod.descripcion = v; }));
     caja.appendChild(campo('Etiqueta corta', prod.etiqueta, function (v) { prod.etiqueta = v; }));
-    caja.appendChild(campo('Foto (ruta del archivo)', prod.imagen, function (v) { prod.imagen = v; }));
 
-    var titulo = document.createElement('label');
-    titulo.textContent = 'Presentaciones y precios';
-    caja.appendChild(titulo);
+    var etiquetaFoto = document.createElement('label');
+    etiquetaFoto.textContent = 'Foto';
+    caja.appendChild(etiquetaFoto);
+    caja.appendChild(cajaDeFoto(prod));
+
+    var titulo2 = document.createElement('label');
+    titulo2.textContent = 'Presentaciones y precios';
+    caja.appendChild(titulo2);
 
     var lista = document.createElement('div');
     caja.appendChild(lista);
@@ -194,10 +528,10 @@
     var pintarPrecios = function () {
       lista.innerHTML = '';
       (prod.precios || []).forEach(function (precio, j) {
-        var fila = document.createElement('div');
-        fila.className = 'precio';
-        fila.appendChild(campo('Presentación', precio.tamano, function (v) { precio.tamano = v; }));
-        fila.appendChild(campo('RD$', precio.monto, function (v) { precio.monto = Number(v); }, 'number'));
+        var linea = document.createElement('div');
+        linea.className = 'precio';
+        linea.appendChild(campo('Presentación', precio.tamano, function (v) { precio.tamano = v; }));
+        linea.appendChild(campo('RD$', precio.monto, function (v) { precio.monto = Number(v); }, 'number'));
         var quitar = document.createElement('button');
         quitar.className = 'peligro';
         quitar.type = 'button';
@@ -205,10 +539,11 @@
         quitar.addEventListener('click', function () {
           prod.precios.splice(j, 1);
           pintarPrecios();
+          refrescarResumen(fila, prod);
           marcarSucio();
         });
-        fila.appendChild(quitar);
-        lista.appendChild(fila);
+        linea.appendChild(quitar);
+        lista.appendChild(linea);
       });
     };
     pintarPrecios();
@@ -224,6 +559,7 @@
       prod.precios = prod.precios || [];
       prod.precios.push({ tamano: '', monto: 0 });
       pintarPrecios();
+      refrescarResumen(fila, prod);
       marcarSucio();
     });
 
@@ -241,7 +577,9 @@
     botones.appendChild(masPrecio);
     botones.appendChild(borrar);
     caja.appendChild(botones);
-    return caja;
+
+    refrescarResumen(fila, prod);
+    return fila;
   };
 
   var pintar = function () {
@@ -253,7 +591,10 @@
       det.className = 'tarjeta categoria';
 
       var res = document.createElement('summary');
-      res.textContent = cat.nombre || '(sección sin nombre)';
+      var nombre = document.createElement('span');
+      nombre.style.cssText = 'font-weight:800;font-size:17px;color:var(--azul)';
+      nombre.textContent = cat.nombre || '(sección sin nombre)';
+      res.appendChild(nombre);
       var cuenta = document.createElement('span');
       var n = (cat.productos || []).length;
       cuenta.textContent = n === 1 ? '1 producto' : n + ' productos';
@@ -262,7 +603,7 @@
 
       det.appendChild(campo('Nombre de la sección', cat.nombre, function (v) {
         cat.nombre = v;
-        res.firstChild.textContent = v || '(sección sin nombre)';
+        nombre.textContent = v || '(sección sin nombre)';
       }));
 
       (cat.productos || []).forEach(function (prod, pi) {
@@ -300,7 +641,37 @@
       det.appendChild(botones);
       cont.appendChild(det);
     });
+
+    filtrar();
   };
+
+  /* ---------- Buscar ---------------------------------------- */
+
+  function filtrar() {
+    var texto = $('filtro').value.trim().toLowerCase();
+    var visibles = 0;
+
+    document.querySelectorAll('.categoria').forEach(function (cat) {
+      var coinciden = 0;
+      cat.querySelectorAll('.producto').forEach(function (fila) {
+        var pasa = !texto || (fila.dataset.nombre || '').indexOf(texto) >= 0;
+        fila.classList.toggle('oculto', !pasa);
+        if (pasa) coinciden++;
+      });
+      visibles += coinciden;
+
+      if (texto) {
+        cat.classList.toggle('oculto', coinciden === 0);
+        if (coinciden) cat.setAttribute('open', '');
+      } else {
+        cat.classList.remove('oculto');
+      }
+    });
+
+    mostrar($('sin-resultados'), !!texto && visibles === 0);
+  }
+
+  $('filtro').addEventListener('input', filtrar);
 
   /* ---------- Servidor --------------------------------------- */
 
