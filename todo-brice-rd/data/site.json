@@ -72,5 +72,19 @@
       "titulo": "Contacto & Servicio a Domicilio",
       "descripcion": "Visítanos en nuestra tienda física o comunícate vía WhatsApp para despachos y pedidos inmediatos."
     }
-  }
+  },
+  "redes": [
+    {
+      "tipo": "instagram",
+      "nombre": "Instagram",
+      "usuario": "@todobrice",
+      "enlace": "https://www.instagram.com/todobrice/"
+    },
+    {
+      "tipo": "tiktok",
+      "nombre": "TikTok",
+      "usuario": "@todobricerd",
+      "enlace": "https://www.tiktok.com/@todobricerd"
+    }
+  ]
 }

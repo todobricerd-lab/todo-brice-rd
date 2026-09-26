@@ -141,6 +141,32 @@
   .aviso.malo { color: var(--rojo); font-weight: 700; }
   .aviso.bien { color: var(--verde); font-weight: 700; }
 
+  /* ── Pestañas ──────────────────────────────────────────────
+     Lo general primero, que es lo que se toca de vez en cuando; el
+     catálogo después, que es lo de todos los días pero mucho más largo. */
+  .pestanas {
+    display: flex; gap: 4px; background: var(--azul); padding: 0 16px;
+    position: sticky; top: 61px; z-index: 9; overflow-x: auto;
+  }
+  .pestanas button {
+    background: transparent; color: #A9B6D6; border: 0; border-radius: 0;
+    padding: 11px 14px; font-size: 14.5px; white-space: nowrap;
+    border-bottom: 3px solid transparent;
+  }
+  .pestanas button.activa { color: #fff; border-bottom-color: var(--naranja); }
+
+  .grupo { margin-top: 18px; }
+  .grupo > h2 {
+    font-size: 13px; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--suave); margin: 0 0 2px;
+  }
+  .nota { font-size: 12.5px; color: var(--suave); margin: 4px 0 0; }
+  .red { border: 1px solid var(--borde); border-radius: 12px; padding: 12px; margin-top: 10px; background: #FCFDFF; }
+  select {
+    font: inherit; width: 100%; margin-top: 5px; padding: 11px 12px;
+    border: 1px solid var(--borde); border-radius: 10px; background: #fff; color: var(--texto);
+  }
+
   .entrada { max-width: 380px; margin: 14vh auto; padding: 0 16px; }
   .entrada .tarjeta { text-align: center; }
   .entrada h1 { font-size: 21px; margin: 0 0 4px; color: var(--azul); }
@@ -169,13 +195,22 @@
 <div id="editor" class="oculto">
   <header>
     <div>
-      <b>Catálogo</b>
-      <small>Productos, precios y fotos</small>
+      <b>Todo Brice</b>
+      <small>Edición del sitio</small>
     </div>
     <button class="neutro chico" id="salir">Salir</button>
   </header>
 
-  <div class="env">
+  <nav class="pestanas">
+    <button type="button" data-hoja="general" class="activa">Información general</button>
+    <button type="button" data-hoja="catalogo">Catálogo</button>
+  </nav>
+
+  <!-- ══════ Hoja: información general ══════ -->
+  <div class="env" id="hoja-general"></div>
+
+  <!-- ══════ Hoja: catálogo ══════ -->
+  <div class="env oculto" id="hoja-catalogo">
     <div class="buscar">
       <input type="search" id="filtro" placeholder="Buscar un producto…" autocomplete="off">
     </div>
@@ -210,8 +245,10 @@
  */
 (function () {
   var datos = { categorias: [] };
-  var sucio = false;
-  var cajaActiva = null;   /* a qué producto va la foto que se pegue */
+  var sitio = {};
+  var sucio = false;       /* el catálogo */
+  var sucioSitio = false;  /* la información general */
+  var cajaActiva = null;   /* a qué caja va la foto que se pegue */
 
   var $ = function (id) { return document.getElementById(id); };
   var mostrar = function (el, si) { el.classList.toggle('oculto', !si); };
@@ -226,6 +263,13 @@
     sucio = true;
     aviso('Hay cambios sin guardar');
   };
+
+  var marcarSucioSitio = function () {
+    sucioSitio = true;
+    aviso('Hay cambios sin guardar');
+  };
+
+  var hayCambios = function () { return sucio || sucioSitio; };
 
   /* ---------- Fotos ------------------------------------------ */
 
@@ -257,7 +301,10 @@
     });
   }
 
-  function prepararImagen(archivo) {
+  /* `png` conserva la transparencia. Hace falta para el logo: pasado a
+     JPG saldría con un recuadro blanco alrededor, que se nota encima del
+     azul de la cabecera y del pie. */
+  function prepararImagen(archivo, png) {
     return abrirImagen(archivo).then(function (fuente) {
       var anchoOrig = fuente.width || fuente.naturalWidth;
       var altoOrig = fuente.height || fuente.naturalHeight;
@@ -269,20 +316,23 @@
       lienzo.width = ancho;
       lienzo.height = alto;
       var ctx = lienzo.getContext('2d');
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, ancho, alto);
+      if (!png) {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, ancho, alto);
+      }
       ctx.drawImage(fuente, 0, 0, ancho, alto);
       if (fuente.close) fuente.close();
 
       return new Promise(function (listo, falla) {
         lienzo.toBlob(function (blob) {
           blob ? listo(blob) : falla(new Error('No se pudo preparar la imagen'));
-        }, 'image/jpeg', 0.82);
+        }, png ? 'image/png' : 'image/jpeg', 0.82);
       });
     });
   }
 
-  function subirFoto(archivo, prod, caja) {
+  function subirFoto(archivo, obj, campo, caja, opciones) {
+    opciones = opciones || {};
     var pista = caja.querySelector('.pista');
     var decir = function (texto, malo) {
       pista.textContent = texto;
@@ -295,12 +345,12 @@
     }
 
     decir('Preparando la imagen…');
-    prepararImagen(archivo)
+    prepararImagen(archivo, opciones.png)
       .then(function (blob) {
         decir('Subiendo…');
         return fetch('/api/foto', {
           method: 'POST',
-          headers: { 'Content-Type': 'image/jpeg' },
+          headers: { 'Content-Type': opciones.png ? 'image/png' : 'image/jpeg' },
           body: blob,
         });
       })
@@ -311,9 +361,9 @@
         if (!res.ok || !res.j.url) {
           throw new Error(res.j && res.j.error ? res.j.error : 'No se pudo subir');
         }
-        prod.imagen = res.j.url;
-        pintarFoto(caja, prod);
-        marcarSucio();
+        obj[campo] = res.j.url;
+        pintarFoto(caja, obj, campo);
+        (opciones.alCambiar || marcarSucio)();
         decir('Foto lista. Falta guardar los cambios.');
       })
       .catch(function (err) {
@@ -321,14 +371,15 @@
       });
   }
 
-  /* Repinta la caja de la foto y la miniatura del encabezado. */
-  function pintarFoto(caja, prod) {
+  /* Repinta la caja de la foto y, si cuelga de un producto, también su
+     miniatura del encabezado. */
+  function pintarFoto(caja, obj, campo) {
     var previo = caja.querySelector('.vista, .hueco');
     var nuevo;
-    if (prod.imagen) {
+    if (obj[campo]) {
       nuevo = document.createElement('img');
       nuevo.className = 'vista';
-      nuevo.src = prod.imagen;
+      nuevo.src = obj[campo];
       nuevo.alt = '';
     } else {
       nuevo = document.createElement('div');
@@ -337,13 +388,14 @@
     }
     caja.replaceChild(nuevo, previo);
 
-    mostrar(caja.querySelector('.quitar-foto'), !!prod.imagen);
+    mostrar(caja.querySelector('.quitar-foto'), !!obj[campo]);
 
     var fila = caja.closest('.producto');
-    if (fila) refrescarResumen(fila, prod);
+    if (fila) refrescarResumen(fila, obj);
   }
 
-  function cajaDeFoto(prod) {
+  function cajaDeFoto(obj, campo, opciones) {
+    opciones = opciones || {};
     var caja = document.createElement('div');
     caja.className = 'foto';
     caja.tabIndex = 0;
@@ -365,7 +417,7 @@
     elegir.textContent = 'Elegir foto';
     elegir.addEventListener('click', function (ev) {
       ev.stopPropagation();
-      abrirSelector(prod, caja);
+      abrirSelector(obj, campo, caja, opciones);
     });
 
     var quitar = document.createElement('button');
@@ -374,9 +426,9 @@
     quitar.textContent = 'Quitar';
     quitar.addEventListener('click', function (ev) {
       ev.stopPropagation();
-      prod.imagen = '';
-      pintarFoto(caja, prod);
-      marcarSucio();
+      obj[campo] = '';
+      pintarFoto(caja, obj, campo);
+      (opciones.alCambiar || marcarSucio)();
     });
 
     acciones.appendChild(elegir);
@@ -394,7 +446,7 @@
        qué producto mandarlo. Se recuerda la última caja tocada. */
     var activar = function () {
       if (cajaActiva && cajaActiva.caja !== caja) cajaActiva.caja.classList.remove('encima');
-      cajaActiva = { caja: caja, prod: prod };
+      cajaActiva = { caja: caja, obj: obj, campo: campo, opciones: opciones };
     };
     caja.addEventListener('focus', activar);
     caja.addEventListener('click', activar);
@@ -408,27 +460,26 @@
       ev.preventDefault();
       caja.classList.remove('encima');
       var archivo = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0];
-      if (archivo) subirFoto(archivo, prod, caja);
+      if (archivo) subirFoto(archivo, obj, campo, caja, opciones);
     });
 
-    pintarFoto(caja, prod);
+    pintarFoto(caja, obj, campo);
     return caja;
   }
 
   /* El selector de archivos es uno solo; se le cuelga a quién sirve
      justo antes de abrirlo. */
   var destinoSelector = null;
-  function abrirSelector(prod, caja) {
-    destinoSelector = { prod: prod, caja: caja };
+  function abrirSelector(obj, campo, caja, opciones) {
+    destinoSelector = { obj: obj, campo: campo, caja: caja, opciones: opciones };
     var sel = $('selector-foto');
     sel.value = '';
     sel.click();
   }
   $('selector-foto').addEventListener('change', function () {
     var archivo = this.files && this.files[0];
-    if (archivo && destinoSelector) {
-      subirFoto(archivo, destinoSelector.prod, destinoSelector.caja);
-    }
+    var d = destinoSelector;
+    if (archivo && d) subirFoto(archivo, d.obj, d.campo, d.caja, d.opciones);
   });
 
   document.addEventListener('paste', function (ev) {
@@ -437,7 +488,8 @@
     for (var i = 0; i < items.length; i++) {
       if (items[i].kind === 'file' && items[i].type.indexOf('image/') === 0) {
         ev.preventDefault();
-        subirFoto(items[i].getAsFile(), cajaActiva.prod, cajaActiva.caja);
+        var a = cajaActiva;
+        subirFoto(items[i].getAsFile(), a.obj, a.campo, a.caja, a.opciones);
         return;
       }
     }
@@ -516,7 +568,7 @@
     var etiquetaFoto = document.createElement('label');
     etiquetaFoto.textContent = 'Foto';
     caja.appendChild(etiquetaFoto);
-    caja.appendChild(cajaDeFoto(prod));
+    caja.appendChild(cajaDeFoto(prod, 'imagen'));
 
     var titulo2 = document.createElement('label');
     titulo2.textContent = 'Presentaciones y precios';
@@ -645,6 +697,179 @@
     filtrar();
   };
 
+  /* ---------- Información general ---------------------------- */
+
+  var TIPOS_RED = [
+    ['instagram', 'Instagram'],
+    ['tiktok', 'TikTok'],
+    ['facebook', 'Facebook'],
+    ['youtube', 'YouTube'],
+    ['otro', 'Otra'],
+  ];
+
+  /* Igual que `campo`, pero escribiendo sobre la información general.
+     Se separan porque son dos guardados distintos: uno va a /api/site y
+     el otro a /api/catalogo. */
+  var campoSitio = function (etiqueta, valor, alCambiar, nota) {
+    var cont = document.createElement('div');
+    var lab = document.createElement('label');
+    lab.textContent = etiqueta;
+    var inp = document.createElement('input');
+    inp.type = 'text';
+    inp.value = valor == null ? '' : valor;
+    inp.addEventListener('input', function () { alCambiar(inp.value); marcarSucioSitio(); });
+    lab.appendChild(inp);
+    cont.appendChild(lab);
+    if (nota) {
+      var p = document.createElement('p');
+      p.className = 'nota';
+      p.textContent = nota;
+      cont.appendChild(p);
+    }
+    return cont;
+  };
+
+  var grupo = function (titulo) {
+    var g = document.createElement('div');
+    g.className = 'grupo tarjeta';
+    var h = document.createElement('h2');
+    h.textContent = titulo;
+    g.appendChild(h);
+    return g;
+  };
+
+  function pintarGeneral() {
+    var cont = $('hoja-general');
+    cont.innerHTML = '';
+
+    sitio.contacto = sitio.contacto || {};
+    sitio.whatsapp = sitio.whatsapp || {};
+    sitio.medios = sitio.medios || {};
+    sitio.redes = Array.isArray(sitio.redes) ? sitio.redes : [];
+
+    /* ── Logo ── */
+    var gLogo = grupo('Logo');
+    var etiqueta = document.createElement('label');
+    etiqueta.textContent = 'Imagen del logo';
+    gLogo.appendChild(etiqueta);
+    gLogo.appendChild(cajaDeFoto(sitio.medios, 'logo', {
+      png: true,
+      alCambiar: marcarSucioSitio,
+    }));
+    var notaLogo = document.createElement('p');
+    notaLogo.className = 'nota';
+    notaLogo.textContent = 'Se guarda en PNG para que el fondo transparente no salga como un cuadro blanco sobre el azul.';
+    gLogo.appendChild(notaLogo);
+    cont.appendChild(gLogo);
+
+    /* ── Contacto ── */
+    var gCont = grupo('Contacto');
+    gCont.appendChild(campoSitio('Teléfono de la tienda', sitio.contacto.telefono_visible,
+      function (v) { sitio.contacto.telefono_visible = v; }));
+    gCont.appendChild(campoSitio('WhatsApp como se muestra', sitio.contacto.whatsapp_visible,
+      function (v) { sitio.contacto.whatsapp_visible = v; },
+      'Es solo lo que lee el cliente. El que abre el chat es el de abajo.'));
+    gCont.appendChild(campoSitio('Número que abre el chat', sitio.whatsapp.numero,
+      function (v) { sitio.whatsapp.numero = v; },
+      'Con el código del país y sin espacios ni guiones. Ejemplo: 18293795820.'));
+    gCont.appendChild(campoSitio('Mensaje con el que empieza el chat', sitio.whatsapp.mensaje_general,
+      function (v) { sitio.whatsapp.mensaje_general = v; }));
+    gCont.appendChild(campoSitio('Correo', sitio.contacto.correo,
+      function (v) { sitio.contacto.correo = v; }));
+    gCont.appendChild(campoSitio('Dirección', sitio.contacto.direccion,
+      function (v) { sitio.contacto.direccion = v; }));
+    cont.appendChild(gCont);
+
+    /* ── Redes ── */
+    var gRedes = grupo('Redes sociales');
+    var lista = document.createElement('div');
+    gRedes.appendChild(lista);
+
+    var pintarRedes = function () {
+      lista.innerHTML = '';
+      sitio.redes.forEach(function (red, i) {
+        var caja = document.createElement('div');
+        caja.className = 'red';
+
+        var lab = document.createElement('label');
+        lab.textContent = 'Red';
+        var sel = document.createElement('select');
+        TIPOS_RED.forEach(function (par) {
+          var op = document.createElement('option');
+          op.value = par[0];
+          op.textContent = par[1];
+          sel.appendChild(op);
+        });
+        sel.value = red.tipo || 'otro';
+        lab.appendChild(sel);
+        caja.appendChild(lab);
+
+        var campoNombre = campoSitio('Nombre que se muestra', red.nombre, function (v) { red.nombre = v; });
+        caja.appendChild(campoNombre);
+
+        /* Al elegir una red conocida se rellena el nombre, pero también
+           en la casilla: si solo se cambiara el dato, el campo quedaría
+           en blanco y parecería que no se guardó. */
+        sel.addEventListener('change', function () {
+          red.tipo = sel.value;
+          var conocido = TIPOS_RED.find(function (p) { return p[0] === sel.value; });
+          if (conocido && sel.value !== 'otro') {
+            red.nombre = conocido[1];
+            campoNombre.querySelector('input').value = conocido[1];
+          }
+          marcarSucioSitio();
+        });
+        caja.appendChild(campoSitio('Usuario', red.usuario, function (v) { red.usuario = v; }));
+        caja.appendChild(campoSitio('Enlace', red.enlace, function (v) { red.enlace = v; },
+          'La dirección completa, empezando por https://'));
+
+        var quitar = document.createElement('button');
+        quitar.className = 'peligro';
+        quitar.type = 'button';
+        quitar.textContent = 'Quitar esta red';
+        quitar.style.marginTop = '12px';
+        quitar.addEventListener('click', function () {
+          if (!confirm('¿Quitar ' + (red.nombre || 'esta red') + ' del pie de la página?')) return;
+          sitio.redes.splice(i, 1);
+          pintarRedes();
+          marcarSucioSitio();
+        });
+        caja.appendChild(quitar);
+
+        lista.appendChild(caja);
+      });
+    };
+    pintarRedes();
+
+    var botones = document.createElement('div');
+    botones.className = 'fila-botones';
+    var mas = document.createElement('button');
+    mas.className = 'neutro chico';
+    mas.type = 'button';
+    mas.textContent = '+ Agregar red';
+    mas.addEventListener('click', function () {
+      sitio.redes.push({ tipo: 'otro', nombre: '', usuario: '', enlace: '' });
+      pintarRedes();
+      marcarSucioSitio();
+    });
+    botones.appendChild(mas);
+    gRedes.appendChild(botones);
+    cont.appendChild(gRedes);
+  }
+
+  /* ---------- Pestañas --------------------------------------- */
+
+  document.querySelectorAll('.pestanas button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.pestanas button').forEach(function (o) {
+        o.classList.toggle('activa', o === b);
+      });
+      mostrar($('hoja-general'), b.dataset.hoja === 'general');
+      mostrar($('hoja-catalogo'), b.dataset.hoja === 'catalogo');
+      window.scrollTo(0, 0);
+    });
+  });
+
   /* ---------- Buscar ---------------------------------------- */
 
   function filtrar() {
@@ -676,14 +901,19 @@
   /* ---------- Servidor --------------------------------------- */
 
   var cargar = function () {
-    return fetch('/api/catalogo')
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        datos = d && Array.isArray(d.categorias) ? d : { categorias: [] };
-        pintar();
-        aviso('');
-        sucio = false;
-      });
+    return Promise.all([
+      fetch('/api/catalogo').then(function (r) { return r.json(); }),
+      fetch('/api/site').then(function (r) { return r.json(); }),
+    ]).then(function (par) {
+      var d = par[0];
+      datos = d && Array.isArray(d.categorias) ? d : { categorias: [] };
+      sitio = par[1] && typeof par[1] === 'object' ? par[1] : {};
+      pintarGeneral();
+      pintar();
+      aviso('');
+      sucio = false;
+      sucioSitio = false;
+    });
   };
 
   var entrar = function () {
@@ -710,7 +940,7 @@
   });
 
   $('salir').addEventListener('click', function () {
-    if (sucio && !confirm('Hay cambios sin guardar. ¿Salir de todos modos?')) return;
+    if (hayCambios() && !confirm('Hay cambios sin guardar. ¿Salir de todos modos?')) return;
     fetch('/api/sesion', { method: 'DELETE' }).then(function () { location.reload(); });
   });
 
@@ -720,26 +950,36 @@
     marcarSucio();
   });
 
-  $('guardar').addEventListener('click', function () {
-    aviso('Guardando…');
-    fetch('/api/catalogo', {
+  /* Un solo botón para las dos hojas: manda solo la que cambió, pero si
+     falla cualquiera lo dice, para que nadie se vaya creyendo que quedó
+     guardado lo que no. */
+  function mandar(ruta, cuerpo) {
+    return fetch(ruta, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(datos),
+      body: JSON.stringify(cuerpo),
     })
       .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
         if (!res.ok) throw new Error(res.j && res.j.error ? res.j.error : 'No se pudo guardar');
-        sucio = false;
-        aviso('Guardado. Ya se ve en la página.', 'bien');
-      })
-      .catch(function (err) {
-        aviso(err.message || 'No se pudo guardar', 'malo');
       });
+  }
+
+  $('guardar').addEventListener('click', function () {
+    if (!hayCambios()) { aviso('No hay nada que guardar'); return; }
+    aviso('Guardando…');
+
+    var tareas = [];
+    if (sucioSitio) tareas.push(mandar('/api/site', sitio).then(function () { sucioSitio = false; }));
+    if (sucio) tareas.push(mandar('/api/catalogo', datos).then(function () { sucio = false; }));
+
+    Promise.all(tareas)
+      .then(function () { aviso('Guardado. Ya se ve en la página.', 'bien'); })
+      .catch(function (err) { aviso(err.message || 'No se pudo guardar', 'malo'); });
   });
 
   window.addEventListener('beforeunload', function (e) {
-    if (sucio) { e.preventDefault(); e.returnValue = ''; }
+    if (hayCambios()) { e.preventDefault(); e.returnValue = ''; }
   });
 
   /* Si la cookie sigue viva, se entra directo. */
