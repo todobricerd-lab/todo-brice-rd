@@ -703,7 +703,7 @@
     </script>
 
     <!-- Promo Slider Logic / Lógica del Carrusel de Promociones -->
-    <!-- Las tarjetas se construyen en vivo desde data/promos.json (editable en el CMS, sin tocar código) -->
+    <!-- Las tarjetas se construyen en vivo desde /api/promos (editable en el panel); si la ruta falla, desde data/promos.json -->
     <script>
     (function () {
         var wrapEl = document.getElementById('promo-slider');
@@ -765,8 +765,9 @@
             return b;
         }
 
-        fetch('data/promos.json')
-            .then(function (r) { return r.json(); })
+        fetch('/api/promos')
+            .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+            .catch(function () { return fetch('data/promos.json').then(function (r) { return r.json(); }); })
             .then(function (data) {
                 var promos = (data.promos || []).filter(function (p) { return p.activa !== false; });
                 if (!promos.length) {

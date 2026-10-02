@@ -22,7 +22,21 @@
     --azul: #1F2A60; --verde: #2E9E46; --naranja: #E8751A;
     --fondo: #F4F6FA; --panel: #FFFFFF; --borde: #DCE3ED;
     --texto: #16203A; --suave: #64748B; --rojo: #C0392B;
+    --campo: #FFFFFF; --tenue: #FCFDFF; --verde-tenue: #F1FBF3; --rojo-borde: #F0C9C4;
+    color-scheme: light;
   }
+  /* Modo oscuro: el mismo panel con las variables cambiadas. Lo elige el
+     botón de la cabecera; sin elección, sigue al celular o la computadora. */
+  html.oscuro {
+    --fondo: #0E1426; --panel: #161E36; --borde: #2A3556;
+    --texto: #E7ECF6; --suave: #9AA8C4; --rojo: #F2867A;
+    --campo: #0F1730; --tenue: #121A33; --verde-tenue: #12301F; --rojo-borde: #5A2A2A;
+    color-scheme: dark;
+  }
+  html.oscuro .categoria > summary, html.oscuro .entrada h1, html.oscuro .grupo > h2,
+  html.oscuro .categoria > summary span:first-child { color: #AFC3FF !important; }
+  html.oscuro header, html.oscuro .pestanas { background: #141C3D; }
+  html.oscuro .tarjeta { box-shadow: none; }
   * { box-sizing: border-box; }
   body {
     margin: 0; background: var(--fondo); color: var(--texto);
@@ -46,13 +60,13 @@
   }
   .primario { background: var(--verde); color: #fff; }
   .neutro { background: var(--panel); color: var(--texto); border-color: var(--borde); }
-  .peligro { background: transparent; color: var(--rojo); border-color: #F0C9C4; padding: 7px 12px; font-size: 14px; }
+  .peligro { background: transparent; color: var(--rojo); border-color: var(--rojo-borde); padding: 7px 12px; font-size: 14px; }
   .chico { padding: 8px 13px; font-size: 14px; }
 
   label { display: block; margin-top: 12px; font-size: 13.5px; font-weight: 700; color: var(--suave); }
   input {
     font: inherit; width: 100%; margin-top: 5px; padding: 11px 12px;
-    border: 1px solid var(--borde); border-radius: 10px; background: #fff; color: var(--texto);
+    border: 1px solid var(--borde); border-radius: 10px; background: var(--campo); color: var(--texto);
   }
   input:focus { outline: 3px solid rgba(46,158,70,.35); outline-offset: 1px; border-color: var(--verde); }
 
@@ -83,7 +97,7 @@
   /* ── Productos: cerrados por defecto ───────────────────────
      Antes se pintaban todos abiertos y la sección quedaba de
      varias pantallas de alto. */
-  .producto { border: 1px solid var(--borde); border-radius: 12px; margin-top: 10px; background: #FCFDFF; }
+  .producto { border: 1px solid var(--borde); border-radius: 12px; margin-top: 10px; background: var(--tenue); }
   .producto > summary {
     cursor: pointer; list-style: none; padding: 10px 12px;
     display: flex; align-items: center; gap: 11px;
@@ -96,7 +110,7 @@
   .producto .cuantos { font-size: 12.5px; color: var(--suave); white-space: nowrap; }
   .mini {
     width: 40px; height: 40px; border-radius: 9px; flex: none;
-    object-fit: contain; background: #fff; border: 1px solid var(--borde);
+    object-fit: contain; background: var(--campo); border: 1px solid var(--borde);
   }
   .mini.vacia { display: flex; align-items: center; justify-content: center; font-size: 17px; opacity: .45; }
 
@@ -113,13 +127,13 @@
   .foto {
     display: flex; gap: 12px; align-items: center; margin-top: 8px;
     border: 1.5px dashed var(--borde); border-radius: 12px; padding: 10px;
-    background: #fff; cursor: pointer;
+    background: var(--campo); cursor: pointer;
   }
   .foto:focus { outline: 3px solid rgba(46,158,70,.35); outline-offset: 1px; border-color: var(--verde); }
-  .foto.encima { border-color: var(--verde); background: #F1FBF3; }
+  .foto.encima { border-color: var(--verde); background: var(--verde-tenue); }
   .foto .vista {
     width: 68px; height: 68px; flex: none; border-radius: 10px;
-    object-fit: contain; background: #fff; border: 1px solid var(--borde);
+    object-fit: contain; background: var(--campo); border: 1px solid var(--borde);
   }
   .foto .hueco {
     width: 68px; height: 68px; flex: none; border-radius: 10px;
@@ -163,10 +177,10 @@
   .nota { font-size: 12.5px; color: var(--suave); margin: 4px 0 0; }
   .nota.malo { color: var(--rojo); font-weight: 700; }
   .nota.bien { color: var(--verde); font-weight: 700; }
-  .red { border: 1px solid var(--borde); border-radius: 12px; padding: 12px; margin-top: 10px; background: #FCFDFF; }
+  .red { border: 1px solid var(--borde); border-radius: 12px; padding: 12px; margin-top: 10px; background: var(--tenue); }
   select {
     font: inherit; width: 100%; margin-top: 5px; padding: 11px 12px;
-    border: 1px solid var(--borde); border-radius: 10px; background: #fff; color: var(--texto);
+    border: 1px solid var(--borde); border-radius: 10px; background: var(--campo); color: var(--texto);
   }
 
   .entrada { max-width: 380px; margin: 14vh auto; padding: 0 16px; }
@@ -183,7 +197,7 @@
   body { -webkit-font-smoothing: antialiased; }
   header { box-shadow: 0 2px 10px rgba(16,32,58,.18); }
   header .marca { display: flex; align-items: center; gap: 11px; }
-  header .marca img { width: 36px; height: 36px; border-radius: 9px; background: #fff; object-fit: contain; padding: 3px; }
+  header .marca img { width: 36px; height: 36px; border-radius: 9px; background: #FFFFFF; object-fit: contain; padding: 3px; }
   header .ver { color: #fff; text-decoration: none; font-size: 14px; font-weight: 700; opacity: .85; margin-left: auto; white-space: nowrap; }
   header .ver:hover { opacity: 1; }
   header button { margin-left: 0; }
@@ -195,7 +209,7 @@
   .pestanas .punto { width: 8px; height: 8px; border-radius: 50%; background: var(--naranja); display: none; }
   .pestanas .punto.si { display: inline-block; }
 
-  .producto { background: #fff; transition: border-color .15s; }
+  .producto { background: var(--campo); transition: border-color .15s; }
   .producto[open] { border-color: rgba(46,158,70,.55); box-shadow: 0 4px 14px rgba(16,32,58,.06); }
   .producto .cuantos { font-weight: 700; color: var(--verde); font-size: 13px; }
   .producto .cuantos.vacio { color: var(--rojo); font-weight: 600; }
@@ -217,6 +231,38 @@
   button:disabled { opacity: .45; cursor: default; }
   .primario:not(:disabled):hover { filter: brightness(1.06); }
 
+  /* Las fotos se ven sobre blanco también en oscuro: muchas son PNG
+     con fondo transparente pensadas para la página clara. */
+  html.oscuro .mini, html.oscuro .foto .vista { background: #fff; }
+
+  .tema { background: transparent; border: 1px solid rgba(255,255,255,.35); color: #fff; padding: 7px 11px; font-size: 15px; }
+
+  /* Interruptor de sí/no (destacado, promoción activa). */
+  .interruptor { display: flex; align-items: center; gap: 11px; margin-top: 14px; cursor: pointer; color: var(--texto); font-size: 14.5px; font-weight: 700; }
+  .interruptor input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+  .interruptor .pista-sw { flex: none; position: relative; width: 44px; height: 25px; border-radius: 999px; background: var(--borde); transition: background .2s; }
+  .interruptor .pista-sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 19px; height: 19px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .2s; }
+  .interruptor input:checked + .pista-sw { background: var(--verde); }
+  .interruptor input:checked + .pista-sw::after { transform: translateX(19px); }
+  .interruptor input:focus-visible + .pista-sw { outline: 3px solid rgba(46,158,70,.45); outline-offset: 2px; }
+  .interruptor small { display: block; font-weight: 500; color: var(--suave); font-size: 12.5px; }
+
+  .icono-cat { display: block; width: 72px; text-align: center; font-size: 20px; padding-top: 6px; padding-bottom: 6px; }
+  .categoria > summary .nombre-cat { font-weight: 800; font-size: 17px; color: var(--azul); }
+  html.oscuro .categoria > summary .nombre-cat { color: #AFC3FF; }
+  .estrella { color: var(--naranja); font-size: 15px; flex: none; }
+
+  /* Colores de las promociones: tres botones en vez de un menú, para
+     ver de una vez cómo queda. */
+  .colores { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+  .colores button { padding: 7px 12px; font-size: 13.5px; color: #fff; border: 2px solid transparent; }
+  .colores button.elegido { border-color: var(--texto); box-shadow: 0 0 0 2px var(--panel) inset; }
+  .c-naranja { background: #EB5C27; } .c-verde { background: #2E9E46; } .c-azul { background: #1F2A60; }
+  .promo.apagada > summary { opacity: .55; }
+  .etq-promo { font-size: 11.5px; font-weight: 800; color: #fff; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+  textarea { font: inherit; width: 100%; margin-top: 5px; padding: 11px 12px; border: 1px solid var(--borde); border-radius: 10px; background: var(--campo); color: var(--texto); resize: vertical; min-height: 76px; }
+  textarea:focus { outline: 3px solid rgba(46,158,70,.35); outline-offset: 1px; border-color: var(--verde); }
+
   /* En el celular el precio necesita su ancho (si no, "250" se corta) y
      el aviso pasa arriba de los botones para que estos no se aprieten. */
   .precio .monto { min-width: 112px; }
@@ -229,6 +275,16 @@
     body { padding-bottom: 130px; }
   }
 </style>
+<script>
+  /* El tema se aplica antes de pintar para que no parpadee en blanco. */
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('brice-panel-tema'); } catch (e) {}
+    if (t === 'oscuro' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('oscuro');
+    }
+  })();
+</script>
 </head>
 <body>
 
@@ -257,12 +313,14 @@
       </div>
     </div>
     <a class="ver" href="/" target="_blank" rel="noopener">Ver la página ↗</a>
+    <button class="tema" type="button" id="tema" title="Cambiar a modo oscuro" aria-label="Cambiar a modo oscuro">🌙</button>
     <button class="neutro chico" id="salir">Salir</button>
   </header>
 
   <nav class="pestanas">
     <button type="button" data-hoja="general" class="activa">Información general <i class="punto" id="punto-general" title="Cambios sin guardar"></i></button>
     <button type="button" data-hoja="catalogo">Catálogo <i class="punto" id="punto-catalogo" title="Cambios sin guardar"></i></button>
+    <button type="button" data-hoja="promos">Promociones <i class="punto" id="punto-promos" title="Cambios sin guardar"></i></button>
   </nav>
 
   <!-- ══════ Hoja: información general ══════ -->
@@ -277,6 +335,15 @@
     <div id="categorias"></div>
     <div class="fila-botones">
       <button class="neutro" id="add-categoria">+ Agregar sección</button>
+    </div>
+  </div>
+
+  <!-- ══════ Hoja: promociones ══════ -->
+  <div class="env oculto" id="hoja-promos">
+    <p class="nota">Son las tarjetas del carrusel de Inicio. Solo salen las que están activas, en este orden.</p>
+    <div id="promos"></div>
+    <div class="fila-botones">
+      <button class="neutro" id="add-promo">+ Agregar promoción</button>
     </div>
   </div>
 
@@ -308,6 +375,8 @@
   var sitio = {};
   var sucio = false;       /* el catálogo */
   var sucioSitio = false;  /* la información general */
+  var promos = { promos: [] };
+  var sucioPromos = false; /* las promociones */
   var cajaActiva = null;   /* a qué caja va la foto que se pegue */
 
   var $ = function (id) { return document.getElementById(id); };
@@ -319,7 +388,7 @@
     e.className = 'aviso' + (clase ? ' ' + clase : '');
   };
 
-  var hayCambios = function () { return sucio || sucioSitio; };
+  var hayCambios = function () { return sucio || sucioSitio || sucioPromos; };
 
   /* El punto naranja dice en qué pestaña hay algo sin guardar, y los
      botones de abajo solo se encienden cuando hay algo que guardar o
@@ -327,6 +396,7 @@
   var refrescarBotones = function () {
     $('punto-general').classList.toggle('si', sucioSitio);
     $('punto-catalogo').classList.toggle('si', sucio);
+    $('punto-promos').classList.toggle('si', sucioPromos);
     $('guardar').disabled = !hayCambios();
     $('descartar').disabled = !hayCambios();
   };
@@ -341,6 +411,35 @@
     sucioSitio = true;
     aviso('Hay cambios sin guardar');
     refrescarBotones();
+  };
+
+  var marcarSucioPromos = function () {
+    sucioPromos = true;
+    aviso('Hay cambios sin guardar');
+    refrescarBotones();
+  };
+
+  /* Interruptor de sí/no con su explicación debajo. */
+  var interruptor = function (texto, nota, valor, alCambiar) {
+    var lab = document.createElement('label');
+    lab.className = 'interruptor';
+    var inp = document.createElement('input');
+    inp.type = 'checkbox';
+    inp.checked = !!valor;
+    var sw = document.createElement('span');
+    sw.className = 'pista-sw';
+    var t = document.createElement('span');
+    t.textContent = texto;
+    if (nota) {
+      var s = document.createElement('small');
+      s.textContent = nota;
+      t.appendChild(s);
+    }
+    inp.addEventListener('change', function () { alCambiar(inp.checked); });
+    lab.appendChild(inp);
+    lab.appendChild(sw);
+    lab.appendChild(t);
+    return lab;
   };
 
   /* ---------- Fotos ------------------------------------------ */
@@ -463,7 +562,7 @@
     mostrar(caja.querySelector('.quitar-foto'), !!obj[campo]);
 
     var fila = caja.closest('.producto');
-    if (fila) refrescarResumen(fila, obj);
+    if (fila) (fila.classList.contains('promo') ? refrescarPromo : refrescarResumen)(fila, obj);
   }
 
   function cajaDeFoto(obj, campo, opciones) {
@@ -605,6 +704,7 @@
     var titulo = res.querySelector('.titulo');
     titulo.textContent = prod.nombre || 'Producto sin nombre';
     titulo.classList.toggle('vacio', !prod.nombre);
+    mostrar(res.querySelector('.estrella'), !!prod.destacado);
 
     /* El precio a la vista: así se revisa el catálogo sin abrir cada
        producto. Sin ningún monto puesto se avisa en rojo. */
@@ -634,6 +734,11 @@
     var titulo = document.createElement('div');
     titulo.className = 'titulo';
     res.appendChild(titulo);
+    var estrella = document.createElement('span');
+    estrella.className = 'estrella oculto';
+    estrella.textContent = '⭐';
+    estrella.title = 'Más vendido';
+    res.appendChild(estrella);
     var cuantos = document.createElement('span');
     cuantos.className = 'cuantos';
     res.appendChild(cuantos);
@@ -649,6 +754,11 @@
     }));
     caja.appendChild(campo('Descripción', prod.descripcion, function (v) { prod.descripcion = v; }));
     caja.appendChild(campo('Etiqueta corta', prod.etiqueta, function (v) { prod.etiqueta = v; }));
+    caja.appendChild(interruptor('⭐ Más vendido', 'Sale con una estrella y un borde naranja en la tienda.', prod.destacado, function (v) {
+      prod.destacado = v;
+      refrescarResumen(fila, prod);
+      marcarSucio();
+    }));
 
     var etiquetaFoto = document.createElement('label');
     etiquetaFoto.textContent = 'Foto';
@@ -778,8 +888,12 @@
       if (abiertas.indexOf(ci) >= 0 || (abrir && abrir.c === ci)) det.open = true;
 
       var res = document.createElement('summary');
+      var icono = document.createElement('span');
+      icono.style.cssText = 'font-size:19px;color:inherit';
+      icono.textContent = cat.icono || '';
+      res.appendChild(icono);
       var nombre = document.createElement('span');
-      nombre.style.cssText = 'font-weight:800;font-size:17px;color:var(--azul)';
+      nombre.className = 'nombre-cat';
       nombre.textContent = cat.nombre || '(sección sin nombre)';
       res.appendChild(nombre);
       var cuenta = document.createElement('span');
@@ -788,10 +902,29 @@
       res.appendChild(cuenta);
       det.appendChild(res);
 
-      det.appendChild(campo('Nombre de la sección', cat.nombre, function (v) {
+      /* Ícono y nombre en la misma fila: el ícono es un emoji y sale al
+         lado del nombre en la tienda. */
+      var filaNombre = document.createElement('div');
+      filaNombre.className = 'precio';
+      var cIcono = campo('Ícono', cat.icono, function (v) {
+        cat.icono = v;
+        icono.textContent = v;
+      });
+      cIcono.style.flex = 'none';
+      cIcono.querySelector('input').className = 'icono-cat';
+      cIcono.querySelector('input').maxLength = 4;
+      cIcono.querySelector('input').placeholder = '🧴';
+      filaNombre.appendChild(cIcono);
+      filaNombre.appendChild(campo('Nombre de la sección', cat.nombre, function (v) {
         cat.nombre = v;
         nombre.textContent = v || '(sección sin nombre)';
       }));
+      filaNombre.lastChild.style.flex = '1';
+      det.appendChild(filaNombre);
+      var notaIcono = document.createElement('p');
+      notaIcono.className = 'nota';
+      notaIcono.textContent = 'El ícono es un emoji: en el celular, toca la casilla y elige uno del teclado; en la computadora, Windows + punto.';
+      det.appendChild(notaIcono);
 
       (cat.productos || []).forEach(function (prod, pi) {
         var fila = pintarProducto(cat, prod, pi);
@@ -835,6 +968,200 @@
 
     filtrar();
   };
+
+  /* ---------- Promociones ------------------------------------ */
+
+  /* Mismos campos que lee el carrusel de index.html. Se guardan en
+     /api/promos; data/promos.json es solo la semilla. */
+  var COLORES = [['naranja', 'Naranja'], ['verde', 'Verde'], ['azul', 'Azul']];
+
+  function refrescarPromo(fila, p) {
+    var res = fila.querySelector('summary');
+    var previo = res.querySelector('.mini');
+    var nuevo;
+    if (p.imagen && p.tipoMedio !== 'video') {
+      nuevo = document.createElement('img');
+      nuevo.className = 'mini';
+      nuevo.src = p.imagen;
+      nuevo.alt = '';
+    } else {
+      nuevo = document.createElement('div');
+      nuevo.className = 'mini vacia';
+      nuevo.textContent = p.tipoMedio === 'video' ? '🎬' : '🖼️';
+    }
+    res.replaceChild(nuevo, previo);
+    var t = res.querySelector('.titulo');
+    t.textContent = [p.categoria, p.tituloPrecio].filter(Boolean).join(' · ') || 'Promoción sin título';
+    t.classList.toggle('vacio', !p.categoria && !p.tituloPrecio);
+    var etq = res.querySelector('.etq-promo');
+    etq.textContent = p.etiqueta || '';
+    etq.className = 'etq-promo c-' + (p.colorEtiqueta || 'naranja');
+    mostrar(etq, !!p.etiqueta);
+    res.querySelector('.cuantos').textContent = p.activa ? 'Activa' : 'Apagada';
+    res.querySelector('.cuantos').classList.toggle('vacio', !p.activa);
+    fila.classList.toggle('apagada', !p.activa);
+  }
+
+  function selectorColor(etiqueta, p, campo) {
+    var cont = document.createElement('div');
+    var lab = document.createElement('label');
+    lab.textContent = etiqueta;
+    cont.appendChild(lab);
+    var fila = document.createElement('div');
+    fila.className = 'colores';
+    COLORES.forEach(function (par) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'c-' + par[0] + ((p[campo] || 'naranja') === par[0] ? ' elegido' : '');
+      b.textContent = par[1];
+      b.setAttribute('aria-pressed', String((p[campo] || 'naranja') === par[0]));
+      b.addEventListener('click', function () {
+        p[campo] = par[0];
+        fila.querySelectorAll('button').forEach(function (o) {
+          o.classList.toggle('elegido', o === b);
+          o.setAttribute('aria-pressed', String(o === b));
+        });
+        var f = cont.closest('.promo');
+        if (f) refrescarPromo(f, p);
+        marcarSucioPromos();
+      });
+      fila.appendChild(b);
+    });
+    cont.appendChild(fila);
+    return cont;
+  }
+
+  /* `campo` marca el catálogo como cambiado; aquí hace falta lo mismo
+     pero para las promociones. */
+  function campoPromo(etiqueta, p, nombre, fila, largo) {
+    var c = campo(etiqueta, p[nombre], function (v) { p[nombre] = v; refrescarPromo(fila, p); });
+    var viejo = c.querySelector('input');
+    var nuevo = largo ? document.createElement('textarea') : viejo.cloneNode();
+    nuevo.value = p[nombre] || '';
+    nuevo.addEventListener('input', function () { p[nombre] = nuevo.value; refrescarPromo(fila, p); marcarSucioPromos(); });
+    viejo.parentNode.replaceChild(nuevo, viejo);
+    return c;
+  }
+
+  function pintarPromos(abrir) {
+    var cont = $('promos');
+    cont.innerHTML = '';
+    var lista = promos.promos;
+
+    lista.forEach(function (p, i) {
+      var fila = document.createElement('details');
+      fila.className = 'producto promo';
+      if (abrir === i) fila.open = true;
+
+      var res = document.createElement('summary');
+      res.appendChild(document.createElement('div')).className = 'mini vacia';
+      var t = document.createElement('div');
+      t.className = 'titulo';
+      res.appendChild(t);
+      var etq = document.createElement('span');
+      etq.className = 'etq-promo';
+      res.appendChild(etq);
+      var estado = document.createElement('span');
+      estado.className = 'cuantos';
+      res.appendChild(estado);
+      fila.appendChild(res);
+
+      var cuerpo = document.createElement('div');
+      cuerpo.className = 'cuerpo';
+      fila.appendChild(cuerpo);
+
+      cuerpo.appendChild(interruptor('Activa', 'Apagada no sale en la página, pero no se borra.', p.activa, function (v) {
+        p.activa = v;
+        refrescarPromo(fila, p);
+        marcarSucioPromos();
+      }));
+
+      var labFoto = document.createElement('label');
+      labFoto.textContent = 'Foto de la promoción';
+      cuerpo.appendChild(labFoto);
+      if (p.tipoMedio === 'video') {
+        var notaV = document.createElement('p');
+        notaV.className = 'nota';
+        notaV.textContent = 'Esta promoción usa un video. Se puede cambiar por una foto: al elegir una, deja de ser video.';
+        cuerpo.appendChild(notaV);
+      }
+      cuerpo.appendChild(cajaDeFoto(p, 'imagen', {
+        alCambiar: function () { p.tipoMedio = 'imagen'; refrescarPromo(fila, p); marcarSucioPromos(); },
+      }));
+
+      cuerpo.appendChild(campoPromo('Etiqueta (arriba de la foto)', p, 'etiqueta', fila));
+      cuerpo.appendChild(selectorColor('Color de la etiqueta', p, 'colorEtiqueta'));
+      cuerpo.appendChild(campoPromo('Producto o categoría', p, 'categoria', fila));
+      cuerpo.appendChild(campoPromo('Título y precio', p, 'tituloPrecio', fila));
+      cuerpo.appendChild(campoPromo('Descripción', p, 'descripcion', fila, true));
+      cuerpo.appendChild(selectorColor('Color del botón "Pedir"', p, 'colorBoton'));
+      cuerpo.appendChild(campoPromo('Mensaje que llega por WhatsApp', p, 'whatsappTexto', fila));
+
+      var botones = document.createElement('div');
+      botones.className = 'fila-botones';
+      var borrar = document.createElement('button');
+      borrar.className = 'peligro';
+      borrar.type = 'button';
+      borrar.textContent = 'Eliminar promoción';
+      borrar.addEventListener('click', function () {
+        if (!confirm('¿Eliminar esta promoción? Si solo quieres esconderla, apágala.')) return;
+        lista.splice(i, 1);
+        pintarPromos();
+        marcarSucioPromos();
+      });
+      botones.appendChild(borrar);
+
+      var orden = document.createElement('div');
+      orden.className = 'orden';
+      [['↑', 'Subir', -1, i === 0], ['↓', 'Bajar', 1, i === lista.length - 1]].forEach(function (d) {
+        var b = document.createElement('button');
+        b.className = 'neutro chico';
+        b.type = 'button';
+        b.textContent = d[0];
+        b.title = d[1] + ' esta promoción';
+        b.setAttribute('aria-label', b.title);
+        b.disabled = d[3];
+        b.addEventListener('click', function () {
+          var tmp = lista[i]; lista[i] = lista[i + d[2]]; lista[i + d[2]] = tmp;
+          pintarPromos(i + d[2]);
+          marcarSucioPromos();
+        });
+        orden.appendChild(b);
+      });
+      var dup = document.createElement('button');
+      dup.className = 'neutro chico';
+      dup.type = 'button';
+      dup.textContent = 'Duplicar';
+      dup.addEventListener('click', function () {
+        lista.splice(i + 1, 0, JSON.parse(JSON.stringify(p)));
+        pintarPromos(i + 1);
+        marcarSucioPromos();
+      });
+      orden.appendChild(dup);
+      botones.appendChild(orden);
+      cuerpo.appendChild(botones);
+
+      refrescarPromo(fila, p);
+      cont.appendChild(fila);
+      if (abrir === i) setTimeout(function () { fila.scrollIntoView({ block: 'center', behavior: 'smooth' }); }, 0);
+    });
+
+    if (!lista.length) {
+      var vacio = document.createElement('p');
+      vacio.className = 'sin-resultados';
+      vacio.textContent = 'No hay promociones. Con ninguna activa, el carrusel no sale en Inicio.';
+      cont.appendChild(vacio);
+    }
+  }
+
+  $('add-promo').addEventListener('click', function () {
+    promos.promos.push({
+      activa: true, tipoMedio: 'imagen', imagen: '', etiqueta: '', colorEtiqueta: 'naranja',
+      categoria: '', tituloPrecio: '', colorBoton: 'azul', descripcion: '', whatsappTexto: '',
+    });
+    pintarPromos(promos.promos.length - 1);
+    marcarSucioPromos();
+  });
 
   /* ---------- Información general ---------------------------- */
 
@@ -1079,8 +1406,9 @@
       document.querySelectorAll('.pestanas button').forEach(function (o) {
         o.classList.toggle('activa', o === b);
       });
-      mostrar($('hoja-general'), b.dataset.hoja === 'general');
-      mostrar($('hoja-catalogo'), b.dataset.hoja === 'catalogo');
+      ['general', 'catalogo', 'promos'].forEach(function (h) {
+        mostrar($('hoja-' + h), b.dataset.hoja === h);
+      });
       window.scrollTo(0, 0);
     });
   });
@@ -1119,15 +1447,19 @@
     return Promise.all([
       fetch('/api/catalogo').then(function (r) { return r.json(); }),
       fetch('/api/site').then(function (r) { return r.json(); }),
+      fetch('/api/promos').then(function (r) { return r.json(); }),
     ]).then(function (par) {
       var d = par[0];
       datos = d && Array.isArray(d.categorias) ? d : { categorias: [] };
       sitio = par[1] && typeof par[1] === 'object' ? par[1] : {};
+      promos = par[2] && Array.isArray(par[2].promos) ? par[2] : { promos: [] };
       pintarGeneral();
       pintar();
+      pintarPromos();
       aviso('');
       sucio = false;
       sucioSitio = false;
+      sucioPromos = false;
       refrescarBotones();
       if (sitio.medios && sitio.medios.logo) document.querySelector('header .marca img').src = sitio.medios.logo;
     });
@@ -1197,6 +1529,7 @@
     var tareas = [];
     if (sucioSitio) tareas.push(mandar('/api/site', sitio).then(function () { sucioSitio = false; }));
     if (sucio) tareas.push(mandar('/api/catalogo', datos).then(function () { sucio = false; }));
+    if (sucioPromos) tareas.push(mandar('/api/promos', promos).then(function () { sucioPromos = false; }));
 
     Promise.all(tareas)
       .then(function () { aviso('Guardado. Ya se ve en la página.', 'bien'); })
@@ -1207,6 +1540,21 @@
   window.addEventListener('beforeunload', function (e) {
     if (hayCambios()) { e.preventDefault(); e.returnValue = ''; }
   });
+
+  /* ---------- Tema claro / oscuro ----------------------------- */
+  var pintarTema = function () {
+    var osc = document.documentElement.classList.contains('oscuro');
+    var b = $('tema');
+    b.textContent = osc ? '☀️' : '🌙';
+    b.title = osc ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+    b.setAttribute('aria-label', b.title);
+  };
+  $('tema').addEventListener('click', function () {
+    var osc = document.documentElement.classList.toggle('oscuro');
+    try { localStorage.setItem('brice-panel-tema', osc ? 'oscuro' : 'claro'); } catch (e) {}
+    pintarTema();
+  });
+  pintarTema();
 
   /* Si la cookie sigue viva, se entra directo. */
   fetch('/api/sesion')
