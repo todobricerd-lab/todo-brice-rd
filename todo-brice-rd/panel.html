@@ -175,6 +175,59 @@
   .entrada p { margin: 0; color: var(--suave); font-size: 14px; }
   .entrada button { width: 100%; margin-top: 16px; }
   .oculto { display: none !important; }
+
+  /* ── Refinado (oct-2026) ───────────────────────────────────
+     Mismo panel y mismas rutas; solo cambia cómo se ve y cuatro
+     ayudas: saber qué pestaña tiene cambios, poder deshacerlos,
+     ver el precio sin abrir el producto y mover productos. */
+  body { -webkit-font-smoothing: antialiased; }
+  header { box-shadow: 0 2px 10px rgba(16,32,58,.18); }
+  header .marca { display: flex; align-items: center; gap: 11px; }
+  header .marca img { width: 36px; height: 36px; border-radius: 9px; background: #fff; object-fit: contain; padding: 3px; }
+  header .ver { color: #fff; text-decoration: none; font-size: 14px; font-weight: 700; opacity: .85; margin-left: auto; white-space: nowrap; }
+  header .ver:hover { opacity: 1; }
+  header button { margin-left: 0; }
+
+  .tarjeta { border-radius: 16px; box-shadow: 0 1px 2px rgba(16,32,58,.04), 0 8px 22px rgba(16,32,58,.05); }
+  .grupo > h2 { color: var(--azul); font-size: 12.5px; letter-spacing: .08em; }
+
+  .pestanas button { display: inline-flex; align-items: center; gap: 7px; }
+  .pestanas .punto { width: 8px; height: 8px; border-radius: 50%; background: var(--naranja); display: none; }
+  .pestanas .punto.si { display: inline-block; }
+
+  .producto { background: #fff; transition: border-color .15s; }
+  .producto[open] { border-color: rgba(46,158,70,.55); box-shadow: 0 4px 14px rgba(16,32,58,.06); }
+  .producto .cuantos { font-weight: 700; color: var(--verde); font-size: 13px; }
+  .producto .cuantos.vacio { color: var(--rojo); font-weight: 600; }
+
+  .precio .monto { position: relative; }
+  .precio .monto input { padding-left: 46px; }
+  .precio .monto::before {
+    content: "RD$"; position: absolute; left: 12px; bottom: 12px;
+    font-size: 14px; font-weight: 700; color: var(--suave); pointer-events: none;
+  }
+  .precio .peligro { padding: 10px 12px; margin-bottom: 1px; }
+
+  .orden { display: flex; gap: 6px; margin-left: auto; }
+  .orden button { padding: 7px 11px; font-size: 14px; }
+  .orden button:disabled { opacity: .35; cursor: default; }
+
+  .barra { box-shadow: 0 -4px 16px rgba(16,32,58,.06); }
+  .barra .aviso { margin-left: auto; text-align: right; }
+  button:disabled { opacity: .45; cursor: default; }
+  .primario:not(:disabled):hover { filter: brightness(1.06); }
+
+  /* En el celular el precio necesita su ancho (si no, "250" se corta) y
+     el aviso pasa arriba de los botones para que estos no se aprieten. */
+  .precio .monto { min-width: 112px; }
+  @media (max-width: 520px) {
+    .precio > div:first-child { flex: 1.2; }
+    .barra .env { flex-wrap: wrap; gap: 8px 10px; }
+    .barra .aviso { order: -1; width: 100%; margin: 0; text-align: left; }
+    .barra button { flex: 1; }
+    header .ver { font-size: 13px; }
+    body { padding-bottom: 130px; }
+  }
 </style>
 </head>
 <body>
@@ -196,16 +249,20 @@
 <!-- ══════════ Editor ══════════ -->
 <div id="editor" class="oculto">
   <header>
-    <div>
-      <b>Todo Brice</b>
-      <small>Edición del sitio</small>
+    <div class="marca">
+      <img src="img/favicon/favicon.ico" alt="">
+      <div>
+        <b>Todo Brice</b>
+        <small>Edición del sitio</small>
+      </div>
     </div>
+    <a class="ver" href="/" target="_blank" rel="noopener">Ver la página ↗</a>
     <button class="neutro chico" id="salir">Salir</button>
   </header>
 
   <nav class="pestanas">
-    <button type="button" data-hoja="general" class="activa">Información general</button>
-    <button type="button" data-hoja="catalogo">Catálogo</button>
+    <button type="button" data-hoja="general" class="activa">Información general <i class="punto" id="punto-general" title="Cambios sin guardar"></i></button>
+    <button type="button" data-hoja="catalogo">Catálogo <i class="punto" id="punto-catalogo" title="Cambios sin guardar"></i></button>
   </nav>
 
   <!-- ══════ Hoja: información general ══════ -->
@@ -225,7 +282,8 @@
 
   <div class="barra">
     <div class="env">
-      <button class="primario" id="guardar">Guardar cambios</button>
+      <button class="neutro" id="descartar" disabled>Descartar</button>
+      <button class="primario" id="guardar" disabled>Guardar cambios</button>
       <span class="aviso" id="estado"></span>
     </div>
   </div>
@@ -261,17 +319,29 @@
     e.className = 'aviso' + (clase ? ' ' + clase : '');
   };
 
+  var hayCambios = function () { return sucio || sucioSitio; };
+
+  /* El punto naranja dice en qué pestaña hay algo sin guardar, y los
+     botones de abajo solo se encienden cuando hay algo que guardar o
+     que descartar. */
+  var refrescarBotones = function () {
+    $('punto-general').classList.toggle('si', sucioSitio);
+    $('punto-catalogo').classList.toggle('si', sucio);
+    $('guardar').disabled = !hayCambios();
+    $('descartar').disabled = !hayCambios();
+  };
+
   var marcarSucio = function () {
     sucio = true;
     aviso('Hay cambios sin guardar');
+    refrescarBotones();
   };
 
   var marcarSucioSitio = function () {
     sucioSitio = true;
     aviso('Hay cambios sin guardar');
+    refrescarBotones();
   };
-
-  var hayCambios = function () { return sucio || sucioSitio; };
 
   /* ---------- Fotos ------------------------------------------ */
 
@@ -536,8 +606,21 @@
     titulo.textContent = prod.nombre || 'Producto sin nombre';
     titulo.classList.toggle('vacio', !prod.nombre);
 
-    var n = (prod.precios || []).length;
-    res.querySelector('.cuantos').textContent = n === 1 ? '1 precio' : n + ' precios';
+    /* El precio a la vista: así se revisa el catálogo sin abrir cada
+       producto. Sin ningún monto puesto se avisa en rojo. */
+    var montos = (prod.precios || [])
+      .map(function (p) { return Number(p.monto) || 0; })
+      .filter(function (m) { return m > 0; });
+    var cuantos = res.querySelector('.cuantos');
+    var rd = function (m) { return 'RD$' + m.toLocaleString('es-DO'); };
+    if (!montos.length) {
+      cuantos.textContent = 'Sin precio';
+    } else {
+      var menor = Math.min.apply(null, montos);
+      var mayor = Math.max.apply(null, montos);
+      cuantos.textContent = menor === mayor ? rd(menor) : rd(menor) + ' – ' + rd(mayor);
+    }
+    cuantos.classList.toggle('vacio', !montos.length);
 
     fila.dataset.nombre = (prod.nombre || '').toLowerCase();
   }
@@ -585,11 +668,18 @@
         var linea = document.createElement('div');
         linea.className = 'precio';
         linea.appendChild(campo('Presentación', precio.tamano, function (v) { precio.tamano = v; }));
-        linea.appendChild(campo('RD$', precio.monto, function (v) { precio.monto = Number(v); }, 'number'));
+        var monto = campo('Precio', precio.monto, function (v) {
+          precio.monto = Number(v);
+          refrescarResumen(fila, prod);
+        }, 'number');
+        monto.className = 'monto';
+        linea.appendChild(monto);
         var quitar = document.createElement('button');
         quitar.className = 'peligro';
         quitar.type = 'button';
-        quitar.textContent = 'Quitar';
+        quitar.textContent = '✕';
+        quitar.title = 'Quitar esta presentación';
+        quitar.setAttribute('aria-label', 'Quitar esta presentación');
         quitar.addEventListener('click', function () {
           prod.precios.splice(j, 1);
           pintarPrecios();
@@ -628,21 +718,64 @@
       marcarSucio();
     });
 
+    /* Mover y duplicar: el orden de aquí es el orden de la página, y
+       duplicar ahorra escribir todo otra vez para un producto parecido. */
+    var orden = document.createElement('div');
+    orden.className = 'orden';
+    var boton = function (texto, titulo, alPulsar, apagado) {
+      var b = document.createElement('button');
+      b.className = 'neutro chico';
+      b.type = 'button';
+      b.textContent = texto;
+      b.title = titulo;
+      b.setAttribute('aria-label', titulo);
+      b.disabled = !!apagado;
+      b.addEventListener('click', alPulsar);
+      orden.appendChild(b);
+    };
+    var ci = datos.categorias.indexOf(cat);
+    var mover = function (d) {
+      var lista = cat.productos;
+      var tmp = lista[i];
+      lista[i] = lista[i + d];
+      lista[i + d] = tmp;
+      pintar({ c: ci, p: i + d });
+      marcarSucio();
+    };
+    boton('↑', 'Subir este producto', function () { mover(-1); }, i === 0);
+    boton('↓', 'Bajar este producto', function () { mover(1); }, i === cat.productos.length - 1);
+    boton('Duplicar', 'Duplicar este producto', function () {
+      var copia = JSON.parse(JSON.stringify(prod));
+      copia.nombre = (prod.nombre || '') + ' (copia)';
+      cat.productos.splice(i + 1, 0, copia);
+      pintar({ c: ci, p: i + 1 });
+      marcarSucio();
+    });
+
     botones.appendChild(masPrecio);
     botones.appendChild(borrar);
+    botones.appendChild(orden);
     caja.appendChild(botones);
 
     refrescarResumen(fila, prod);
     return fila;
   };
 
-  var pintar = function () {
+  /* `abrir` ({c, p}) deja abierto ese producto después de repintar.
+     Lo que ya estaba abierto se mantiene abierto: antes, añadir un
+     producto cerraba la sección entera y había que buscarlo otra vez. */
+  var pintar = function (abrir) {
     var cont = $('categorias');
+    var abiertas = [];
+    cont.querySelectorAll(':scope > .categoria').forEach(function (d, k) {
+      if (d.open) abiertas.push(k);
+    });
     cont.innerHTML = '';
 
     datos.categorias.forEach(function (cat, ci) {
       var det = document.createElement('details');
       det.className = 'tarjeta categoria';
+      if (abiertas.indexOf(ci) >= 0 || (abrir && abrir.c === ci)) det.open = true;
 
       var res = document.createElement('summary');
       var nombre = document.createElement('span');
@@ -661,7 +794,12 @@
       }));
 
       (cat.productos || []).forEach(function (prod, pi) {
-        det.appendChild(pintarProducto(cat, prod, pi));
+        var fila = pintarProducto(cat, prod, pi);
+        if (abrir && abrir.c === ci && abrir.p === pi) {
+          fila.open = true;
+          setTimeout(function () { fila.scrollIntoView({ block: 'center', behavior: 'smooth' }); }, 0);
+        }
+        det.appendChild(fila);
       });
 
       var botones = document.createElement('div');
@@ -674,8 +812,7 @@
       masProd.addEventListener('click', function () {
         cat.productos = cat.productos || [];
         cat.productos.push({ nombre: '', imagen: '', etiqueta: '', destacado: false, descripcion: '', precios: [{ tamano: '', monto: 0 }] });
-        det.setAttribute('open', '');
-        pintar();
+        pintar({ c: ci, p: cat.productos.length - 1 });
         marcarSucio();
       });
 
@@ -991,8 +1128,18 @@
       aviso('');
       sucio = false;
       sucioSitio = false;
+      refrescarBotones();
+      if (sitio.medios && sitio.medios.logo) document.querySelector('header .marca img').src = sitio.medios.logo;
     });
   };
+
+  /* Descartar vuelve a lo último guardado. Pregunta antes, porque no
+     tiene vuelta atrás. */
+  $('descartar').addEventListener('click', function () {
+    if (!hayCambios()) return;
+    if (!confirm('¿Descartar los cambios que no se han guardado?')) return;
+    cargar().then(function () { aviso('Cambios descartados.'); });
+  });
 
   var entrar = function () {
     mostrar($('entrada'), false);
@@ -1053,7 +1200,8 @@
 
     Promise.all(tareas)
       .then(function () { aviso('Guardado. Ya se ve en la página.', 'bien'); })
-      .catch(function (err) { aviso(err.message || 'No se pudo guardar', 'malo'); });
+      .catch(function (err) { aviso(err.message || 'No se pudo guardar', 'malo'); })
+      .then(refrescarBotones);
   });
 
   window.addEventListener('beforeunload', function (e) {
