@@ -52,11 +52,13 @@ function igualesSinFiltrar(a, b) {
  * Lo que se guarda no es la contraseña sino el resultado de pasarla por
  * PBKDF2 con una sal distinta cada vez. Aunque alguien llegara a leer el
  * KV, no tendría la contraseña: tendría que adivinarla, y cada intento
- * le cuesta las 150.000 vueltas. Guardar un SHA-256 pelado no serviría,
+ * le cuesta las 100.000 vueltas. Guardar un SHA-256 pelado no serviría,
  * porque contra una contraseña corta se prueban millones por segundo.
  */
 export const CLAVE_KV = 'clave';
-export const VUELTAS = 150000;
+/* 100.000 es el tope de Cloudflare: con más, PBKDF2 falla en producción
+   (en local no avisa) y el panel recibe una página de error en vez de JSON. */
+export const VUELTAS = 100000;
 
 const aBytes = (hex) => {
   const salida = new Uint8Array(hex.length / 2);
