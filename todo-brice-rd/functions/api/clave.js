@@ -9,9 +9,13 @@
  * dejarlo fuera de su propio panel.
  */
 
-import { claveCorrecta, guardada, amasar, nuevaSal, haySesion, json, CLAVE_KV, VUELTAS } from '../_auth.js';
+import {
+  claveCorrecta, guardada, amasar, nuevaSal, haySesion, json, CLAVE_KV, VUELTAS,
+  bloqueado, anotarFallo, olvidarFallos, DEMASIADOS,
+} from '../_auth.js';
 
-const MINIMO = 8;
+/* Seis vale porque los intentos están contados (ver _auth.js). */
+const MINIMO = 6;
 
 const frenar = () => new Promise((listo) => setTimeout(listo, 700));
 
@@ -51,10 +55,15 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'La nueva no puede empezar ni terminar con espacios' }, 400);
   }
 
+  if (await bloqueado(request, env)) return json({ ok: false, error: DEMASIADOS }, 429);
+
   if (!(await claveCorrecta(actual, env))) {
+    await anotarFallo(request, env);
     await frenar();
     return json({ ok: false, error: 'La contraseña de ahora no coincide' }, 401);
   }
+
+  await olvidarFallos(request, env);
 
   const sal = nuevaSal();
   await env.CATALOGO.put(

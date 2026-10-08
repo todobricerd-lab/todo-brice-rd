@@ -8,9 +8,15 @@
  * Nunca se responde en qué falló el intento. Decir "contraseña
  * incorrecta" frente a "falta configurar" le regala información a quien
  * está probando desde fuera.
+ *
+ * A los cinco fallos seguidos la conexión queda fuera una hora (ver
+ * _auth.js). Eso sí se dice: Manuel tiene que saber por qué no entra.
  */
 
-import { claveCorrecta, cookieDeSesion, cookieVacia, haySesion, json } from '../_auth.js';
+import {
+  claveCorrecta, cookieDeSesion, cookieVacia, haySesion, json,
+  bloqueado, anotarFallo, olvidarFallos, DEMASIADOS,
+} from '../_auth.js';
 
 /* Espera breve ante un intento fallido: no frena a nadie decidido, pero
    encarece probar contraseñas a mansalva desde un script. */
@@ -24,10 +30,14 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false }, 400);
   }
 
+  if (await bloqueado(request, env)) return json({ ok: false, error: DEMASIADOS }, 429);
+
   if (await claveCorrecta(cuerpo && cuerpo.clave, env)) {
+    await olvidarFallos(request, env);
     return json({ ok: true }, 200, { 'Set-Cookie': await cookieDeSesion(env) });
   }
 
+  await anotarFallo(request, env);
   await frenar();
   return json({ ok: false }, 401);
 }

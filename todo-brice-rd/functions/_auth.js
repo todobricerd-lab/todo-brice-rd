@@ -103,6 +103,47 @@ export async function claveCorrecta(intento, env) {
   return igualesSinFiltrar(a, b);
 }
 
+/* ── Límite de intentos ─────────────────────────────────────────
+ *
+ * Cinco fallos seguidos desde la misma conexión y esa conexión queda
+ * fuera una hora. Sin esto, una contraseña corta se adivina probando:
+ * seis números son un millón de combinaciones y un script las recorre.
+ *
+ * Se cuenta en el mismo KV, con vencimiento: el contador se borra solo.
+ * Es un freno, no un muro: KV tarda en ponerse al día y quien pruebe
+ * desde miles de conexiones a la vez lo esquiva. Para eso está Access.
+ */
+export const TOPE_FALLOS = 5;
+const BLOQUEO_SEGUNDOS = 3600;
+
+const llaveDeIntentos = (request) =>
+  'intentos:' + (request.headers.get('CF-Connecting-IP') || 'sin-ip');
+
+export async function bloqueado(request, env) {
+  if (!env.CATALOGO) return false;
+  return (Number(await env.CATALOGO.get(llaveDeIntentos(request))) || 0) >= TOPE_FALLOS;
+}
+
+export async function anotarFallo(request, env) {
+  if (!env.CATALOGO) return;
+  const llave = llaveDeIntentos(request);
+  const van = (Number(await env.CATALOGO.get(llave)) || 0) + 1;
+  try {
+    await env.CATALOGO.put(llave, String(van), { expirationTtl: BLOQUEO_SEGUNDOS });
+  } catch {
+    /* Si el almacén no deja escribir, el intento ya falló igual. */
+  }
+}
+
+export async function olvidarFallos(request, env) {
+  if (!env.CATALOGO) return;
+  try {
+    await env.CATALOGO.delete(llaveDeIntentos(request));
+  } catch {}
+}
+
+export const DEMASIADOS = 'Demasiados intentos. Vuelve a probar en una hora.';
+
 export async function cookieDeSesion(env) {
   const vence = Date.now() + DURACION_HORAS * 60 * 60 * 1000;
   const cuerpo = String(vence);

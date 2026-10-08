@@ -1376,7 +1376,7 @@
     boton.textContent = 'Cambiar la contraseña';
     boton.addEventListener('click', function () {
       if (nueva.value !== repetir.value) { decir('Las dos nuevas no son iguales.', 'malo'); return; }
-      if (nueva.value.length < 8) { decir('La nueva debe tener al menos 8 caracteres.', 'malo'); return; }
+      if (nueva.value.length < 6) { decir('La nueva debe tener al menos 6 caracteres.', 'malo'); return; }
 
       decir('Cambiando…');
       fetch('/api/clave', {
@@ -1488,9 +1488,11 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ clave: $('clave').value }),
     })
-      .then(function (r) { return r.ok ? entrar() : Promise.reject(); })
-      .catch(function () {
-        err.textContent = 'Contraseña incorrecta.';
+      .then(function (r) { return r.ok ? entrar() : Promise.reject(r.status); })
+      .catch(function (estado) {
+        err.textContent = estado === 429
+          ? 'Demasiados intentos. Vuelve a probar en una hora.'
+          : 'Contraseña incorrecta.';
         mostrar(err, true);
         $('clave').select();
       });
